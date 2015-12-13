@@ -1,0 +1,357 @@
+{% extends 'mobile/layout.html' %} {% block title %}
+<title>@{{user_info.username}} 的消息 - 买买买</title>
+{% endblock %} {% block main %}
+<div class="col-xs-12 shifter-page">
+    <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
+        <li {%if active_tab=="me" %}class="active" {%endif%}>
+            <a href="#me" role="tab" data-toggle="tab">与我相关</a>
+        </li>
+        <li {%if active_tab=="post" %}class="active" {%endif%} id="post-tab">
+            <a href="#post" role="tab" data-toggle="tab">关注的帖子{%if post_count%} <span class="badge notice-badge">{{post_count}}</span>{%endif%}</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane {%if active_tab=="me" %}active{%endif%}" id="me">
+            <div class="feed-list notice-feeds">
+                <div class="feeds-inner">
+                    {%for notice in notices.list%} 
+                    {%if notice.notice_type==1 or notice.notice_type==4 or notice.notice_type==5 or notice.notice_type==8 or notice.notice_type==11 or notice.notice_type==12 or notice.notice_type==7 or notice.notice_type==14%}
+                    <div class="feed">
+                        <div class="user-wrapper">
+                            <div class="user-title">
+                                <div class="time">{{notice.created|pretty_date}}</div>
+                                <div class="user-meta meta">
+                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
+                                    {{notice.notice_text}}
+                                </div>
+                                <div class="feed-title">
+                                    <h2>
+                                        <a href="/p/{{notice.post_id}}#{{notice.reply_id}}">{{notice.post_title}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <div class="summary-text">{{notice.reply_content|mobile_index_process}}</div>
+                        </div>
+                    </div>
+                    {%endif%} 
+                    {%if notice.notice_type==2 or notice.notice_type==3 or notice.notice_type==9 or notice.notice_type==10 or notice.notice_type==16 or notice.notice_type==17%}
+                    <div class="feed">
+                        <div class="user-wrapper">
+                            <div class="user-title">
+                                <div class="time">{{notice.created|pretty_date}}</div>
+                                <div class="user-meta meta">
+                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
+                                    {{notice.notice_text}}
+                                </div>
+                                <div class="feed-title">
+                                    <h2>
+                                        <a href="/p/{{notice.post_id}}">{{notice.post_title}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {%endif%} 
+                    {%if notice.notice_type==6 or notice.notice_type==13%}
+                    <div class="feed">
+                        <div class="user-wrapper">
+                            <div class="user-title">
+                                <div class="time">{{notice.created|pretty_date}}</div>
+                                <div class="user-meta meta">
+                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
+                                    {{notice.notice_text}}
+                                </div>
+                                <div class="feed-title">
+                                    <h2>
+                                        <a href="/p/{{notice.post_id}}">{{notice.post_title}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <div class="summary-text">{{notice.post_content|mobile_index_process}}</div>
+                        </div>
+                    </div>
+                    {%endif%} 
+                    {%if notice.notice_type==15%}
+                    <div class="feed">
+                        <div class="user-wrapper">
+                            <div class="user-title">
+                                <div class="time">{{notice.created|pretty_date}}</div>
+                                <div class="user-meta meta">
+                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
+                                    {{notice.notice_text}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%} 
+                    {%endfor%} 
+                    {% if notices.page.next!=notices.page.current %}
+                    <div class="next jscroll-next-parent">
+                        <a href="/notifications?p={{notices.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                    </div>
+                    {%else%}
+                    <div class="next jscroll-next-parent">
+                        <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane {%if active_tab=="post" %}active{%endif%}" id="post">
+            <div class="feed-list2">
+                <div class="feeds-inner2">
+                    {%for feed in feeds.list%} 
+                    {%if feed.feed_type==2 or feed.feed_type==8%}
+                    <div class="feed">
+                        <div class="user-wrapper">
+                            <div class="user-title">
+                                <div class="time">{{feed.created|pretty_date}}</div>
+                                <div class="user-meta meta">
+                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
+                                    {{feed.feed_text}}
+                                </div>
+                                <div class="feed-title">
+                                    <h2>
+                                        <a href="/p/{{feed.post_id}}#{{feed.reply_id}}">{{feed.post_title}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <div class="user-name">
+                                <a class="reply-user-link tipped_ajax_user" data-tipped="/get/user/{{feed.reply_user_username}}" href="/u/{{feed.reply_user_username}}">{{feed.reply_user_username}}</a>{%if feed.reply_user_sign%}，{{feed.reply_user_sign}}{%endif%}
+                            </div>
+                            <div class="summary-text">{{feed.reply_content|mobile_index_process}}</div>
+                        </div>
+                        <div class="answer-meta meta">
+                            <a class="feed-post-follow-btn {% if user_info == none%}unlogin{%endif%}" href="javascript:void(0)" data-obj="{{feed.post_id}}" data-type="{{feed.post_type}}">{%if feed.post_follow_id%}取消关注{%else%}关注问题{%endif%}</a>
+                            <span class="bullet">•</span>
+                            <a href="/p/{{feed.post_id}}">{{feed.post_reply_num}} 个{%if feed.post_type=='q'%}回答{%else%}评论{%endif%}</a>
+                            {% if user_info.username != feed.author_username %}
+                            <span class="bullet">•</span>
+                            <a class="thank {% if feed.reply_thank_id %}thanked{% endif %} {% if user_info == none%}unlogin{%endif%}" {% if user_info==none or feed.reply_thank_id==none %}href="javascript:;" {% endif %} data-id="{{feed.reply_id}}" data-type="reply">{% if feed.reply_thank_id %}已感谢{% else %}感谢{% endif %}</a>
+                            <span class="bullet">•</span>
+                            <a class="report {% if feed.reply_report_id %}reported{% endif %} {% if user_info == none%}unlogin{%endif%}" {% if user_info==none or feed.reply_report_id==none %}href="javascript:;" {% endif %} data-id="{{feed.reply_id}}" data-type="reply">{% if feed.post_report_id %}已举报{% else %}举报{% endif %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {%endif%} 
+                    {%endfor%} 
+                    {% if feeds.page.next!=feeds.page.current %}
+                    <div class="next jscroll-next-parent">
+                        <a href="/notifications?p={{notices.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                    </div>
+                    {%else%}
+                    <div class="next jscroll-next-parent">
+                        <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="inviteJoinModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">邀请朋友加入</h4>
+            </div>
+            <div class="modal-body">
+                <div class="invite-email input-group">
+                    <input id="inviteEmailInput" type="text" class="form-control" placeholder="输入 email 邀请朋友加入买买买">
+                    <span class="input-group-btn">
+                        <button id="inviteEmail" class="btn btn-default" type="button" data-post="">发送邀请</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+{% block navigation %}
+<nav class="shifter-navigation">
+                    <ul class="nav nav-list">
+                    <li class="nav-item">
+                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
+                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
+                            <input name="tn" type="hidden" value="bds" />
+                            <input name="cl" type="hidden" value="3" />
+                            <input name="si" type="hidden" value="mmmai.com" />
+                            <input name="ct" type="hidden" value="2097152" />
+                        </div>
+                    </form>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>
+                我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>
+                我的所有关注
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>
+                    <i class="icon-message"></i>
+                    我的消息 
+                    {%if notice_count%}
+                    <span class="badge message-badge">{{notice_count}}</span>
+                    {%endif%}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>
+                    <i class="icon-invitation"></i>
+                    邀请我回答的问题 
+                    {%if invite_count%}
+                    <span class="badge invite-badge">{{invite_count}}</span>
+                    {%endif%}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/tags">
+                    <i class="icon-tag"></i>
+                    所有标签
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%else%}class="comingsoon" {%endif%} href="javascript:;" {% if user_info==none%}data-link="list" {%endif%}>
+                    <i class="icon-list"></i>
+                    欲望清单
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
+                    <i class="icon-invite"></i>
+                    邀请朋友加入
+                </a>
+            </li>
+        </ul>
+
+        <div class="slide-bottom">
+        {%if user_info%}
+        {%else%}
+        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
+        {%endif%} 
+        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
+        {%if user_info%}
+        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
+        {%endif%}
+        </div>
+    </nav>
+{% endblock %} 
+
+{% block javascript %}
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".summary-text").each(function() {
+                var text = $(this);
+        var img1 = $(this).find('.mmm-img:eq(0)').attr('src');
+        
+        str = text.text();
+        textLeng = 88;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        text.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(this); 
+        }
+            });
+
+        $(document).on('click', '#inviteEmail', function() {
+            var email = $('#inviteEmailInput').val();
+
+            $.getJSON('/invite/to/join?email=' + email, function(data) {
+                if (data.success != 0) {
+                    $('#inviteEmailInput').val('');
+                    $('#inviteJoinModal').modal('hide');
+                    alert('邀请发送成功!');
+                } else {
+                    alert('邀请发送失败!');
+                }
+            });
+        });
+
+        $(document).on('click', '#post-tab', function() {
+            $.getJSON('/update/user/view/follow', function(data) {
+                if (data.success != 0) {
+                    $(".notice-badge").hide();
+                    $(".actived .message-badge").hide();
+                } else {}
+            });
+        });
+
+        $('.feed-list').jscroll({
+            loadingHtml: '<a href="/notifications?p={{notices.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.feeds-inner',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+            callback: function(newElems) {
+                $(".summary-text").each(function() {
+                var text = $(this);
+        var img1 = $(this).find('.mmm-img:eq(0)').attr('src');
+        
+        str = text.text();
+        textLeng = 88;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        text.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(this); 
+        }
+            });
+            },
+        });
+
+        $('.feed-list2').jscroll({
+            loadingHtml: '<a href="/notifications?p={{notices.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.feeds-inner2',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+            callback: function(newElems) {
+                $(".summary-text").each(function() {
+                var text = $(this);
+        var img1 = $(this).find('.mmm-img:eq(0)').attr('src');
+        
+        str = text.text();
+        textLeng = 88;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        text.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(this); 
+        }
+            });
+            },
+        });
+
+        $(document).on('click', '.video-link', function() {
+            var video_id = $(this).attr('data-video');
+            $(this).replaceWith('<iframe webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" height="498" width="510" src="//player.youku.com/embed/' + video_id + '" frameborder="0"></iframe>');
+        });
+    });
+</script>
+{% endblock %}

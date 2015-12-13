@@ -1,0 +1,846 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+<title>{{post.title}} - 买买买</title>
+{% endblock %} 
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/fontdiao/fontdiao/css/fontdiao.css" />
+<link rel="stylesheet" href="/static/summernote-0.5.2-dist/summernote.css">{% endblock %} {% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="question">
+        <div class="topic-tags">
+            {% for tag in tags.list %}
+            <a href="/t/{{tag.tag_name}}" class="label label-topic tipped_ajax_tag" data-tipped="/get/tag/{{tag.tag_name}}">{{tag.tag_name}}</a>
+            {% endfor %}
+        </div>
+
+        <div id="post-user-wrapper" class="user-wrapper">
+            <div class="zm-votebar post-votebar">
+                {% if post.author_id != user_info.uid %}
+                <button class="up vote-btn vote-post {%if post.vote_up_down and post.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
+                data-type="up">
+                    <i class="icon vote-arrow"></i>
+                    <span class="label">赞同</span>
+                    <span class="count">{{post.up_num}}</span>
+                </button>
+                <button class="down vote-btn vote-post {%if post.vote_up_down and post.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
+                data-type="down">
+                    <i class="icon vote-arrow"></i>
+                    <span class="label">反对，不会显示你的姓名</span>
+                    <span class="count" style="display: none;">{{post.down_num}}</span>
+                </button>
+                {% else %}
+                <button class="up vote-btn vote-self-btn" title="赞同">
+                    <span class="label">赞同</span>
+                    <span class="count">{{post.up_num}}</span>
+                </button>
+                {% endif %}
+            </div>
+            <div id="post-user-avatar" class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{post.author_username}}">
+                <a href="/u/{{post.author_username}}">
+                    <img src="{{post.author_avatar}}-46px" width="46px" height="46px" alt="" class="avatar-img">
+                </a>
+            </div>
+            <div class="user-title">
+                <div class="user-name">
+                    <a class="tipped_ajax_user" data-tipped="/get/user/{{post.author_username}}" href="/u/{{post.author_username}}">{{post.author_username}}</a>
+                    {%if post.author_sign%}，{{post.author_sign}}{%endif%}
+                </div>
+                <div class="topic-title">
+                    <h2>{{post.title}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="topic-content">{{post.content|desktop_content_process}}</div>
+        <div class="item_action_bar meta">
+            {%if post.post_type=='q'%}
+            <a class="invite {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}" href="javascript:;">邀请回答</a>
+            <span class="bullet">•</span>
+            {%endif%} {% if post.author_id != user_info.uid %}
+            <a class="thank {% if thank %}thanked{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if thank==none or user_info==none %}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
+            data-type="post">{% if thank %}已感谢{% else %}感谢{% endif %}</a>
+            <span class="bullet">•</span>
+            <a id="p{{post.post_type}}{{post.id}}" class="{% if report %}reported{%else%}report{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if report==none or user_info==none %}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}"
+            data-link2="{{link2}}" {%endif%} data-id="{{post.id}}" data-type="p{{post.post_type}}" {% if report==none %}data-toggle="modal" data-target="#reportModal" {%endif%}>{% if report %}已举报{% else %}举报{% endif %}</a>
+            <span class="bullet">•</span>
+            {% endif %}
+            <span class="time">{{post.created|pretty_date}}</span>
+            {% if user_info and (post.author_id == user_info.uid or user_info.permission > 1)%}
+            <span class="bullet">•</span>
+            <a class="edit" href="/edit/{{post.id}}" data-id="{{post.id}}" data-type="post">修改</a>
+            {% if replys.list|length ==0 %}
+            <span class="bullet">•</span>
+            <a class="delete" href="javascript:;" data-id="{{post.id}}" data-type="p{{post.post_type}}" data-toggle="modal" data-target="#delModal">删除</a>
+            {% endif %} {% endif %}
+        </div>
+        {% if user_info != none %}
+        <div class="panel-container" style="display:none">
+            <div class="question-invite-panel" id="question-invite-panel" data-showsearch="true"> <i class="icon icon-spike"></i>
+                <div class="invite-main-wrap">
+                    <div class="invite-email input-group">
+                        <input id="inviteEmailInput" type="text" class="form-control" placeholder="输入 email 邀请朋友回答这个问题">
+                        <span class="input-group-btn">
+                            <button id="inviteEmail" class="btn btn-default" type="button" data-post="{{post.id}}">邀请回答</button>
+                        </span>
+                    </div>
+
+                    <ul class="suggest-persons clearfix"></ul>
+
+                    <div class="zm-invite-pager" style="">
+                        <a class="js-prev link-disabled" href="javascript:;" style="margin-right: 20px;">上一页</a>
+                        <a class="js-next" href="javascript:;" style="">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="answers-title clearfix">
+        <div id="answers-filter" class="answers-sorter">
+            {% if sort=="voted" %}
+            <span class="lbl">按票数排序</span>
+            <a class="lbl" href="/p/{{post.id}}?sort=created">按时间排序</a>  <i class="zg-icon zg-icon-double-arrow"></i>
+            {% else %}
+            <span class="lbl">按时间排序</span>
+            <a class="lbl" href="/p/{{post.id}}">按票数排序</a>
+            <i class="zg-icon zg-icon-double-arrow"></i>
+            {% endif %}
+        </div>
+        <h3 id="question-answer-num">{{post.reply_num}} 个{% if post.post_type=='q' %}回答{% else %}评论{% endif %}</h3>
+    </div>
+
+    <div class="answers-area">
+        <div class="answers-inner">
+            {% set i=0 %} {% for reply in replys.list %}
+            <div id="{{reply.id}}" class="answer-item">
+                <div class="user-wrapper">
+                    <div class="zm-votebar">
+                        {% if reply.author_id != user_info.uid %}
+                        <button class="up vote-btn vote-reply {%if reply.vote_up_down and reply.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
+                        data-type="up">
+                            <i class="icon vote-arrow"></i>
+                            <span class="label">赞同</span>
+                            <span class="count">{{reply.up_num}}</span>
+                        </button>
+                        <button class="down vote-btn vote-reply {%if reply.vote_up_down and reply.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
+                        data-type="down">
+                            <i class="icon vote-arrow"></i>
+                            <span class="label">反对，不会显示你的姓名</span>
+                            <span class="count" style="display: none;">{{reply.down_num}}</span>
+                        </button>
+                        {% else %}
+                        <button class="up vote-btn vote-self-btn" title="赞同">
+                            <span class="label">赞同</span>
+                            <span class="count">{{reply.up_num}}</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <div class="user-title">
+                        <div class="user-name">
+                            {% if reply.anon==0 %}
+                            <a class="tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}" href="/u/{{reply.author_username}}">{{reply.author_username}}</a>
+                            {%if reply.author_sign%}，{{reply.author_sign}}{%endif%} {%else%} 匿名用户 {%endif%}
+                        </div>
+                        {% set votes=votesList[i] %}
+                        <div class="answer-user-meta meta">
+                            {% if votes.list %} {% for vote in votes.list %}
+                            <a href="/u/{{vote.author_username}}" class="tipped_ajax_user" data-tipped="/get/user/{{vote.author_username}}">{{vote.author_username}}</a>
+                            {%if vote!=votes.list[votes.list|length-1] %}、{%endif%} {% endfor %} 等人赞同 {%else%} 还没有人赞同 {%endif%}
+                        </div>
+                        {% set i=i+1 %}
+                    </div>
+                    {% if reply.anon==0 %}
+                    <div class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}">
+                        <a href="/u/{{reply.author_username}}">
+                            <img src="{{ reply.author_avatar}}-46px" width="46px" height="46px" alt="" class="avatar-img">
+                        </a>
+                    </div>
+                    {%endif%}
+                </div>
+                <div class="answer-text">{{reply.content|desktop_content_process}}</div>
+                <div class="answer-meta meta">
+                    {% if reply.author_id != user_info.uid %}
+                    <a class="thank {% if reply.reply_thank_id %}thanked{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if reply.reply_thank_id==none or user_info==none%}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"
+                    {%endif%} data-id="{{reply.id}}" data-type="reply">{% if reply.reply_thank_id %}已感谢{% else %}感谢{% endif %}</a>
+                    <span class="bullet">•</span>
+                    <a id="r{{post.post_type}}{{reply.id}}" class="{% if reply.reply_report_id %}reported{%else%}report{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if reply.reply_report_id==none or user_info==none%}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}"
+                    data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}" data-type="r{{post.post_type}}" {% if reply.reply_report_id==none%}data-toggle="modal" data-target="#reportModal" {%endif%}>{% if reply.reply_report_id %}已举报{% else %}举报{% endif %}</a>
+                    <span class="bullet">•</span>
+                    {% endif %}
+                    <span class="time">{{reply.created|pretty_date}}</span>
+                    {% if user_info and (reply.author_id == user_info.uid or user_info.permission > 1) %}
+                    <span class="bullet">•</span>
+                    <a class="edit" href="javascript:;" data-id="{{reply.id}}" data-type="reply">修改</a>
+                    <span class="bullet">•</span>
+                    <a class="delete" href="javascript:;" data-id="{{reply.id}}" data-type="r{{post.post_type}}" data-toggle="modal" data-target="#delModal">删除</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %} 
+            {% if replys.page.next!=replys.page.current %}
+            <div class="next jscroll-next-parent">
+                <a href="/p/{{post.id}}?p={{replys.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+            </div>
+            {%else%}
+            <div class="next jscroll-next-parent">
+                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+
+    <div class="comment-box {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}>
+        {% if user_info != none %}
+        <div class="user-wrapper">
+            <div class="user-title">
+                <div class="user-name">
+                    <a href="/u/{{user_info.username}}" class="tipped_ajax_user" data-tipped="/get/user/{{user_info.username}}">{{user_info.username}}</a>
+                    {% if user_info.sign %}，{{user_info.sign}}{% endif %}
+                </div>
+                <div class="user-meta meta">
+                    <a href="javascript:;">修改话题经验</a>
+                    <span class="bullet">•</span>
+                    <a class='anon' href="javascript:;">匿名</a>
+                </div>
+            </div>
+            <div class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{user_info.username}}">
+                <a href="/u/{{user_info.username}}">
+                    <img src="{{ user_info.avatar}}-46px" width="46px" height="46px" alt="" class="avatar-img">
+                </a>
+            </div>
+        </div>
+        {%else%}
+        <div class="zu-answer-form-title">
+            <strong>我来回答这个问题</strong>
+        </div>
+        {%endif%}
+        <div class="comment-area clear">
+            <div id="rSummernote" class="description"></div>
+            <input type="hidden" name="reply" id="rReplyText" value="">
+        </div>
+        <div class="reply-btn">
+            <input type="submit" id="rPostBtn" data-post="{{ post.id }}" class="btn btn-sm btn-default" value="立即发布">{{ xsrf_form_html() }}</div>
+    </div>
+
+</div>
+
+<div class=" col-xs-12 col-md-3">
+    <div class="follow-box box">
+        <a id="followBtn" data-obj="{{post.id}}" data-type="{{post.post_type}}" type="button" class="btn {%if follow %}btn-danger {% else %} btn-success {% endif %}btn-follow {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}"
+        data-link2="{{link2}}" {%endif%}>{%if follow%}{% if post.post_type=='q'%}取消关注{%else%}取消收藏{%endif%}{% else %} {% if post.post_type=='q'%}关注问题{%else%}收藏文章{%endif%}{% endif %}</a>
+        <div class="promote-link meta">
+            <a href="javascript:;">
+            {% if post.post_type=='q'%}关注者{%else%}收藏者{%endif%} <strong id="followNum">{{post.follow_num}}</strong>
+                人
+            </a>
+        </div>
+    </div>
+    {% if related_posts.list %}
+    <div class="related-box box">
+        <h3>相似{% if post.post_type=='q'%}问题{%else%}文章{%endif%}</h3>
+        {% for related_post in related_posts.list %}
+        <p>
+            <a href="/p/{{related_post.id}}">{{related_post.title}}</a>
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="share-box box">
+        <h3>分享{% if post.post_type=='q'%}问题{%else%}文章{%endif%}</h3>
+        <div class="share-line">
+            <div class="bdsharebuttonbox bdshare-button-style0-16" data-tag="bd_share_toolbar" data-bd-bind="1391875707839">
+                <a class="bds_tsina bds_has_name share-img" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+                <a class="bds_weixin bds_has_name share-img" data-cmd="weixin" title="分享到微信">腾讯微信</a>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="status-box box bottom-box">
+        <h3>{% if post.post_type=='q'%}问题{%else%}文章{%endif%}状态</h3>
+        <div class="zg-gray-normal">
+            最近活动于
+            <span class="time">{{post.updated|pretty_date}}</span>
+            <span class="zg-bull">•</span>
+            被浏览
+            <strong>{{post.view_num}}</strong>
+            次
+        </div>
+    </div>
+
+    <div class="item-box box" style="display:none">
+        <h3>相关宝贝</h3>
+        <div class="item-list">
+
+        </div>
+    </div>
+</div>
+
+<div id="delModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                                                            你确定要删除自己的问题吗？
+                </h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    如果选择确认，你的问题将会被永久删除。
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" data-id="" data-type="">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+{% block javascript %}
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script src="/static/summernote-0.5.2-dist/summernote.js"></script>
+<script src="/static/summernote-0.5.2-dist/summernote-zh-CN.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.answers-area').jscroll({
+            loadingHtml: '<a href="/p/{{post.id}}?p={{replys.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.answers-inner',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+        });
+
+        $('#rSummernote').summernote({
+            minHeight: 200, // set minimum height of editor
+            maxHeight: 600, // set maximum height of editor
+            toolbar: [
+                ['style', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
+                //['fontsize', ['fontsize']],
+                //['color', ['color']],
+                ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
+                //['height', ['height']],
+                //['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
+                //['insert', ['link']],
+                ['view', ['fullscreen' /*, 'codeview'*/ ]],
+            ],
+            lang: 'zh-CN',
+            onImageUpload: function(files, editor, editable) {
+                $('.note-group-select-from-files h5').text('正在上传图片');
+                $('.note-image-input').addClass('uploading');
+                sendFile(files[0], editor, editable);
+            },
+            onShoppingUpload: function(sUrl, editor, editable) {
+                sendShopping(sUrl, editor, editable);
+            },
+        });
+
+        function sendShopping(sUrl, editor, editable) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/additem",
+                data: JSON.stringify({
+                    url: sUrl,
+                }),
+                success: function(msg) {
+                    if (msg.success != 0) {
+                        editor.insertShopping(editable, msg);
+                    } else {
+                        alert("error");
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        }
+
+        function sendFile(file, editor, editable) {
+            data = new FormData();
+            data.append("file", file);
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "/upload",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(url) {
+                    editor.insertImage(editable, url);
+                    $('.note-image-dialog').modal('hide');
+                    $('.note-image-input').removeClass('uploading');
+                    $('.note-group-select-from-files h5').text('从本地上传');                  
+                }
+            });
+        }
+
+        {% if user_info != none %}
+        $(document).on('click', '#rPostBtn', function() {
+            var reply_text = $('#rSummernote').code();
+            if (reply_text == '<p><br></p>') {
+                return;
+            }
+            var post_id = $('#rPostBtn').attr('data-post');
+            var reply_list = $('.answers-area');
+
+            var anon_text = $('.anon');
+            var anon;
+            if (anon_text.text() == '匿名') {
+                anon = 0;
+            } else {
+                anon = 1;
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/reply/" + post_id,
+                data: JSON.stringify({
+                    reply_content: reply_text,
+                    anon: anon
+                }),
+                success: function(msg) {
+                    if (msg.success != 0) {
+                        var reply_string = '<div id="' + msg.reply_id + '" class="answer-item"><div class="user-wrapper"><div class="zm-votebar"><button class="up vote-btn vote-self-btn" title="赞同"> <span class="label">赞同</span><span class="count">0</span></button></div><div class="user-title"><div class="user-name"><a href="/u/{{user_info.username}}">{{user_info.username}}</a>{%if user_info.sign%}，{{user_info.sign}}{%endif%}</div><div class="answer-user-meta meta">还没有人赞同</div></div><div class="user-avatar"><a href="/u/{{user_info.username}}"><img src="{{ user_info.avatar }}-46px" width="46px" height="46px" alt="" class="avatar-img"></a></div></div><div class="answer-text">' + reply_text + '</div><div class="answer-meta meta"><span class="time">刚刚</span><span class="bullet">&nbsp;•&nbsp;</span><a class="edit" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">&nbsp;•&nbsp;</span><a class="delete" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></div></div>';
+                        $('#rSummernote').code('');
+                        $(reply_string).insertBefore('.jscroll-next-parent:last');
+                    } else {
+                        alert("error");
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+
+        $(document).on('click', '#followBtn', function() {
+            var obj_id = $('#followBtn').attr('data-obj');
+            var obj_type = $('#followBtn').attr('data-type');
+            var follow_text;
+            var unfollow_text;
+
+            if (obj_type == 'q') {
+                follow_text = "关注问题";
+                unfollow_text = "取消关注";
+            } else {
+                follow_text = "收藏文章";
+                unfollow_text = "取消收藏";
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/follow",
+                data: JSON.stringify({
+                    obj_id: obj_id,
+                    obj_type: obj_type
+                }),
+                success: function(msg) {
+                    if ($('#followBtn').hasClass('btn-success')) {
+                        $('#followBtn').removeClass('btn-success');
+                        $('#followBtn').addClass('btn-danger');
+                        $('#followBtn').text(unfollow_text);
+                        $('#followNum').text(parseInt($('#followNum').text()) + 1);
+                    } else {
+                        $('#followBtn').removeClass('btn-danger');
+                        $('#followBtn').addClass('btn-success');
+                        $('#followBtn').text(follow_text);
+                        $('#followNum').text(parseInt($('#followNum').text()) - 1);
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+
+        $(document).on('click', '.vote-post', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/post/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.vote-reply', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/reply/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.invite', function() {
+            var post_id = $(this).attr('data-id');
+
+            $.getJSON('/get/users/' + post_id, function(data) {
+                if (data.success != 0) {
+                    if (data.users.length > 0) {
+                        var users_string = '';
+                        for (i = 0; i < data.users.length; i++) {
+                            if (i % 2 == 0) {
+                                position = "odd";
+                            } else {
+                                position = "even";
+                            }
+                            if (i > 3) {
+                                style = "display: none;";
+                            } else {
+                                style = '';
+                            }
+                            users_string += '<li class="person ' + position + ' bordered" style="' + style + '"><div class="blk"><a title="' + data.users[i].username + '" class="zm-item-link-avatar" href="/u/' + data.users[i].username + '"><img src="' + data.users[i].avatar + '" class="zm-item-img-avatar"></a><div class="content"><a class="invite-button btn btn-f btn-success " data-id="' + data.users[i].uid + '" data-post="' + post_id + '">邀请回答</a><a href="' + data.users[i].username + '" class="zg-link">' + data.users[i].username + '</a><div class="bio" title="' + data.users[i].sign + '">' + data.users[i].sign + '</div><div class="reason" title="在相关话题下有 ' + data.users[i].answers + ' 个回答">在相关话题下有 ' + data.users[i].answers + ' 个回答</div></div></div></li>'
+                        }
+                        $('.suggest-persons').html(users_string);
+                        if (data.users.length < 5) {
+                            //$('.js-next').addClass('link-disabled');
+                            $('.zm-invite-pager').hide();
+                        }
+                    } else {
+                        $('.suggest-persons').hide();
+                        $('.zm-invite-pager').hide();
+                    }
+                    $('.panel-container').fadeIn("slow");
+                }
+            });
+        });
+
+        $(document).on('click', '.invite-button', function() {
+            var user_id = $(this).attr('data-id');
+            var post_id = $(this).attr('data-post');
+            var invite_btn = $(this);
+
+            $.getJSON('/invite/to/answer/' + post_id + '?u=' + user_id, function(data) {
+                if (data.success != 0) {
+                    if (invite_btn.hasClass("btn-success")) {
+                        invite_btn.text('取消邀请');
+                        invite_btn.removeClass("btn-success");
+                        invite_btn.addClass("btn-danger");
+                    } else {
+                        invite_btn.text('邀请回答');
+                        invite_btn.removeClass("btn-danger");
+                        invite_btn.addClass("btn-success");
+                    }
+
+                }
+            });
+        });
+
+        $(document).on('click', '.js-next', function() {
+            if ($('.js-next').hasClass('link-disabled')) {
+                return;
+            }
+            var element = $('.suggest-persons').find('li:visible:first');
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.hide();
+                element = element.next();
+            }
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.show();
+                element = element.next();
+            }
+
+            if (!element.hasClass('person')) {
+                $('.js-next').addClass('link-disabled');
+                $('.js-prev').removeClass('link-disabled');
+            }
+        });
+
+        $(document).on('click', '.js-prev', function() {
+            if ($('.js-prev').hasClass('link-disabled')) {
+                return;
+            }
+            var element = $('.suggest-persons').find('li:visible:first');
+            var elementPrev = element.prev();
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.hide();
+                element = element.next();
+            }
+
+            for (i = 0; i < 4; i++) {
+                if (!elementPrev.hasClass('person')) {
+                    break;
+                }
+                elementPrev.show();
+                elementPrev = elementPrev.prev();
+            }
+
+            if (!elementPrev.hasClass('person')) {
+                $('.js-prev').addClass('link-disabled');
+                $('.js-next').removeClass('link-disabled');
+            }
+        });
+
+        $(document).on('click', '.thank', function() {
+            var thank_id = $(this).attr('data-id');
+            var thank_type = $(this).attr('data-type');
+            var thank_text = $(this);
+
+            if (thank_text.text() == '已感谢') {
+                return;
+            }
+
+            $.getJSON('/thank/' + thank_id + '?type=' + thank_type, function(data) {
+                if (data.success != 0) {
+                    thank_text.text('已感谢');
+                    thank_text.removeAttr("href");
+                    thank_text.addClass("thanked");
+                }
+            });
+        });
+
+        $(document).on('click', '.anon', function() {
+            var anon_text = $(this);
+
+            if (anon_text.text() == '匿名') {
+                anon_text.text('取消匿名');
+            } else {
+                anon_text.text('匿名');
+            }
+        });
+
+        $(document).on('click', '.delete', function() {
+            var delete_id = $(this).attr('data-id');
+            var delete_type = $(this).attr('data-type');
+            $('#delModal .btn-success').attr('data-id', delete_id);
+            $('#delModal .btn-success').attr('data-type', delete_type);
+
+            var text1 = '';
+            var text2 = '';
+            if (report_type == 'pq') {
+                text1 = '你确定要删除自己的问题吗？';
+                text2 = '如果选择确认，你的问题将会被永久删除。'
+            } else if (report_type == 'pp') {
+                text1 = '你确定要删除自己的文章吗？';
+                text2 = '如果选择确认，你的文章将会被永久删除。'
+            } else if (report_type == 'rq') {
+                text1 = '你确定要删除自己的答案吗？';
+                text2 = '如果选择确认，你的答案将会被永久删除。'
+            } else if (report_type == 'rp') {
+                text1 = '你确定要删除自己的评论吗？';
+                text2 = '如果选择确认，你的评论将会被永久删除。'
+            }
+            $('#delModal .modal-title').text(text1);
+            $('#delModal .modal-body p').text(text2);
+        });
+
+        $(document).on('click', '#delModal .btn-success', function() {
+            var delete_id = $(this).attr('data-id');
+            var delete_type = $(this).attr('data-type');
+
+            if (delete_type == 'pq' || delete_type == 'pp') {
+                $.getJSON('/delete/post/' + delete_id, function(data) {
+                    if (data.success != 0) {
+                        window.location.replace("/");
+                    }
+                });
+            } else {
+                $.getJSON('/delete/reply/' + delete_id, function(data) {
+                    if (data.success != 0) {
+                        $('#' + delete_id).hide();
+                        $('#delModal').modal('hide');
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '#inviteEmail', function() {
+            var post_id = $(this).attr('data-post');
+            var email = $('#inviteEmailInput').val();
+
+            $.getJSON('/invite/to/email/' + post_id + '?email=' + email, function(data) {
+                if (data.success != 0) {
+                    $('#inviteEmailInput').val('');
+                    $('.panel-container').hide();
+                } else {
+                    alert('邀请发送失败!');
+                }
+            });
+        });
+
+        $(document).on('click', '.edit', function() {
+            var edit_id = $(this).attr('data-id');
+            var edit_type = $(this).attr('data-type');
+
+            if (edit_type == 'reply') {
+                var reply_text = $('#' + edit_id + ' .answer-text').html();
+                $('#' + edit_id + ' .answer-text').toggle();
+                $('<div class="editor-wrapper"><div id="editSummernote" class="description"></div></div>').insertAfter('#' + edit_id + ' .answer-text');
+                $('#editSummernote').summernote({
+                    minHeight: 200, // set minimum height of editor
+                    maxHeight: 600, // set maximum height of editor
+                    toolbar: [
+                        ['style', ['style']],
+                        ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
+                        //['fontsize', ['fontsize']],
+                        //['color', ['color']],
+                        ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
+                        //['height', ['height']],
+                        //['table', ['table']],
+                        ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
+                        //['insert', ['link']],
+                        ['view', ['fullscreen' /*, 'codeview'*/ ]],
+                    ],
+                    lang: 'zh-CN',
+                    onImageUpload: function(files, editor, editable) {
+                        $('.note-group-select-from-files h5').text('正在上传图片');
+                        $('.note-image-input').addClass('uploading');
+                        sendFile(files[0], editor, editable);
+                    },
+                    onShoppingUpload: function(sUrl, editor, editable) {
+                        sendShopping(sUrl, editor, editable);
+                    },
+                });
+                $('#editSummernote').code(reply_text);
+                $('<div class="edit-cancel-btn"><input type="cancel" id="editCancelBtn" data-id="' + edit_id + '" class="btn btn-sm btn-default" value="取消"></div>').insertAfter('#' + edit_id + ' .editor-wrapper #editSummernote');
+                $('<div class="edit-reply-btn"><input type="submit" id="editPostBtn" data-id="' + edit_id + '" class="btn btn-sm btn-default" value="立即发布"></div>').insertAfter('#' + edit_id + ' .editor-wrapper #editSummernote');
+            }
+        });
+
+        $(document).on('click', '#editCancelBtn', function() {
+            $(this).parent().parent().parent().find('.answer-text').toggle();
+            $(this).parent().parent().remove();
+        });
+
+        $(document).on('click', '#editPostBtn', function() {
+            var reply_text = $(this).parent().parent().find('.note-editable').html();
+            var reply_id = $(this).attr('data-id');
+            var answer_text = $(this).parent().parent().parent().find('.answer-text');
+            var editor_wrapper = $(this).parent().parent();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/edit/reply/" + reply_id,
+                data: JSON.stringify({
+                    reply_content: reply_text
+                }),
+                success: function(msg) {
+                    answer_text.html(reply_text);
+                    answer_text.toggle();
+                    editor_wrapper.remove();
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        }); 
+        {% endif %}
+
+        $(".mmm-item").each(function() {
+            var status_box = $('.status-box');
+            var item_box = $('.item-box');
+            if (status_box.hasClass('bottom-box')) {
+                status_box.removeClass('bottom-box');
+            }
+            if (item_box.hasClass('bottom-box')==false) {
+                item_box.addClass('bottom-box');
+            }
+            item_box.show();
+            var item_list = $('.item-list');
+            var list_str = item_list.html() + $("<p>").append($(this).clone()).html()
+            item_list.html(list_str)
+        });
+
+        window._bd_share_config = {
+            "common": {
+                "bdSnsKey": {},
+                "bdText": "{{post.title}}-@买买喵",
+                "bdMini": "2",
+                "bdPic": "",
+                "bdStyle": "0",
+                "bdSize": "16"
+            },
+            "share": {}
+        };
+        with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    });
+</script>
+{% endblock %}

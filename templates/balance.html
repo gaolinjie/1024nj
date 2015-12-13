@@ -1,0 +1,137 @@
+{% extends 'layout.html' %} {% block title %}
+<title>@{{user_info.username}} 的财富 - 买买买</title>
+{% endblock %} {% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="card">
+        <div class="nav-tab">
+            <div class="main-tab">
+                <i class="icon-balance"></i>
+                <a href="" class="tab-item">我的账户余额</a>
+                <div class="fr" id="money">
+                    <a href="javascript:;" class="balance_area" alt="{{gold_coins}} 金币，{{silver_coins}} 银币，{{bronze_coins}} 铜币">{%if gold_coins!=0%}{{gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if silver_coins!=0%}{{silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if bronze_coins!=0%}{{bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>类型</th>
+                        <th>数额</th>
+                        <th>余额</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for balance in balances.list%}
+                    <tr>
+                        <td class="balance-time">{{balance.created}}</td>
+                        <td>{{balance.type_name}}</td>
+                        <td>{%if balance.amount>0%}+{%endif%}{{balance.amount}}</td>
+                        <td>{{balance.balance}}</td>
+                        <td class="balance-description">{{balance.balance_text1}}{%if balance.user_id%} <a href="/u/{{balance.user_name}}" class=" tipped_ajax_user" data-tipped="/get/user/{{balance.user_name}}">{{balance.user_name}}</a> {%endif%}{{balance.balance_text2}} > <a href="/p/{{balance.post_id}}{%if balance.reply_id%}#{{balance.reply_id}}{%endif%}">{{balance.post_title}}</a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            <ul class="pager">{{ balances.page|pagination(request.uri) }}</ul>
+        </div>
+    </div>
+</div>
+<div class=" col-xs-12 col-md-3">
+    {%if user_info%}
+    <div class="card">
+        <div class="cell">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="48" valign="top">
+                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
+                        </td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sep10"></div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td>
+                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="inner">
+            <div class="fr" id="money">
+                    <a href="/balance" class="balance_area" alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
+                </div>
+            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%} 条未读提醒</a></div>
+    </div>
+    {%else%}
+    <div class="card">
+      <div class="feed">
+            <span class="login-header">可能是东半球颜值最高的体育聚合社区</span>
+        </div>
+      <div class="feed center">
+        <a class="unlogin signup-switch" href="javascript:;">
+                                <button class="signin-btn btn btn-success">立即加入</button>
+        </a>
+      
+      <div class="signup-text">
+      已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
+      </div>
+    </div>
+    </div>
+    {%endif%}
+    {%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
+</div>
+<div id="inviteJoinModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">邀请朋友加入</h4>
+            </div>
+            <div class="modal-body">
+                <div class="invite-email input-group">
+                    <input id="inviteEmailInput" type="text" class="form-control" placeholder="输入 email 邀请朋友加入买买买">
+                    <span class="input-group-btn">
+                        <button id="inviteEmail" class="btn btn-default" type="button" data-post="">发送邀请</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script>
+$(document).on('click', '#inviteEmail', function() {
+    var email = $('#inviteEmailInput').val();
+
+    $.getJSON('/invite/to/join?email=' + email, function(data) {
+        if (data.success != 0) {
+            $('#inviteEmailInput').val('');
+            $('#inviteJoinModal').modal('hide');
+            alert('邀请发送成功!');
+        } else {
+            alert('邀请发送失败!');
+        }
+    });
+});
+</script>
+{% endblock %}

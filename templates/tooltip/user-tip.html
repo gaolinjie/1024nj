@@ -1,0 +1,74 @@
+<div class="AjaxTippedUser">
+    {%if view_user%}
+    <div class="avatar">
+        <a href="/u/{{view_user.username}}">
+            <img src="{{view_user.avatar}}-60px" width="60" height="60">
+            <div class="border-overlay">
+                <!-- [] -->
+            </div>
+        </a>
+    </div>
+    <div class="info">
+        <h1 class="has_font">
+            <a href="/u/{{view_user.username}}">
+                {{view_user.username}}
+            </a>
+        </h1>
+        <span class="albumCount">
+            获得：{{view_user.followers}} 关注，{{view_user.up_num}} 赞同，{{view_user.thank_num}}
+            感谢
+        </span>
+        <div class="albums">
+            {%for follow_user in follow_users.list%}
+            <div class="album">
+                <a href="/u/{{follow_user.username}}">
+                    <img class="" src="{{follow_user.avatar}}-18px" alt="" width="18" height="18">
+                    <div class="border-overlay">
+                        <!-- [] -->
+                    </div>
+                </a>
+            </div>
+            {%endfor%} {%if view_user != user_info%}
+            <a data-obj="{{view_user.uid}}" data-type="u" type="button" class="more btn {%if follow %}btn-danger {% else %} btn-success {% endif %} btn-xs tip-follow-user {%if user_info == none%}unlogin{%endif%}">
+                {%if follow%}取消关注 {% else %} 关注{% endif %}
+            </a>
+            {%endif%}
+        </div>
+    </div>
+    {%else%} 该用户不存在 {%endif%}
+</div>
+{%if user_info!=none and view_user!=none%}
+<script type="text/javascript">
+    $(document).on('click', '.tip-follow-user',
+    function() {
+        var obj_id = $(this).attr('data-obj');
+        var obj_type = $(this).attr('data-type');
+        var follow_btn = $(this);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/follow",
+            data: JSON.stringify({
+                obj_id: obj_id,
+                obj_type: obj_type
+            }),
+            success: function(msg) {
+                if (follow_btn.hasClass('btn-success')) {
+                    follow_btn.removeClass('btn-success');
+                    follow_btn.addClass('btn-danger');
+                    follow_btn.text('取消关注');
+                } else {
+                    follow_btn.removeClass('btn-danger');
+                    follow_btn.addClass('btn-success');
+                    follow_btn.text('关注');
+                }
+            },
+            error: function(msg) {
+                alert("error");
+            }
+        });
+    });
+</script>
+{%endif%}

@@ -1,0 +1,207 @@
+{% extends 'layout.html' %} {% block title %}
+<title>首页 - 买买买</title>
+{% endblock %} {% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="feed-list">
+        <div class="feeds-inner">
+            {%for feed in feeds.list%}
+            <div class="feed">
+                <div class="user-wrapper">
+                    <div class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}">
+                        <a href="/u/{{feed.author_username}}">
+                            <img src="{{feed.author_avatar}}-avatar" width="46px" height="46px" alt="" class="avatar-img">
+                        </a>
+                    </div>
+                    <div class="user-title">
+                        <div class="time">{{feed.created|pretty_date}}</div>
+                        <div class="user-meta meta">
+                            <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
+                            邀请你回答问题
+                        </div>
+                        <div class="feed-title">
+                            <h2>
+                                <a href="/p/{{feed.post_id}}">{{feed.post_title}}</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary">
+                    <div class="content-text hidden">{{feed.post_content|index_content_process}}</div>
+                    <div class="summary-text"></div>
+                </div>
+            </div>
+            {%endfor%} {% if feeds.page.next!=feeds.page.current %}
+            <div class="next jscroll-next-parent">
+                <a href="/invitations?p={{feeds.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+            </div>
+            {%else%}
+            <div class="next jscroll-next-parent">
+                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+
+</div>
+
+<div class=" col-xs-12 col-md-3">
+    <div class="sidenav container-box">
+        <ul class="nav nav-list">
+            <li class="nav-item">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/follows/{{user_info.username}}"> <i class="icon-follow"></i>
+                    我的所有关注
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/notifications">
+                    <i class="icon-message"></i>
+                    我的消息 {%if notice_count%}
+                    <span class="badge message-badge">{{notice_count}}</span>
+                    {%endif%}
+                </a>
+            </li>
+
+            <li class="nav-item actived">
+                <a href="/invitations">
+                    <i class="icon-invitation"></i>
+                    邀请我回答的问题
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:;" class="comingsoon">
+                    <i class="icon-list"></i>
+                    欲望清单
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
+                    <i class="icon-invite"></i>
+                    邀请朋友加入
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="inviteJoinModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">邀请朋友加入</h4>
+            </div>
+            <div class="modal-body">
+                <div class="invite-email input-group">
+                    <input id="inviteEmailInput" type="text" class="form-control" placeholder="输入 email 邀请朋友加入买买买">
+                    <span class="input-group-btn">
+                        <button id="inviteEmail" class="btn btn-default" type="button" data-post="">发送邀请</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".content-text").each(function() {
+        vvar content = $(this);
+        if (content.hasClass('contented')) {
+            return;
+        }
+        var summary = $(this).parent().find('.summary-text');
+        var img1 = content.find('.mmm-img:eq(0)').attr('src');
+        var img2 = content.find('.mmm-img:eq(1)').attr('src');
+        var img3 = content.find('.mmm-img:eq(2)').attr('src');
+        
+        var str = content.text();
+        var textLeng = 140;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        summary.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(summary); 
+        }
+        if (img3) {
+            $('<img class="mmm-img" src="'+img2+'">').insertBefore(summary);
+            $('<img class="mmm-img last-img" src="'+img3+'">').insertBefore(summary);  
+            summary.addClass('summary-text3');     
+        } else {
+            if (img1) {
+                summary.addClass('summary-text2');  
+            }
+        }
+        content.addClass('contented');
+    });
+
+        $(document).on('click', '#inviteEmail', function() {
+            var email = $('#inviteEmailInput').val();
+
+            $.getJSON('/invite/to/join?email=' + email, function(data) {
+                if (data.success != 0) {
+                    $('#inviteEmailInput').val('');
+                    $('#inviteJoinModal').modal('hide');
+                    alert('邀请发送成功!');
+                } else {
+                    alert('邀请发送失败!');
+                }
+            });
+        });
+
+        $('.feed-list').jscroll({
+            loadingHtml: '<a href="/invitations?p={{feeds.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.feeds-inner',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+            callback: function(newElems) {
+                $(".content-text").each(function() {
+        var content = $(this);
+        if (content.hasClass('contented')) {
+            return;
+        }
+        var summary = $(this).parent().find('.summary-text');
+        var img1 = content.find('.mmm-img:eq(0)').attr('src');
+        var img2 = content.find('.mmm-img:eq(1)').attr('src');
+        var img3 = content.find('.mmm-img:eq(2)').attr('src');
+        
+        var str = content.text();
+        var textLeng = 140;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        summary.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(summary); 
+        }
+        if (img3) {
+            $('<img class="mmm-img" src="'+img2+'">').insertBefore(summary);
+            $('<img class="mmm-img last-img" src="'+img3+'">').insertBefore(summary);  
+            summary.addClass('summary-text3');     
+        } else {
+            if (img1) {
+                summary.addClass('summary-text2');  
+            }
+        }
+        content.addClass('contented');
+    });
+            },
+        });
+
+        $(document).on('click', '.video-link', function() {
+            var video_id = $(this).attr('data-video');
+            $(this).replaceWith('<iframe webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" height="498" width="510" src="//player.youku.com/embed/' + video_id + '" frameborder="0"></iframe>');
+        });
+    });
+</script>
+{% endblock %}

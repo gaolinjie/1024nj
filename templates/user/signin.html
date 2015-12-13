@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+
+	<meta charset="utf-8">
+
+	<title>登入</title>
+
+	<link rel="stylesheet" href="/static/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+
+	<link href="/static/css/login.css" rel="stylesheet">
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+	<div id="login">
+		<div class="login-header">
+
+		<a class="login-logo" href="/"></a>
+	</div>
+
+		<form action="" method="POST">
+
+			<fieldset>
+				{{ errors|dump_errors }}
+				<p>
+					<label for="email">邮箱</label>
+				</p>
+				<p>
+					<input type="email" id="email" name="email" value="mail@address.com" onBlur="if(this.value=='')this.value='mail@address.com'" onFocus="if(this.value=='mail@address.com')this.value=''"></p>
+				<!-- JS because of IE support; better: placeholder="mail@address.com" -->
+
+				<p>
+					<label class="pwd_label" for="password">密码</label>
+					<a class="forgot" href="/forgot">忘记密码?</a>
+				</p>
+				<p>
+					<input type="password" id="password" name="password" value="password" onBlur="if(this.value=='')this.value='password'" onFocus="if(this.value=='password')this.value=''"></p>
+				<!-- JS because of IE support; better: placeholder="password" -->
+
+				<p>
+					<input type="submit" value="登入"></p>
+
+
+			</fieldset>
+			{{ xsrf_form_html() }}
+		</form>
+		<a class="signup" href="/signup">立即注册新帐户</a>
+
+	</div>
+	<!-- end login -->
+	
+
+</body>
+</html>

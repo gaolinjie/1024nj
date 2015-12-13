@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+<div class="card setting">
+    <div class="setting-card">
+        <form class="form-horizontal" action='' method="POST">
+            <fieldset>
+                <div id="legend">
+                    <legend class="setting-title">用户设置</legend>
+                </div>
+                {{ errors|dump_errors }}
+                <div class="save-btn">
+                    <input type="submit" id="qPostBtn" class="btn btn-sm btn-success" value="保存改动">{{ xsrf_form_html() }}</div>
+                <div class="form-group left">
+                    <!-- Username -->
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" placeholder="" class="form-control" value="{{ user_info.username or '' }}" readonly></div>
+
+                <div class="form-group">
+                    <!-- E-mail -->
+                    <label for="email">E-mail</label>
+                    <input type="text" id="email" name="email" placeholder="" class="form-control" value="{{ user_info.email or '' }}" readonly></div>
+
+                <div class="form-group left">
+                    <!-- Sign -->
+                    <label for="sign">签&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                    <input type="text" id="sign" name="sign" placeholder="一句话介绍自己" class="form-control" value="{{ user_info.sign or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- Gender -->
+                    <label for="gender">性&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                    <select id="gender" name="gender" class="form-control" value="{{ user_info.gender}}">
+                        <option {% if user_info.gender == '男' %} selected="selected" {% endif %}>男</option>
+                        <option {% if user_info.gender == '女' %} selected="selected" {% endif %}>女</option>
+                    </select>
+                </div>
+
+                <div class="form-group left">
+                    <!-- Location -->
+                    <label for="location">位&nbsp;&nbsp;&nbsp;&nbsp;置</label>
+                    <input type="text" id="location" name="location" placeholder="你的位置" class="form-control" value="{{ user_info.location or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- Business -->
+                    <label for="business">行&nbsp;&nbsp;&nbsp;&nbsp;业</label>
+                    <input type="text" id="business" name="business" placeholder="你所处的行业" class="form-control" value="{{ user_info.business or '' }}"></div>
+
+                <div class="form-group left">
+                    <!-- Edu -->
+                    <label for="edu">教&nbsp;&nbsp;&nbsp;&nbsp;育</label>
+                    <input type="text" id="edu" name="edu" placeholder="你的教育信息" class="form-control" value="{{ user_info.edu or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- Company -->
+                    <label for="company">单&nbsp;&nbsp;&nbsp;&nbsp;位</label>
+                    <input type="text" id="company" name="company" placeholder="你工作的单位" class="form-control" value="{{ user_info.company or '' }}"></div>
+
+                <div class="form-group left">
+                    <!-- website -->
+                    <label for="website">网&nbsp;&nbsp;&nbsp;&nbsp;站</label>
+                    <input type="text" id="website" name="website" placeholder="你的个人网站" class="form-control" value="{{ user_info.website or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- Intro -->
+                    <label for="intro">简&nbsp;&nbsp;&nbsp;&nbsp;介</label>
+                    <textarea type="text" id="intro" name="intro" placeholder="可以稍微详细的介绍自己。" class="form-control">{{ user_info.intro or '' }}</textarea>
+                </div>
+            </fieldset>
+            {{ xsrf_form_html() }}
+        </form>
+    </div>
+    </div>
+</div>
+
+<div class=" col-xs-12 col-md-3">
+<div class="card">
+    <div class="sidenav container-box">
+        <ul class="nav nav-list">
+            <li class="nav-item">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+    </div>
+    </div>
+</div>
+{% endblock %}

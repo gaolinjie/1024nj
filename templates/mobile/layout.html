@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0" user-scalable=no >
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="/static/img/favicon.ico">{% block title %}{% endblock %}
+        <link rel="stylesheet" href="/static/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/bootstrapvalidator/bootstrapValidator.min.css" />
+        <link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />{% block stylesheet %}{% endblock %}
+        <link href="/static/css/mobile.css" rel="stylesheet">
+        <link href="/static/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
+        <link href="/static/Shifter/jquery.fs.shifter.css" rel="stylesheet">
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+        <script src="/static/js/ie-emulation-modes-warning.js"></script>
+        <style type="text/css" adt="123"></style>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <meta name="baidu-site-verification" content="WZVI4nJJ9u" />
+    </head>
+
+    <body class="shifter" {%if scrollspy%}data-spy="scroll" data-target="#myScrollspy" {%endif%}>
+
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+                <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed shifter-handle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"></a>
+          </div>
+        </nav>
+
+        <div class="container ">
+            {% block main %}{% endblock %} 
+            {%if user_info==none%}
+            <div id="loginModal" class="modal fade" {%if link%}data-link="{{link}}" {%endif%} {%if link2%}data-link2="{{link2}}" {%endif%}>
+                <div class="modal-dialog">
+                    <form class="login signin-form" action="/signin" method="POST">
+                        <fieldset>
+                            <legend class="legend">
+                                登录或注册
+                                <span class="modal-dialog-title-close" data-dismiss="modal"></span>
+                            </legend>
+                            <div class="title">
+                                <a class="js-signup signup-switch with-icon" href="javascript:;">
+
+                        注册
+
+                        <i class="icon-sign icon-sign-arrow"></i>
+
+                    </a>
+                                <span class="js-title-label title-label">登录买买买</span>
+                            </div>
+                            <div class="form-group input">
+                                <input type="email" name="email" placeholder="邮箱" class="form-control email-input" />
+                                <span>
+
+                                <i class="fa fa-envelope-o"></i>
+
+                            </span>
+                            </div>
+                            <div class="form-group input">
+                                <input type="password" name="password" placeholder="密码" class="form-control password-input" />
+                                <span>
+
+                                <i class="fa fa-lock"></i>
+
+                            </span>
+                            </div>
+                            <div class="action">
+                                <button type="submit" class="submit btn btn-success btn-signin">登录</button>
+                            </div>
+                        </fieldset>
+                        {{ xsrf_form_html() }}
+                    </form>
+
+                    <form class="login signup-form" style="display: none;" action="/signup" method="POST">
+                        <fieldset>
+                            <legend class="legend">
+                                登录或注册
+                                <span class="modal-dialog-title-close" data-dismiss="modal"></span>
+                            </legend>
+                            <div class="title">
+                                <a class="js-signup signin-switch with-icon" href="javascript:;">
+
+                        登录
+
+                        <i class="icon-sign icon-sign-arrow"></i>
+
+                    </a>
+                                <span class="js-title-label title-label">快速注册</span>
+                            </div>
+
+                            <div class="form-group input">
+                                <input type="text" name="username" placeholder="用户名" class="form-control username-input" />
+                                <span>
+
+                                <i class="fa fa-user"></i>
+
+                            </span>
+                            </div>
+
+                            <input type="checkbox" name="gender" id="gender-switch" data-on-text="男" data-off-text="女" data-on-color="success" data-off-color="danger" checked>
+
+                            <div class="form-group input">
+                                <input type="email" name="email" placeholder="邮箱" class="form-control email-input" />
+                                <span>
+
+                                <i class="fa fa-envelope-o"></i>
+
+                            </span>
+                            </div>
+
+                            <div class="form-group input">
+                                <input type="password" name="password" placeholder="密码" class="form-control password-input" />
+                                <span>
+
+                                <i class="fa fa-lock"></i>
+
+                            </span>
+                            </div>
+<!--
+                            <div class="form-group input">
+                                <input type="text" name="invite" placeholder="邀请码" class="form-control invite-input" {%if invite%}value="{{invite}}" {%endif%} autocomplete="off" />
+                                <span>
+
+                                <i class="fa fa-gift"></i>
+
+                            </span>
+                            </div>
+-->
+                            <div class="action">
+                                <button type="submit" class="submit btn btn-success btn-sinup">注册</button>
+                            </div>
+
+                        </fieldset>
+                        {{ xsrf_form_html() }}
+                    </form>
+
+                    <form class="login signin-error" data-error="{{error}}" style="disply: none">
+                        <fieldset>
+                            <legend class="legend">
+                                登录或注册
+                                <span class="modal-dialog-title-close" data-dismiss="modal"></span>
+                            </legend>
+                            <div class="title">
+                                <a class="js-signup signin-switch with-icon" href="javascript:;">
+
+                        重新登录
+
+                        <i class="icon-sign icon-sign-arrow"></i>
+
+                    </a>
+                                <span class="js-title-label title-label">登录失败</span>
+                            </div>
+                            <div class="input error-text">
+                                你输入邮箱或密码有误，请重试。
+                            </div>
+                        </fieldset>
+                    </form>
+
+                    <form class="login signup-error" data-error={{error}} style="disply: none">
+                        <fieldset>
+                            <legend class="legend">
+                                登录或注册
+                                <span class="modal-dialog-title-close" data-dismiss="modal"></span>
+                            </legend>
+                            <div class="title">
+                                <a class="js-signup signup-switch with-icon" href="javascript:;">
+
+                        重新注册
+
+                        <i class="icon-sign icon-sign-arrow"></i>
+
+                    </a>
+                                <span class="js-title-label title-label">注册失败</span>
+                            </div>
+                            <div class="input error-text">
+                                你输入的注册信息有误，请重试。
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            {%else%}
+            <div id="comingsoonModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title">敬请期待</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>这个功能还在开发中，很快就能与你见面啦！^-^</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">知道了</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            {%endif%}
+
+            <div id="reportModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title">
+
+                            你确定要举报这个问题吗？
+
+                        </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="header">如果该问题符合下列情况，请举报：</div>
+                            <ul class="options clearfix">
+                                <li class="">
+                                    <label>
+                                        广告等垃圾信息
+                                    </label>
+                                </li>
+                                <li class="">
+                                    <label>
+                                        不友善内容，违反法律法规，不宜公开讨论的政治内容
+                                    </label>
+                                </li>
+                                <li class="">
+                                    <label>
+                                        问题已失效或过期
+                                    </label>
+                                    <div class="description visible-if-checked">
+                                        提问语境不再成立，失去时效，或其他客观条件变化导致问题不再需要更多讨论
+                                    </div>
+                                </li>
+                                <li class="">
+                                    <label>
+                                        其他（可自行填写）
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" data-id="" data-type="">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="inviteJoinModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">邀请朋友加入</h4>
+            </div>
+            <div class="modal-body">
+                <div class="invite-email input-group">
+                    <input id="inviteEmailInput" type="text" class="form-control" placeholder="输入 email 邀请朋友加入买买买">
+                    <span class="input-group-btn">
+
+                        <button id="inviteEmail" class="btn btn-default" type="button" data-post="">发送邀请</button>
+
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+        <!-- /container -->
+        {% block navigation %}{% endblock %} 
+
+
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="/static/js/jquery-2.1.1.min.js"></script>
+        <script src="/static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+        <script src="/static/bootstrap-switch-master/dist/js/bootstrap-switch.min.js"></script>
+        <script src="/static/bootstrapvalidator/bootstrapValidator.min.js"></script>
+        <script src="/static/scrollup-master/dist/jquery.scrollUp.min.js"></script>
+        <script src="/static/Shifter/jquery.fs.shifter.js"></script>
+
+        {% block javascript %}{% endblock %}
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.shifter({
+    maxWidth: Infinity
+});
+
+                    $('.J_search').submit(function(e) {
+                        var _node = $(this);
+                        var query = _node.find('input').val();
+                        e.preventDefault();
+                        window.open('http://baidu.com/search?q=site:mmmai.com/p%20' + query, "_blank");
+                    });
+            
+                    $(document).on('click', '.comingsoon', function() {
+                        $('#comingsoonModal').modal('show');
+                    });
+
+                    /* user_info == none */
+                    {% if user_info == none %}
+                    $(".username-input").focus(function() {
+                        $(".bootstrap-switch-id-gender-switch").hide();
+                    });
+            
+                    $(".username-input").focusout(function() {
+                        $(".bootstrap-switch-id-gender-switch").show();
+                    });
+            
+                    $('.signin-form').bootstrapValidator({
+                        message: 'This value is not valid',
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            email: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '邮箱不能为空'
+                                    },
+                                    emailAddress: {
+                                        message: '输入的不是邮箱地址'
+                                    },
+                                    regexp: {
+                                        regexp: /^((?!qq\.com).)*$/,
+                                        message: "对不起，暂不支持 qq 邮箱"
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '密码不能为空'
+                                    },
+                                    stringLength: {
+                                        min: 6,
+                                        max: 64,
+                                        message: '密码长度在 6 - 64 个字符之间'
+                                    }
+                                }
+                            },
+                        }
+                    });
+            
+                    $('.signup-form').bootstrapValidator({
+                        message: 'This value is not valid',
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            username: {
+                                message: '用户名格式错误',
+                                validators: {
+                                    notEmpty: {
+                                        message: '用户名不能为空'
+                                    },
+                                    stringLength: {
+                                        min: 3,
+                                        max: 16,
+                                        message: '用户名长度在 3 - 16 个字符之间'
+                                    },
+                                    regexp: {
+                                        regexp: /^(?!_)(?!.*?_$)(?!\d+)[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+                                        message: "用户名可由中英文，数字，'_' 构成，但 '_' 不可在首尾，也不能全为数字"
+                                    }
+                                }
+                            },
+                            email: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '邮箱不能为空'
+                                    },
+                                    emailAddress: {
+                                        message: '输入的不是邮箱地址'
+                                    },
+                                    regexp: {
+                                        regexp: /^((?!qq\.com).)*$/,
+                                        message: "对不起，暂不支持 qq 邮箱"
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '密码不能为空'
+                                    },
+                                    stringLength: {
+                                        min: 6,
+                                        max: 64,
+                                        message: '密码长度在 6 - 64 个字符之间'
+                                    }
+                                }
+                            },
+                            invite: {
+                                message: '邀请码错误',
+                                validators: {
+                                    notEmpty: {
+                                        message: '邀请码不能为空'
+                                    },
+                                    uuid: {
+                                        message: '邀请码格式不正确'
+                                    },
+                                }
+                            },
+                        }
+                    });
+            
+                    {% if error == none %} 
+                    {% if sign_in_up == "signin" %}
+                    $('#loginModal').modal('show');
+                    $('.signin-error').hide();
+                    $('.signup-error').hide();
+                    var link = $('#loginModal').attr('data-link');
+                    var link2 = $('#loginModal').attr('data-link2');
+                    var action;
+                    if (link != null) {
+                        action = "/signin?r=" + link;
+                        if (link2 != null) {
+                            action = action + "&n=" + link2;
+                        }
+                        $(".signin-form").attr("action", action);
+                    }
+                    {% endif %}
+            
+                    {% if sign_in_up == "signup" %}
+                    {% if invite %}
+                    var invite = $('.invite-input').val()
+                    $('.invite-input').parent().hide(); 
+                    {% endif %}
+                    $('#loginModal').modal('show');
+                    $('.signin-form').hide();
+                    $('.signup-form').show();
+                    $('.signin-error').hide();
+                    $('.signup-error').hide();
+                    var link = $('#loginModal').attr('data-link');
+                    var link2 = $('#loginModal').attr('data-link2');
+                    var action;
+                    if (link != null) {
+                        action = "/signup?r=" + link;
+                        if (link2 != null) {
+            
+                            action = action + "&n=" + link2;
+                        }
+                        $(".signin-form").attr("action", action);
+                    }
+                    {% endif %}
+                    {% else %}
+                    {% if sign_in_up == "signin" %}
+                    $('#loginModal').modal('show');
+                    $('.signin-form').hide();
+                    $('.signup-form').hide();
+                    $('.signup-error').hide();
+                    var error = $('.signin-error').attr("data-error");
+                    var error_text = ""
+                    if (error=="1") {
+                        error_text = "该邮箱注册的用户不存在，请检查重试。";
+                    } else if (error=="2") {
+                        error_text = "输入的用户密码有误，请检查重试。";
+                    }
+                    $('.signin-error .error-text').text(error_text);
+                    $('.signin-error').show();
+                    {% endif %}
+            
+                    {% if sign_in_up == "signup" %}
+                    $('#loginModal').modal('show');
+                    $('.signin-form').hide();
+                    $('.signup-form').hide();
+                    $('.signin-error').hide();
+                    var error = $('.signup-error').attr("data-error");
+                    var error_text = ""
+                    if (error=="2") {
+                        error_text = "你输入的邀请码有误，请输入正确的邀请码重试。";
+                    } else if (error=="3") {
+                        error_text = "所填邮箱已经被注册过，请更改邮箱重试。";
+                    } else if (error=="4") {
+                        error_text = "所填用户名已经被注册过，请更改用户名重试。";
+                    } else {
+                        error_text = "你输入的注册信息有误，请重试。";
+                    }
+                    $('.signup-error .error-text').text(error_text);
+                    $('.signup-error').show();
+                    {% endif %}
+                    {% endif %}
+            
+                    $(document).on('click', '.unlogin', function() {
+                        $('#loginModal').modal('show');
+                        $('.signin-form').show();
+                        $('.signup-form').hide();
+                        $('.signin-error').hide();
+                        $('.signup-error').hide();
+                        var link = $(this).attr('data-link');
+                        var link2 = $(this).attr('data-link2');
+                        var action;
+                        if (link != null) {
+                            action = "/signin?r=" + link;
+                            if (link2 != null) {
+                                action = action + "&n=" + link2;
+                            }
+                            $(".signin-form").attr("action", action);
+                        }
+                    });
+            
+                    $(".input").focusin(function() {
+                        $(this).find("span").animate({
+                            "opacity": "0"
+                        }, 200);
+                    });
+            
+                    $(".input").focusout(function() {
+                        $(this).find("span").animate({
+                            "opacity": "1"
+                        }, 300);
+                    });
+            
+                    $(document).on('click', '.signup-switch', function() {
+                        $('.signin-form').hide();
+                        $('.signup-form').show();
+                        $('.signin-error').hide();
+                        $('.signup-error').hide();
+                    });
+            
+                    $(document).on('click', '.signin-switch', function() {
+                        $('.signup-form').hide();
+                        $('.signin-form').show();
+                        $('.signin-error').hide();
+                        $('.signup-error').hide();
+                    });
+            
+                    $(document).on('click', '.nav-signup', function() {
+                        $('#loginModal').modal('show');
+                        $('.signin-form').hide();
+                        $('.signup-form').show();
+                        $('.signin-error').hide();
+                        $('.signup-error').hide();
+                    });
+            
+                    $("#gender-switch").bootstrapSwitch(); 
+                    {% else %}
+                    $(document).on('click', '.report', function() {
+                        var report_id = $(this).attr('data-id');
+                        var report_type = $(this).attr('data-type');
+            
+                        $('#reportModal .btn-success').attr('data-id', report_id);
+                        $('#reportModal .btn-success').attr('data-type', report_type);
+            
+                        var text1 = '';
+                        var text2 = '';
+                        if (report_type == 'pq') {
+                            text1 = '你确定要举报这个问题吗？';
+                            text2 = '如果该问题符合下列情况，请举报：'
+                        } else if (report_type == 'pp') {
+                            text1 = '你确定要举报这篇文章吗？';
+                            text2 = '如果该文章符合下列情况，请举报：'
+                        } else if (report_type == 'rq') {
+                            text1 = '你确定要举报这个答案吗？';
+                            text2 = '如果该答案符合下列情况，请举报：'
+                        } else if (report_type == 'rp') {
+                            text1 = '你确定要举报这个评论吗？';
+                            text2 = '如果该评论符合下列情况，请举报：'
+                        }
+                        $('#reportModal .modal-title').text(text1);
+                        $('#reportModal .header').text(text2);
+                    });
+            
+                    $(document).on('click', '#reportModal .btn-success', function() {
+                        var report_id = $(this).attr('data-id');
+                        var report_type = $(this).attr('data-type');
+                        var report_text = $('#' + report_type + report_id);
+            
+                        var obj_type = '';
+                        if (report_type == 'pq' || report_type == 'pp') {
+                            obj_type = 'post';
+                        } else {
+                            obj_type = 'reply';
+                        }
+            
+                        $.getJSON('/report/' + report_id + '?type=' + obj_type, function(data) {
+                            if (data.success != 0) {
+                                report_text.text('已举报');
+                                report_text.removeAttr("href");
+                                report_text.removeAttr("data-toggle");
+                                report_text.removeAttr("data-target");
+                                report_text.addClass("reported");
+                                report_text.addClass("report");
+                                $('#reportModal').modal('hide');
+                            }
+                        });
+                    });
+
+$(document).on('click', '#inviteEmail', function() {
+        var email = $('#inviteEmailInput').val();
+
+        $.getJSON('/invite/to/join?email=' + email, function(data) {
+            if (data.success != 0) {
+                $('#inviteEmailInput').val('');
+                $('#inviteJoinModal').modal('hide');
+            } else {
+                alert('邀请发送失败!');
+            }
+        });
+    });
+
+                    $(document).on('click', '.m-votebar-vote', function() {
+                        $(this).hide();
+                        $(this).parent().find('.zm-votebar').show();
+                    });
+                    {% endif %}
+            
+                    $(document).on('click', '.video-link', function() {
+                        $('.t_Tooltip').hide();
+                        var video_id = $(this).attr('data-video');
+                        $(this).replaceWith('<iframe width="100%" height="" src="http://player.youku.com/embed/' + video_id + '" frameborder="0" allowfullscreen></iframe>');
+                        $('iframe').height(document.body.clientWidth/1.9-3);
+                    });
+            
+                    $('.tipped_ajax_user').each(function() {
+                        Tipped.create(this, {
+                            spinner: true,
+                            ajax: true,
+                            skin: 'white',
+                            hook: 'topleft'
+                        });
+                    });
+            
+                    $('.tipped_ajax_youku').each(function() {
+                        Tipped.create(this, {
+                            spinner: true,
+                            ajax: true,
+                            skin: 'white',
+                            hook: 'topleft'
+                        });
+                    });
+            
+                    $('.tipped_ajax_tag').each(function() {
+                        Tipped.create(this, {
+                            spinner: true,
+                            ajax: true,
+                            skin: 'white',
+                            hook: 'topleft'
+                        });
+                    });
+            
+                    $.scrollUp({
+                        scrollName: 'scrollUp', // Element ID
+                        topDistance: '300', // Distance from top before showing element (px)
+                        topSpeed: 300, // Speed back to top (ms)
+                        animation: 'fade', // Fade, slide, none
+                        animationInSpeed: 200, // Animation in speed (ms)
+                        animationOutSpeed: 200, // Animation out speed (ms)
+                        scrollText: '回顶部', // Text for element
+                        activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+                    });
+            
+                    
+                });
+        </script>
+
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56393056-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    </body>
+
+</html>

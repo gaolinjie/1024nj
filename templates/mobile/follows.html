@@ -1,0 +1,457 @@
+{% extends 'mobile/layout.html' %} {% block title %}
+<title>@{{view_user.username}} 的关注 - 买买买</title>
+{% endblock %} {% block main %}
+<div class="col-xs-12 shifter-page">
+    <div id="gh-banner">
+        <div id="c4-header-bg-container" class=" has-custom-banner" {%if view_user.cover %}style="background-image: url({{view_user.cover}}-cover)" {%endif%}>
+            <div class="hd-banner">
+                <div class="hd-banner-image"></div>
+            </div>
+            <div id="header-links">
+                <ul class="about-network-links">
+                    <li class="channel-links-item">
+                        <a class="sina" href="{{view_user.weibo or 'javascript:;'}}" title="@{{view_user.username}} {%if view_user.weibo %}的微博{% else %}还未设置{% endif %}" target="_blank"></a>
+                    </li>
+
+                    <li class="channel-links-item">
+                        <a class="qzone" href="{{view_user.qzone or 'javascript:;'}}" title="@{{view_user.username}} {%if view_user.qzone %}的QQ空间{% else %}还未设置{% endif %}" target="_blank"></a>
+                    </li>
+
+                    <li class="channel-links-item">
+                        <a class="douban" href="{{view_user.douban or 'javascript:;'}}" title="@{{view_user.username}} {%if view_user.douban %}的豆瓣主页{% else %}还未设置{% endif %}" target="_blank"></a>
+                    </li>
+
+                    <li class="channel-links-item">
+                        <a class="renren" href="{{view_user.renren or 'javascript:;'}}" title="@{{view_user.username}} {%if view_user.renren %}的人人主页{% else %}还未设置{% endif %}" target="_blank"></a>
+                    </li>
+                </ul>
+                {% if view_user.website %}
+                <ul class="about-custom-links">
+                    <li class="channel-links-item">
+                        <a href="{{view_user.website}}" rel="me nofollow" target="_blank" title="{{view_user.website}}" class="about-channel-link yt-uix-redirect-link about-channel-link-with-icon">
+                            <img src="/static/img/website.png" class="about-channel-link-favicon" alt="" width="16" height="16">
+                            <span class="about-channel-link-text">{{view_user.website}}</span>
+                        </a>
+                    </li>
+
+                </ul>
+                {% endif %}
+            </div>
+
+            <a class="channel-header-profile-image-container spf-link" href="/u/{{view_user.username}}">
+                <img class="channel-header-profile-image" src="{{ view_user.avatar }}-48px" title="{{view_user.username}}" alt="{{view_user.username}}">
+            </a>
+
+            <div class="user-text">
+                <div class="user-name">
+                    {{view_user.username}}
+                    <a class="rank" data-container="body" data-toggle="popover" data-placement="right" data-content="声望：{{view_user.coins}}，获得 赞同 {{view_user.up_num}}，感谢 {{view_user.thank_num}}。"></a>
+                </div>
+                {%if view_user.sign%}
+                <div class="user-description">{{view_user.sign}}</div>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+
+    <div class="tag-feed">
+        <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
+            <li {%if active_tab=="question" %}class="active" {%endif%}>
+                <a href="#question" role="tab" data-toggle="tab">关注的问题</a>
+            </li>
+            <li {%if active_tab=="post" %}class="active" {%endif%}>
+                <a href="#post" role="tab" data-toggle="tab">收藏的文章</a>
+            </li>
+            <li {%if active_tab=="followees" %}class="active" {%endif%}>
+                <a href="#followees" role="tab" data-toggle="tab">关注了</a>
+            </li>
+            <li {%if active_tab=="followers" %}class="active" {%endif%}>
+                <a href="#followers" role="tab" data-toggle="tab">关注者</a>
+            </li>
+            <li {%if active_tab=="tags" %}class="active" {%endif%}>
+                <a href="#tags" role="tab" data-toggle="tab">关注的标签</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane {%if active_tab=="question" %}active{%endif%}" id="question">
+                <div class="feed-list1">
+                    <div class="feeds-inner1">
+                        {%for feed in feeds1.list%}
+                        <div class="feed">
+                            <div class="user-wrapper">
+                                <div class="user-title">
+                                    <div class="time">{{feed.created|pretty_date}}</div>
+                                    <div class="user-meta meta">
+                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
+                                        提出了问题
+                                    </div>
+                                    <div class="feed-title">
+                                        <h2>
+                                            <a href="/p/{{feed.post_id}}">{{feed.title}}</a>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%} {% if feeds1.page.next!=feeds1.page.current %}
+                        <div class="next jscroll-next-parent">
+                            <a href="/follows/{{view_user.username}}?p={{feeds1.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                        </div>
+                        {%else%}
+                        <div class="next jscroll-next-parent">
+                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane {%if active_tab=="post" %}active{%endif%}" id="post">
+                <div class="feed-list2">
+                    <div class="feeds-inner2">
+                        {%for feed in feeds2.list%}
+                        <div class="feed">
+                            <div class="user-wrapper">
+                                <div class="user-title">
+                                    <div class="time">{{feed.created|pretty_date}}</div>
+                                    <div class="user-meta meta">
+                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
+                                        提出了问题
+                                    </div>
+                                    <div class="feed-title">
+                                        <h2>
+                                            <a href="/p/{{feed.post_id}}">{{feed.title}}</a>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%} {% if feeds2.page.next!=feeds2.page.current %}
+                        <div class="next jscroll-next-parent">
+                            <a href="/follows/{{view_user.username}}?p={{feeds2.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                        </div>
+                        {%else%}
+                        <div class="next jscroll-next-parent">
+                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane {%if active_tab==" followees " %}active{%endif%}" id="followees">
+                <div class="feed-list3">
+                    <div class="feeds-inner3">
+                        {%for feed in feeds3.list%}
+                        <div class="feed feed-f">
+                            <div class="btn-right">
+                                <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"
+                                {%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
+                            </div>
+
+                            <div class="user-wrapper-f">
+                                <div class="user-avatar-f tipped_ajax_user" data-tipped="/get/user/{{feed.username}}">
+                                    <a href="/u/{{feed.username}}">
+                                        <img src="{{feed.avatar}}-32px" width="32px" height="32px" alt="" class="avatar-img-f">
+                                    </a>
+                                </div>
+                                <div class="user-title-f">
+                                    <div class="feed-title">
+                                        <h2>
+                                            <a class="tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">{{feed.username}}</a>
+                                        </h2>
+                                    </div>
+                                    {% if feed.sign %}
+                                    <div class="user-meta-s meta">{{feed.sign}}</div>
+                                    {% endif %}
+                                    <div class="user-meta-f meta">
+                                        <a target="_blank" href="/people/luwangshan/followers" class="zg-link-gray-normal">{{feed.followees}} 关注者</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan/asks" class="zg-link-gray-normal">{{feed.questions}} 提问</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan/answers" class="zg-link-gray-normal">{{feed.answers}} 回答</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan" class="zg-link-gray-normal">{{feed.posts}} 文章</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%} {% if feeds3.page.next!=feeds3.page.current %}
+                        <div class="next jscroll-next-parent">
+                            <a href="/follows/{{view_user.username}}?p={{feeds3.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                        </div>
+                        {%else%}
+                        <div class="next jscroll-next-parent">
+                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane {%if active_tab==" followers " %}active{%endif%}" id="followers">
+                <div class="feed-list4">
+                    <div class="feeds-inner4">
+                        {%for feed in feeds4.list%}
+                        <div class="feed feed-f">
+                            <div class="btn-right">
+                                <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"
+                                {%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
+                            </div>
+
+                            <div class="user-wrapper-f">
+                                <div class="user-avatar-f tipped_ajax_user" data-tipped="/get/user/{{feed.username}}">
+                                    <a href="/u/{{feed.username}}">
+                                        <img src="{{feed.avatar}}-32px" width="32px" height="32px" alt="" class="avatar-img-f">
+                                    </a>
+                                </div>
+                                <div class="user-title-f">
+                                    <div class="feed-title">
+                                        <h2>
+                                            <a class="tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">{{feed.username}}</a>
+                                        </h2>
+                                    </div>
+                                    {% if feed.sign %}
+                                    <div class="user-meta-s meta">{{feed.sign}}</div>
+                                    {% endif %}
+                                    <div class="user-meta-f meta">
+                                        <a target="_blank" href="/people/luwangshan/followers" class="zg-link-gray-normal">{{feed.followees}} 关注者</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan/asks" class="zg-link-gray-normal">{{feed.questions}} 提问</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan/answers" class="zg-link-gray-normal">{{feed.answers}} 回答</a>
+                                        /
+                                        <a target="_blank" href="/people/luwangshan" class="zg-link-gray-normal">{{feed.posts}} 文章</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%} {% if feeds4.page.next!=feeds4.page.current %}
+                        <div class="next jscroll-next-parent">
+                            <a href="/follows/{{view_user.username}}?p={{feeds4.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                        </div>
+                        {%else%}
+                        <div class="next jscroll-next-parent">
+                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane {%if active_tab==" tags " %}active{%endif%}" id="tags">
+                <div class="feed-list4">
+                    <div class="feeds-inner4">
+                        <ul class="tag-ranking-list">
+                            {%for tag in tags%}
+                            <li>
+                                <a href="/t/{{tag.name}}" class="tag {%if tag.thumb%}tag-img{%endif%}" {%if tag.thumb%}style="background-image: url({{tag.thumb}}-icon);{%endif%}">{{tag.name}}</a>
+                            </li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+{% block navigation %}
+<nav class="shifter-navigation">
+                    <ul class="nav nav-list">
+                    <li class="nav-item">
+                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
+                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
+                            <input name="tn" type="hidden" value="bds" />
+                            <input name="cl" type="hidden" value="3" />
+                            <input name="si" type="hidden" value="mmmai.com" />
+                            <input name="ct" type="hidden" value="2097152" />
+                        </div>
+                    </form>
+            </li>
+            <li class="nav-item actived">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+
+        <div class="slide-bottom">
+        {%if user_info%}
+        {%else%}
+        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
+        {%endif%} 
+        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
+        {%if user_info%}
+        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
+        {%endif%}
+        </div>
+    </nav>
+{% endblock %} 
+
+{% block javascript %} 
+{%if user_info==none or view_user.cover==none%}
+<script src="/static/js/d3.v3.min.js"></script>
+<script src="/static/trianglify-gh-pages/trianglify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var t = new Trianglify();
+        var x = document.getElementById('c4-header-bg-container');
+        var pattern = t.generate(x.offsetWidth, x.offsetHeight);
+        x.setAttribute('style', 'background-image: ' + pattern.dataUrl);
+    });
+</script>
+{%endif%}
+
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#type_tab a').click(function(e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+
+        $(".summary-text").each(function() {
+                var text = $(this);
+        var img1 = $(this).find('.mmm-img:eq(0)').attr('src');
+        
+        str = text.text();
+        textLeng = 88;
+        if (str.length > textLeng) {
+            str = str.substring(0, textLeng) + "...";
+        }
+        text.html(str);
+        if (img1) {
+            $('<img class="mmm-img" src="'+img1+'">').insertBefore(this); 
+        }
+            });
+
+        $(".rank").hover(function() {
+            $(".rank").popover('show')
+        }, function() {
+            $(".rank").popover('hide')
+        });
+
+        {% if user_info != none %}
+        $(document).on('click', '#followBtn', function() {
+            var obj_id = $('#followBtn').attr('data-obj');
+            var obj_type = $('#followBtn').attr('data-type');
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/follow",
+                data: JSON.stringify({
+                    obj_id: obj_id,
+                    obj_type: obj_type
+                }),
+                success: function(msg) {
+                    if ($('#followBtn').hasClass('btn-success')) {
+                        $('#followBtn').removeClass('btn-success');
+                        $('#followBtn').addClass('btn-danger');
+                        $('#followBtn').text('取消关注');
+                    } else {
+                        $('#followBtn').removeClass('btn-danger');
+                        $('#followBtn').addClass('btn-success');
+                        $('#followBtn').text('关注 TA');
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+
+        $(document).on('click', '.thank', function() {
+            var thank_id = $(this).attr('data-id');
+            var thank_type = $(this).attr('data-type');
+            var thank_text = $(this);
+
+            if (thank_text.text() == '已感谢') {
+                return;
+            }
+
+            $.getJSON('/thank/' + thank_id + '?type=' + thank_type, function(data) {
+                if (data.success != 0) {
+                    thank_text.text('已感谢');
+                    thank_text.removeAttr("href");
+                    thank_text.addClass("thanked");
+                }
+            });
+        });
+
+        $(document).on('click', '.report', function() {
+            var report_id = $(this).attr('data-id');
+            var report_type = $(this).attr('data-type');
+            var report_text = $(this);
+
+            if (report_text.text() == '已举报') {
+                return;
+            }
+
+            $.getJSON('/report/' + report_id + '?type=' + report_type, function(data) {
+                if (data.success != 0) {
+                    report_text.text('已举报');
+                    report_text.removeAttr("href");
+                    report_text.addClass("reported");
+                }
+            });
+        }); 
+        {% endif %}
+
+        $('.feed-list1').jscroll({
+            loadingHtml: '<a href="/u/{{view_user.user_name}}?p={{feeds1.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.feeds-inner1',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+        });
+
+        $('.feed-list2').jscroll({
+            loadingHtml: '<a href="/u/{{view_user.user_name}}?p={{feeds2.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.feeds-inner2',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+        });
+
+        $(document).on('click', '.video-link', function() {
+            var video_id = $(this).attr('data-video');
+            $(this).replaceWith('<iframe webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" height="498" width="510" src="//player.youku.com/embed/' + video_id + '" frameborder="0"></iframe>');
+        })
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<!--[if lt IE 9]>
+  <script type="text/javascript" src="../js/excanvas/excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="../js/spinners/spinners.min.js"></script> <!-- optional -->
+<script type="text/javascript" src="../js/tipped/tipped.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/tipped/tipped.css" />
+
+
+<script type='text/javascript'>
+//By creating tooltips after DOM load we make sure that referenced elements are available.
+jQuery(document).ready(function($) {
+  /*
+   * Demonstrations: Skins
+   */
+  Tipped.create("#demo_skins_dark");
+  Tipped.create("#demo_skins_black", { skin: 'black' });
+  Tipped.create("#demo_skins_light", { skin: 'light' });
+
+  Tipped.create("#demo_skins_white", { skin: 'white' });
+  Tipped.create("#demo_skins_yellow", { skin: 'yellow' });
+  Tipped.create("#demo_skins_gray", { skin: 'gray' });
+  
+  Tipped.create("#demo_skins_blue", "Skins are optimized to look good on any background", { skin: 'blue' });
+  Tipped.create("#demo_skins_red", "Great for error messages", { skin: 'red' });
+  Tipped.create("#demo_skins_green", "A nice green skin", { skin: 'green' });
+  
+  Tipped.create("#demo_skins_tiny", "Small black tooltips are always useful", { skin: 'tiny' });
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+<div id='page'>
+
+	<h1>Tipped is installed on this page</h1>
+	<p>This page demonstrates the installation, the source of this file can be used as an example when installing 
+	   <a href='http://projects.nickstakenburg.com/tipped' target='_blank'>Tipped</a> on your domain.
+	</p>
+	
+	<div class='demonstrations'>
+	  <div id='demo_skins_dark' title="This is the default skin"><!-- [] --></div>
+	  <div id='demo_skins_black' title="The same skin without a radius"><!-- [] --></div>
+	  <div id='demo_skins_light' title="A light variant"><!-- [] --></div>
+	  
+	  <div id='demo_skins_white' title="White is probably the most popular skin"><!-- [] --></div>
+	  <div id='demo_skins_gray' title="Gray works with anything"><!-- [] --></div>
+	  <div id='demo_skins_yellow' title="The classic yellow tooltip"><!-- [] --></div>
+	  
+	  <div id='demo_skins_blue'><!-- [] --></div>
+	  <div id='demo_skins_red'><!-- [] --></div>
+	  <div id='demo_skins_green'><!-- [] --></div>
+	  
+	  <div id='demo_skins_tiny' class='rightmost'><!-- [] --></div>
+	</div>
+	
+	<h2>What's next?</h2>
+	<p>Check out the <a href='http://projects.nickstakenburg.com/tipped/documentation' target='_blank'>documentation</a> 
+	to learn more about customizing tooltips, it has detailed
+  <a href='http://projects.nickstakenburg.com/tipped/documentation/#installation' target='_blank'>installation instructions</a> 
+	and examples that will help you get started. 
+	</p>
+	
+	<p class='resources'>
+		<strong>Feedback &amp; bugs</strong>: <a href='http://forum.nickstakenburg.com/index.php?p=/categories/tipped' target='_blank'>Tipped Forum</a><br/>
+		<strong>Updates on twitter</strong>: <a href='http://twitter.com/tippedjs' target='_blank'>@tippedjs</a><br/>
+	</p>
+
+</div>
+</body>
+</html>

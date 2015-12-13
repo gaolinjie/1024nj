@@ -1,0 +1,947 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+<title>{{post.title}}</title>
+{% endblock %} 
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/fontdiao/fontdiao/css/fontdiao.css" />
+<link rel="stylesheet" href="/static/summernote-0.5.2-dist/summernote.css">
+{% endblock %}
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="main">
+
+        <div class="card">
+            <div class="header">
+                {%if post.post_type=='bbs'%}
+                <div class="fr"><a href="/u/{{post.author_name}}"><img src="{{post.author_avatar}}" class="avatar" border="0" align="default" width="73" height="73"></a></div>
+                {%endif%}
+                <a href="/">直波侠</a>
+                <span class="chevron">&nbsp;›&nbsp;</span>
+                {%if post.post_type == 'video' or post.post_type == 'game' or post.post_type == 'live'%}
+                {%if post.feed_type == 'football'%}
+                <a href="/football">足球视频</a>
+                {%endif%}
+                {%if post.feed_type == 'basketball'%}
+                <a href="/football">篮球视频</a>
+                {%endif%}
+                {%if post.post_type == 'live'%}
+                <a href="/live">比赛直播</a>
+                {%endif%}
+                {%else%}
+                <a href="/go/{{post.node_name}}">{{post.node_name}}</a>
+                {%endif%}
+                <div class="sep10"></div>
+                <h1>{%if post.open_type=='link'%}<a title="{{post.title}}" href="{{post.post_link}}" target="_blank">{{post.title}}</a>{%else%}{{post.title}}{%endif%}</h1>
+                <div class="votes">
+                    <a href="javascript:" class="vote up vote-post {%if post.vote_up_down and post.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
+                data-type="up">
+                        <li class="fa fa-chevron-up"></li>
+                        <span class="count {% if post.up_num == 0 %}zero{% endif %}">{{post.up_num}}</span>
+                    </a>
+
+                    <a href="javascript:" class="vote down vote-post {%if post.vote_up_down and post.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
+                data-type="down">
+                        <li class="fa fa-chevron-down"></li>
+                        <span class="count {% if post.down_num == 0 %}zero{% endif %}">{{post.down_num}}</span>
+                    </a>
+                </div>
+                &nbsp;
+                <small class="gray">
+                    {% if post.author_id %}
+                    <a href="/u/{{post.author_name}}">{{post.author_name}}</a>
+                    · 
+                {% endif %}
+                    {{post.created|pretty_date}} · {{post.view_num}} 次点击 &nbsp;
+                </small>
+            </div>
+
+            <div class="cell">
+
+                <div class="topic_content">
+                    {%if videos%}
+                     {% set s='' %}
+                {% for video in videos %}
+                {% if s != video.section_name %}
+                
+                {% if s != '' %}
+                </div>
+            </div>
+            {% endif %}
+        {% set s = video.section_name %}
+            <div class="zbx-section">
+                {% if video.section_name %}
+                <div class="section-title">
+                    <span>-</span>
+                    <h2>{{video.section_name}}</h2>
+                </div>
+                {%endif%}
+                <div class="section-content">
+                    {% endif %}
+                    <div class="zbx-video">
+                        <div class="video-title" data-src="{{video.link}}" {%if video.open_type=='new'%}data-open="new"{%endif%}>
+                            <div class="votes">
+                                <a href="javascript:" class="vote up vote-video {%if video.vote_up_down and video.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{video.id}}"
+                data-type="up">
+                                    <li class="fa fa-chevron-up"></li>
+                                    <span class="count {% if video.up_num == 0 %}zero{% endif %}">{{video.up_num}}</span>
+                                </a>
+
+                                <a href="javascript:" class="vote down vote-video {%if video.vote_up_down and video.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{video.id}}"
+                data-type="down">
+                                    <li class="fa fa-chevron-down"></li>
+                                    <span class="count {% if video.down_num == 0 %}zero{% endif %}">{{video.down_num}}</span>
+                                </a>
+                            </div>
+                            <h3> <i class="video-icon video-{{video.vendor}}"></i>
+                                {{video.name}}
+                            </h3>
+                        </div>
+                        <div class="video-content" style="display: none"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {%endif%}
+
+            {{post.content}}
+        </div>
+    </div>
+
+    <div class="topic_buttons">
+        <div class="fr gray f11" style="line-height: 12px; padding-top: 3px; text-shadow: 0px 1px 0px #fff;">
+            {{post.view_num}} 次点击 &nbsp;∙&nbsp;
+            <span id="followNum">{{post.follow_num}}</span>
+            人收藏 &nbsp;
+        </div>
+        <a id="followBtn" data-obj="{{post.id}}" data-type="p" type="button" class="tb" href="javascript:">{%if follow%}取消收藏{%else%}加入收藏{%endif%}</a>
+        &nbsp;
+        <span class="bdsharebuttonbox bdshare-button-style0-16" data-tag="bd_share_toolbar" data-bd-bind="1391875707839">
+            <a class="bds_tsina bds_has_name share-img tb" data-cmd="tsina" title="分享到新浪微博" href="javascript:">新浪微博</a>
+            &nbsp;
+            <a class="bds_weixin bds_has_name share-img tb" data-cmd="weixin" title="分享到微信" href="javascript:">微信</a>
+        </span>
+    </div>
+</div>
+
+
+<div class="card reply-card">
+    <div class="feed">
+        <div class="fr" style="margin: -3px -5px 0px 0px;">
+            {% for tag in tags.list %}
+            <a href="/tag/{{tag.tag_name}}" class="tag">{{tag.tag_name}}</a>
+            {% endfor %}
+        </div>
+        <span class="gray">
+            {{post.reply_num}} 回复 &nbsp; <strong class="snow">|</strong>
+            &nbsp;直到 {{current_time}}
+        </span>
+    </div>
+    {% set i=0 %} {% for reply in replys.list %}
+            {% set i=i+1 %}
+    <div id="{{reply.id}}" class="feed">
+        <div class="feed-up">
+            <div class="avatar feed-left tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}">
+                <a href="/u/{{reply.author_username}}">
+                    <img class="feed-object avatar-48" src="{{ reply.author_avatar}}-48px" alt=""></a>
+            </div>
+            <div class="infos feed-body">
+                <div class="info">
+                    <div class="fr">
+                        <div class="op_area" style="display:none;">
+                            <a style="color: #ccc;" id="r{{post.post_type}}{{reply.id}}" class="op {% if reply.reply_report_id %}reported{%else%}report{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if reply.reply_report_id==none or user_info==none%}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}"
+                    data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}" data-type="rp" {% if reply.reply_report_id==none%}data-toggle="modal" data-target="#reportModal" {%endif%}>{% if reply.reply_report_id %}已举报{% else %}举报{% endif %}</a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a href="#;" class="op">回复 Ta</a>
+                        </div>
+                        &nbsp;
+                        <div class="votes">
+                            <a href="javascript:" class="vote up vote-reply {%if reply.vote_up_down and reply.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
+                        data-type="up">
+                                <li class="fa fa-chevron-up"></li>
+                                <span class="count {% if reply.up_num == 0 %}zero{% endif %}">{{reply.up_num}}</span>
+                            </a>
+                            <a href="javascript:" class="vote down vote-reply {%if reply.vote_up_down and reply.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
+                        data-type="down">
+                                <li class="fa fa-chevron-down"></li>
+                                <span class="count {% if reply.down_num == 0 %}zero{% endif %}">{{reply.down_num}}</span>
+                            </a>
+                        </div>
+                        &nbsp;
+                        <span class="no">{{i}}</span>
+                    </div>
+
+                    <span class="small"> <strong><a class="tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}" href="/u/{{reply.author_username}}">{{reply.author_username}}</a></strong> 
+                        &nbsp;&nbsp;
+                        <span class="time">{{reply.created|pretty_date}}</span>
+                        {% if user_info and (reply.author_id == user_info.uid or user_info.permission > 1) %}
+                        <span class="bullet">•</span>
+                        <a class="edit" href="javascript:;" data-id="{{reply.id}}" data-type="reply">修改</a>
+                        <span class="bullet">•</span>
+                        <a class="delete" href="javascript:;" data-id="{{reply.id}}" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="reply_content">{{reply.content|desktop_content_process}}</div>
+
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+            {% if replys.page.next!=replys.page.current %}
+    <div class="next jscroll-next-parent">
+        <a href="/p/{{post.id}}?p={{replys.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+    </div>
+    {%else%}
+    <div class="next jscroll-next-parent">
+        <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+    </div>
+    {%endif%}
+</div>
+
+<div class="card">
+    <div class="cell">
+        <div class="fr">
+            <a href="#">
+                <strong>↑</strong>
+                回到顶部
+            </a>
+        </div>
+        添加一条新回复
+    </div>
+    <div class="comment-box {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}>
+
+        <div class="comment-area clear">
+            <div class="reply-btn">
+                <input type="submit" id="rPostBtn" data-post="{{ post.id }}" class="btn btn-sm btn-default" value="立即发布">{{ xsrf_form_html() }}</div>
+            <div id="rSummernote" class="description"></div>
+            <input type="hidden" name="reply" id="rReplyText" value=""></div>
+
+    </div>
+</div>
+
+</div>
+</div>
+
+<div class=" col-xs-12 col-md-3">
+{%if user_info%}
+    <div class="card">
+        <div class="cell">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="48" valign="top">
+                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
+                        </td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sep10"></div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td>
+                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="inner">
+            <div class="fr" id="money">
+                    <a href="/balance" class="balance_area" alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
+                </div>
+            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%} 条未读提醒</a></div>
+    </div>
+    {%else%}
+    <div class="card">
+      <div class="feed">
+            <span class="login-header">可能是东半球颜值最高的体育聚合社区</span>
+        </div>
+      <div class="feed center">
+        <a class="unlogin signup-switch" href="javascript:;">
+                                <button class="signin-btn btn btn-success">立即加入</button>
+        </a>
+      
+      <div class="signup-text">
+      已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
+      </div>
+    </div>
+    </div>
+    {%endif%}
+    {%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
+
+<div class="card">
+        <div class="feed">
+            <span class="fade-header">今日热议主题</span>
+        </div>
+        {%for post in hot_posts.list%}
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-24" src="{{post.author_avatar}}" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="{{post.title}}" href="/p/{{post.id}}">{{post.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+
+<div class="card">
+        <div class="feed">
+            <span class="fade-header">热门节点</span>
+        </div>
+        <div class="feed">
+            {%for node in hot_nodes%}
+            <a href="/go/{{node.name}}" class="item_node">{{node.name}}</a>
+            {%endfor%}
+        </div>
+    </div>
+
+</div>
+
+<div id="delModal" class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">你确定要删除自己的问题吗？</h4>
+    </div>
+    <div class="modal-body">
+        <p>如果选择确认，你的问题将会被永久删除。</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-success" data-id="" data-type="">确认</button>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %} 
+
+{% block javascript %}
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script src="/static/summernote-0.5.2-dist/summernote.js"></script>
+<script src="/static/summernote-0.5.2-dist/summernote-zh-CN.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.answers-area').jscroll({
+            loadingHtml: '<a href="/p/{{post.id}}?p={{replys.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.answers-inner',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+        });
+
+        $('#rSummernote').summernote({
+            minHeight: 200, // set minimum height of editor
+            maxHeight: 600, // set maximum height of editor
+            toolbar: [
+                ['style', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
+                //['fontsize', ['fontsize']],
+                //['color', ['color']],
+                ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
+                //['height', ['height']],
+                //['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
+                //['insert', ['link']],
+                ['view', ['fullscreen' /*, 'codeview'*/ ]],
+            ],
+            lang: 'zh-CN',
+            onImageUpload: function(files, editor, editable) {
+                $('.note-group-select-from-files h5').text('正在上传图片');
+                $('.note-image-input').addClass('uploading');
+                sendFile(files[0], editor, editable);
+            },
+            onShoppingUpload: function(sUrl, editor, editable) {
+                sendShopping(sUrl, editor, editable);
+            },
+        });
+
+        function sendShopping(sUrl, editor, editable) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/additem",
+                data: JSON.stringify({
+                    url: sUrl,
+                }),
+                success: function(msg) {
+                    if (msg.success != 0) {
+                        editor.insertShopping(editable, msg);
+                    } else {
+                        alert("error");
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        }
+
+        function sendFile(file, editor, editable) {
+            data = new FormData();
+            data.append("file", file);
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "/upload",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(url) {
+                    editor.insertImage(editable, url);
+                    $('.note-image-dialog').modal('hide');
+                    $('.note-image-input').removeClass('uploading');
+                    $('.note-group-select-from-files h5').text('从本地上传');                  
+                }
+            });
+        }
+
+        {% if user_info != none %}
+        $(document).on('click', '#rPostBtn', function() {
+            var reply_text = $('#rSummernote').code();
+            if (reply_text == '<p><br></p>') {
+                return;
+            }
+            var post_id = $('#rPostBtn').attr('data-post');
+            var reply_list = $('.answers-area');
+
+            var anon_text = $('.anon');
+            var anon;
+            if (anon_text.text() == '匿名') {
+                anon = 0;
+            } else {
+                anon = 1;
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/reply/" + post_id,
+                data: JSON.stringify({
+                    reply_content: reply_text,
+                    anon: anon
+                }),
+                success: function(msg) {
+                    if (msg.success != 0) {
+                        var reply_string = '<div id="' + msg.reply_id + '" class="answer-item"><div class="user-wrapper"><div class="zm-votebar"><button class="up vote-btn vote-self-btn" title="赞同"> <span class="label">赞同</span><span class="count">0</span></button></div><div class="user-title"><div class="user-name"><a href="/u/{{user_info.username}}">{{user_info.username}}</a>{%if user_info.sign%}，{{user_info.sign}}{%endif%}</div><div class="answer-user-meta meta">还没有人赞同</div></div><div class="user-avatar"><a href="/u/{{user_info.username}}"><img src="{{ user_info.avatar }}-46px" width="46px" height="46px" alt="" class="avatar-img"></a></div></div><div class="answer-text">' + reply_text + '</div><div class="answer-meta meta"><span class="time">刚刚</span><span class="bullet">&nbsp;•&nbsp;</span><a class="edit" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">&nbsp;•&nbsp;</span><a class="delete" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></div></div>';
+                        $('#rSummernote').code('');
+                        $(reply_string).insertBefore('.jscroll-next-parent:last');
+                    } else {
+                        alert("error");
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+
+        $(document).on('click', '#followBtn', function() {
+            var obj_id = $('#followBtn').attr('data-obj');
+            var obj_type = $('#followBtn').attr('data-type');
+            var follow_text;
+            var unfollow_text;
+
+            follow_text = "加入收藏";
+            unfollow_text = "取消收藏";
+
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/follow",
+                data: JSON.stringify({
+                    obj_id: obj_id,
+                    obj_type: obj_type
+                }),
+                success: function(msg) {
+                    if ($('#followBtn').text()=='加入收藏') {
+                        $('#followBtn').text(unfollow_text);
+                        $('#followNum').text(parseInt($('#followNum').text()) + 1);
+                    } else {
+                        $('#followBtn').text(follow_text);
+                        $('#followNum').text(parseInt($('#followNum').text()) - 1);
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+
+        $(document).on('click', '.vote-post', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/post/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                    if ('0' == vote_up_num.text()) {
+                        vote_up_num.addClass('zero');
+                    } else {
+                        vote_up_num.removeClass('zero');
+                    }
+                    if ('0' == vote_down_num.text()) {
+                        vote_down_num.addClass('zero');
+                    } else {
+                        vote_down_num.removeClass('zero');
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.vote-reply', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/reply/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                    if ('0' == vote_up_num.text()) {
+                        vote_up_num.addClass('zero');
+                    } else {
+                        vote_up_num.removeClass('zero');
+                    }
+                    if ('0' == vote_down_num.text()) {
+                        vote_down_num.addClass('zero');
+                    } else {
+                        vote_down_num.removeClass('zero');
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.invite', function() {
+            var post_id = $(this).attr('data-id');
+
+            $.getJSON('/get/users/' + post_id, function(data) {
+                if (data.success != 0) {
+                    if (data.users.length > 0) {
+                        var users_string = '';
+                        for (i = 0; i < data.users.length; i++) {
+                            if (i % 2 == 0) {
+                                position = "odd";
+                            } else {
+                                position = "even";
+                            }
+                            if (i > 3) {
+                                style = "display: none;";
+                            } else {
+                                style = '';
+                            }
+                            users_string += '<li class="person ' + position + ' bordered" style="' + style + '"><div class="blk"><a title="' + data.users[i].username + '" class="zm-item-link-avatar" href="/u/' + data.users[i].username + '"><img src="' + data.users[i].avatar + '" class="zm-item-img-avatar"></a><div class="content"><a class="invite-button btn btn-f btn-success " data-id="' + data.users[i].uid + '" data-post="' + post_id + '">邀请回答</a><a href="' + data.users[i].username + '" class="zg-link">' + data.users[i].username + '</a><div class="bio" title="' + data.users[i].sign + '">' + data.users[i].sign + '</div><div class="reason" title="在相关话题下有 ' + data.users[i].answers + ' 个回答">在相关话题下有 ' + data.users[i].answers + ' 个回答</div></div></div></li>'
+                        }
+                        $('.suggest-persons').html(users_string);
+                        if (data.users.length < 5) {
+                            //$('.js-next').addClass('link-disabled');
+                            $('.zm-invite-pager').hide();
+                        }
+                    } else {
+                        $('.suggest-persons').hide();
+                        $('.zm-invite-pager').hide();
+                    }
+                    $('.panel-container').fadeIn("slow");
+                }
+            });
+        });
+
+        $(document).on('click', '.invite-button', function() {
+            var user_id = $(this).attr('data-id');
+            var post_id = $(this).attr('data-post');
+            var invite_btn = $(this);
+
+            $.getJSON('/invite/to/answer/' + post_id + '?u=' + user_id, function(data) {
+                if (data.success != 0) {
+                    if (invite_btn.hasClass("btn-success")) {
+                        invite_btn.text('取消邀请');
+                        invite_btn.removeClass("btn-success");
+                        invite_btn.addClass("btn-danger");
+                    } else {
+                        invite_btn.text('邀请回答');
+                        invite_btn.removeClass("btn-danger");
+                        invite_btn.addClass("btn-success");
+                    }
+
+                }
+            });
+        });
+
+        $(document).on('click', '.js-next', function() {
+            if ($('.js-next').hasClass('link-disabled')) {
+                return;
+            }
+            var element = $('.suggest-persons').find('li:visible:first');
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.hide();
+                element = element.next();
+            }
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.show();
+                element = element.next();
+            }
+
+            if (!element.hasClass('person')) {
+                $('.js-next').addClass('link-disabled');
+                $('.js-prev').removeClass('link-disabled');
+            }
+        });
+
+        $(document).on('click', '.js-prev', function() {
+            if ($('.js-prev').hasClass('link-disabled')) {
+                return;
+            }
+            var element = $('.suggest-persons').find('li:visible:first');
+            var elementPrev = element.prev();
+
+            for (i = 0; i < 4; i++) {
+                if (!element.hasClass('person')) {
+                    break;
+                }
+                element.hide();
+                element = element.next();
+            }
+
+            for (i = 0; i < 4; i++) {
+                if (!elementPrev.hasClass('person')) {
+                    break;
+                }
+                elementPrev.show();
+                elementPrev = elementPrev.prev();
+            }
+
+            if (!elementPrev.hasClass('person')) {
+                $('.js-prev').addClass('link-disabled');
+                $('.js-next').removeClass('link-disabled');
+            }
+        });
+
+        $(document).on('click', '.delete', function() {
+            var delete_id = $(this).attr('data-id');
+            var delete_type = $(this).attr('data-type');
+            $('#delModal .btn-success').attr('data-id', delete_id);
+            $('#delModal .btn-success').attr('data-type', delete_type);
+
+            var text1 = '';
+            var text2 = '';
+            if (delete_type == 'post') {
+                text1 = '你确定要删除自己的主题吗？';
+                text2 = '如果选择确认，你的主题将会被永久删除。'
+            }  else if (delete_type == 'reply') {
+                text1 = '你确定要删除自己的回复吗？';
+                text2 = '如果选择确认，你的回复将会被永久删除。'
+            }
+            $('#delModal .modal-title').text(text1);
+            $('#delModal .modal-body p').text(text2);
+        });
+
+        $(document).on('click', '#delModal .btn-success', function() {
+            var delete_id = $(this).attr('data-id');
+            var delete_type = $(this).attr('data-type');
+
+            if (delete_type == 'pq' || delete_type == 'pp') {
+                $.getJSON('/delete/post/' + delete_id, function(data) {
+                    if (data.success != 0) {
+                        window.location.replace("/");
+                    }
+                });
+            } else {
+                $.getJSON('/delete/reply/' + delete_id, function(data) {
+                    if (data.success != 0) {
+                        $('#' + delete_id).hide();
+                        $('#delModal').modal('hide');
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '#inviteEmail', function() {
+            var post_id = $(this).attr('data-post');
+            var email = $('#inviteEmailInput').val();
+
+            $.getJSON('/invite/to/email/' + post_id + '?email=' + email, function(data) {
+                if (data.success != 0) {
+                    $('#inviteEmailInput').val('');
+                    $('.panel-container').hide();
+                } else {
+                    alert('邀请发送失败!');
+                }
+            });
+        });
+
+        $(document).on('click', '.edit', function() {
+            var edit_id = $(this).attr('data-id');
+            var edit_type = $(this).attr('data-type');
+
+            if (edit_type == 'reply') {
+                var reply_text = $('#' + edit_id + ' .reply_content').html();
+                $('#' + edit_id + ' .reply_content').toggle();
+                $('<div class="editor-wrapper"><div id="editSummernote" class="description"></div></div>').insertAfter('#' + edit_id + ' .reply_content');
+                $('#editSummernote').summernote({
+                    minHeight: 200, // set minimum height of editor
+                    maxHeight: 600, // set maximum height of editor
+                    toolbar: [
+                        ['style', ['style']],
+                        ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
+                        //['fontsize', ['fontsize']],
+                        //['color', ['color']],
+                        ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
+                        //['height', ['height']],
+                        //['table', ['table']],
+                        ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
+                        //['insert', ['link']],
+                        ['view', ['fullscreen' /*, 'codeview'*/ ]],
+                    ],
+                    lang: 'zh-CN',
+                    onImageUpload: function(files, editor, editable) {
+                        $('.note-group-select-from-files h5').text('正在上传图片');
+                        $('.note-image-input').addClass('uploading');
+                        sendFile(files[0], editor, editable);
+                    },
+                    onShoppingUpload: function(sUrl, editor, editable) {
+                        sendShopping(sUrl, editor, editable);
+                    },
+                });
+                $('#editSummernote').code(reply_text);
+                $('<div class="edit-cancel-btn"><input type="cancel" id="editCancelBtn" data-id="' + edit_id + '" class="btn btn-sm btn-default" value="取消"></div>').insertAfter('#' + edit_id + ' .editor-wrapper #editSummernote');
+                $('<div class="edit-reply-btn"><input type="submit" id="editPostBtn" data-id="' + edit_id + '" class="btn btn-sm btn-default" value="立即发布"></div>').insertAfter('#' + edit_id + ' .editor-wrapper #editSummernote');
+            }
+        });
+
+        $(document).on('click', '#editCancelBtn', function() {
+            $(this).parent().parent().parent().find('.reply_content').toggle();
+            $(this).parent().parent().remove();
+        });
+
+        $(document).on('click', '#editPostBtn', function() {
+            var reply_text = $(this).parent().parent().find('.note-editable').html();
+            var reply_id = $(this).attr('data-id');
+            var answer_text = $(this).parent().parent().parent().find('.reply_content');
+            var editor_wrapper = $(this).parent().parent();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/edit/reply/" + reply_id,
+                data: JSON.stringify({
+                    reply_content: reply_text
+                }),
+                success: function(msg) {
+                    answer_text.html(reply_text);
+                    answer_text.toggle();
+                    editor_wrapper.remove();
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        }); 
+        {% endif %}
+
+        $(".mmm-item").each(function() {
+            var status_box = $('.status-box');
+            var item_box = $('.item-box');
+            if (status_box.hasClass('bottom-box')) {
+                status_box.removeClass('bottom-box');
+            }
+            if (item_box.hasClass('bottom-box')==false) {
+                item_box.addClass('bottom-box');
+            }
+            item_box.show();
+            var item_list = $('.item-list');
+            var list_str = item_list.html() + $("<p>").append($(this).clone()).html()
+            item_list.html(list_str)
+        });
+
+
+        
+
+
+
+        window._bd_share_config = {
+            "common": {
+                "bdSnsKey": {},
+                "bdText": "{{post.title}}-@直波侠",
+                "bdMini": "2",
+                "bdPic": "",
+                "bdStyle": "0",
+                "bdSize": "16"
+            },
+            "share": {}
+        };
+        with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+
+
+
+
+        //zbx new
+        $(document).on('click', '.section-title', function() {
+          $(this).parent().find('.section-content').toggle();
+          var span = $(this).find('span')
+          if (span.text() == '+') {
+            span.text('-');
+          } else {
+            span.text('+');
+          }
+        });
+
+        $(document).on('click', '.video-title', function() {
+          var open_type = $(this).attr('data-open');
+          var video_src = $(this).attr('data-src');
+          if (open_type=='new') {
+            window.open(video_src);
+          } else {
+            var video_content = $(this).parent().find('.video-content');
+            if (video_content.is(":hidden")) {
+                video_src = '<iframe allowfullscreen height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
+                video_content.html(video_src);
+            } else {
+                video_content.html('');
+            }
+            video_content.toggle();
+          }
+        });
+
+
+        $(document).on('click', '.video-title .votes .vote', function(e) {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/video/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                    if ('0' == vote_up_num.text()) {
+                        vote_up_num.addClass('zero');
+                    } else {
+                        vote_up_num.removeClass('zero');
+                    }
+                    if ('0' == vote_down_num.text()) {
+                        vote_down_num.addClass('zero');
+                    } else {
+                        vote_down_num.removeClass('zero');
+                    }
+                }
+            });
+            e.stopPropagation();
+        });
+
+        $('.feed').hover( function () {
+            $(this).find('.feed-body .op_area').toggle();
+        }, function () {
+            $(this).find('.feed-body .op_area').toggle();
+        });
+    });
+</script>
+{% endblock %}

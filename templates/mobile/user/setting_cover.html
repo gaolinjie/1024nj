@@ -1,0 +1,117 @@
+{% extends 'mobile/layout.html' %}
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
+{% endblock %} 
+ {% block main %}
+<div class="col-xs-12 shifter-page">
+    <div class="setting-card">
+        <form class="form-horizontal" action='' method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <div id="legend">
+                    <legend class="setting-title">设置封面</legend>
+                </div>
+                {{ errors|dump_errors }}
+                <div class="form-group save-btn">
+                    <input type="submit" id="qPostBtn" class="btn btn-sm btn-success" value="保存改动">{{ xsrf_form_html() }}</div>
+
+                <div class="empty center list cover-upload-zone ng-scope"  >
+                    <input type="file" id="cover" name="cover" class="ng-scope">
+                    <img  alt="" class="s-cover" id="cover-img" {%if user_info.cover %}style="background-image: url({{user_info.cover}}-cover)"{%endif%}/>
+                    <div class="upload-text">
+                        <p><i class="upload cloud icon  fa-cloud-upload"></i>点击上方区域选择图片上传！</p>
+                        <p>仅支持 4M 以内，大于638*174且小于2560x1600的图片</p>
+                    </div>
+                    <div class="ng-hide">
+                        <i class="loading icon"></i>正在上传！
+                        <div file-upload-progress="onUploadProgress" class="ng-scope"></div>
+                    </div>
+                </div>
+                
+            </fieldset>
+            {{ xsrf_form_html() }}
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block navigation %}
+<nav class="shifter-navigation">
+                    <ul class="nav nav-list">
+                    <li class="nav-item">
+                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
+                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
+                            <input name="tn" type="hidden" value="bds" />
+                            <input name="cl" type="hidden" value="3" />
+                            <input name="si" type="hidden" value="mmmai.com" />
+                            <input name="ct" type="hidden" value="2097152" />
+                        </div>
+                    </form>
+            </li>
+            
+            <li class="nav-item actived">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+
+        <div class="slide-bottom">
+        {%if user_info%}
+        {%else%}
+        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
+        {%endif%} 
+        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
+        {%if user_info%}
+        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
+        {%endif%}
+        </div>
+    </nav>
+{% endblock %} 
+
+{% block javascript %}
+{%if user_info.cover==none%}
+<script src="/static/js/d3.v3.min.js"></script>
+<script src="/static/trianglify-gh-pages/trianglify.js"></script>
+ <script type="text/javascript">
+$(document).ready(function() {
+    var t = new Trianglify();
+    var x= document.getElementById('cover-img');
+var pattern = t.generate(x.offsetWidth, x.offsetHeight);
+x.setAttribute('style', 'background-image: '+pattern.dataUrl);
+});
+</script>
+{%endif%}
+{% endblock %}

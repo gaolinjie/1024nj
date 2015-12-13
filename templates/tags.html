@@ -1,0 +1,19 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+<title>所有标签 - 买买买</title>
+{% endblock %} 
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+    <div>
+        <ul class="tag-ranking-list">
+            {% for tag in tags %} 
+            <li>
+                <a href="/t/{{tag.name}}" class="tag {%if tag.thumb%}tag-img{%endif%} tipped_ajax_tag" data-tipped="/get/tag/{{tag.name}}" {%if tag.thumb%}style="background-image: url({{tag.thumb}}-icon);{%endif%}">{{tag.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

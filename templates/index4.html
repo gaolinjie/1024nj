@@ -1,0 +1,508 @@
+{% extends 'layout.html' %} {% block title %}
+<title>首页 - 直波侠</title>
+{% endblock %} {% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" /> {% endblock %} {% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="main">
+        {%if 0%}
+        <div class="card">
+            <div class="nav-tab">
+                <div class="main-tab">
+                    <i class="icon-live"></i>
+                    <a href="/live" class="tab-item">正在直播</a>
+                </div>
+            </div>
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        <li><a class="video-tag" href="/p/1">德甲第34轮 拜仁慕尼黑 - 美因茨05</a></li>
+                        <li><a class="video-tag" href="/">汉堡 - 沙尔克04</a></li>
+                        <li><a class="video-tag" href="/">法兰克福 - 勒沃库森</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        <li><a class="video-tag" href="/">NBA西部决赛3 火箭 - 勇士</a></li>
+                        <li><a class="video-tag" href="/">NBA东部决赛3 骑士 - 老鹰</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+        {%if football_games.list or football_videos.list%}
+        <div class="card">
+            <div class="nav-tab">
+                <div class="main-tab">
+                    <i class="icon-football"></i>
+                    <a href="/football" class="tab-item">足球精选</a>
+                </div>
+            </div>
+            {%if football_games.list%}
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        {% for feed in football_games.list %}
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+            {%endif%} 
+            {%if football_videos.list%}
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        {% for feed in football_videos.list %}
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {%endif%}
+            {%if basketball_games.list%}
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        {% for feed in basketball_games.list %}
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+            {%endif%} 
+            {%if basketball_videos.list%}
+            <div class="feed">
+                <div class="feed-down">
+                    <ul class="tags">
+                        {% for feed in basketball_videos.list %}
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+        {%endif%} 
+
+
+        <div class="card">
+            <div class="nav-tab">
+                <div class="main-tab">
+                    <i class="icon-basketball"></i>
+                    <a href="" class="tab-item">今日热榜</a>
+                </div>
+            </div>
+
+            <div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/images.jpeg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">05月20日 亚冠1/8决赛首回合</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">中国足球</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">andybest</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">momo5269</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/ff">3</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/7bcd64a60ab5301c038bdf3b1d3a4f97_crop_north.png-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">本赛季十大隔扣：恩尼斯飞天骑扣,威金斯隔扣阿西克</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">NBA</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">hhhuu</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">fafgf</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/ff">7</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/MSN-logo-442x442.png-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">巴萨历史最强攻击组合MSN（梅西&苏亚雷斯&内马尔）组合2015赛季20大进球</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">国际足球</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xilei</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">gggli</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/Img384994476.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">15年1月21日库里22分10助大战哈登33分6助回顾</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">NBA</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xsoljddd</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">css</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/20060927000202008fb.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">还是那熟悉的味道 小罗背身脚后跟妙传队友 外星人最新视频集锦</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">国际足球</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xilsei</a></strong> &nbsp;•&nbsp; 21 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">vfdfvdf</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/119660859.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">刺激！火箭vs快船系列赛七场大战十佳球</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">NBA</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xixxxlei</a></strong> &nbsp;•&nbsp; 10 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">ggglssssi</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/b2b13867.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">【中文字幕】霍华德谈胜快船：幸亏没像他们那样被逆转</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">国际足球</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xilei</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">gggli</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/1-1404112314140-L.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">05月18日 天下足球-足坛十大戴面具庆祝</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">NBA</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">hhhuu</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">fafgf</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/ff">7</a>
+  </div>
+  </div>
+</div>
+
+<div class="feed">
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/"><img class="feed-object avatar-48" src="http://avati.qiniudn.com/20061018201001f08c5.jpg-thumb" alt=""></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">哈维本周四将召开新闻发布会 正式宣布今夏离队</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/qna">国际足球</a> &nbsp;•&nbsp; <strong><a href="/member/andybest">xilei</a></strong> &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/momo5269">gggli</a></strong></span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/hh">2</a>
+  </div>
+  </div>
+
+</div>
+
+<div class="next jscroll-next-parent">
+                <a href="/?p=2" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="nav-tab">
+                <div class="main-tab">
+                    <i class="icon-timer"></i>
+                    <a href="/live" class="tab-item">精选直播</a>
+                </div>
+            </div>
+            <div class="feed">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>赛事</th>
+                            <th>比赛对阵</th>
+                            <th>直播频道</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set t='' %} {% for live in lives %} {% if t != live.date.strftime('%Y-%m-%d') %} {% set t = live.date.strftime('%Y-%m-%d') %}
+                        <tr class="success">
+                            <td>{{live.date|get_weekday}}</td>
+                            <td>{{live.date.strftime('%m月%d日')}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">{{live.date.strftime('%H:%M')}}</th>
+                            <td>{{live.game}}</td>
+                            <td><a href="/p/{{live.post_id}}">{{live.team}}</a></td>
+                            <td><a href="/p/{{live.post_id}}">CCTV5+</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class=" col-xs-12 col-md-3">
+    <div class="card">
+        <div class="cell">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="48" valign="top">
+                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
+                        </td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sep10"></div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td width="33%" align="center"><a href="/my/nodes" class="dark" style="display: block;"><span class="bigger">2</span><div class="sep3"></div><span class="fade-header">节点收藏</span></a></td>
+                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/my/topics" class="dark" style="display: block;"><span class="bigger">513</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="/my/following" class="dark" style="display: block;"><span class="bigger">3</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="inner">
+            <div class="fr" id="money"><a href="/balance" class="balance_area" style="">70 <img src="//cdn.v2ex.com/static/img/silver.png" alt="S" align="absmiddle" border="0" style="padding-bottom: 2px;"> 12 <img src="//cdn.v2ex.com/static/img/bronze.png" alt="B" align="absmiddle" border="0"></a></div><a href="/notifications" class="fade-header">0 条未读提醒</a></div>
+    </div>
+    <div class="card">
+        <div class="feed">
+            <a href="h/" target="_blank"><img src="http://avati.qiniudn.com/mm.jpg" border="0" width="250" alt="100offer"></a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="feed">
+            <span class="fade-header">今日热议主题</span>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/images.jpeg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">巴萨历史最强攻击组合</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/Img384994476.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">15年1月21日库里22分10助大战哈登33分6助回顾</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/20060927000202008fb.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">还是那熟悉的味道 </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/119660859.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">刺激！火箭vs快船系列赛七场大战十佳球</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/b2b13867.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">霍华德谈胜快船：幸亏没像他们那样被逆转</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/20061018201001f08c5.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">哈维本周四将召开新闻发布会</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/1-1404112314140-L.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">韦德职业生涯高光进攻集锦</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/7bcd64a60ab5301c038bdf3b1d3a4f97_crop_north.png-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">豪哥：练出爆发力 林书豪身穿湖人队服训练</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/BbsImg143175384320829_770-920.jpg-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">汤普森：不想再回休城</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="feed-up">
+                <div class="avatar feed-left">
+                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/MSN-logo-442x442.png-thumb" alt=""></a>
+                </div>
+                <div class="infos feed-body">
+                    <div class="title feed-heading">
+                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">晚报：哈登45分季后赛新高 火箭胜勇士拒横扫</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="feed">
+            <span class="fade-header">热门标签</span>
+        </div>
+        <div class="feed">
+            <a href="/go/mesos" class="item_node">林书豪</a>
+            <a href="/go/mesos" class="item_node">火箭</a>
+            <a href="/go/mesos" class="item_node">广州恒大</a>
+            <a href="/go/mesos" class="item_node">哈登</a>
+            <a href="/go/mesos" class="item_node">霍华德</a>
+            <a href="/go/mesos" class="item_node">皇家马德里</a>
+            <a href="/go/mesos" class="item_node">巴萨</a>
+            <a href="/go/mesos" class="item_node">亚冠</a>
+            <a href="/go/mesos" class="item_node">中国国足</a>
+            <a href="/go/mesos" class="item_node">NBA</a>
+            <a href="/go/mesos" class="item_node">韦德</a>
+            <a href="/go/mesos" class="item_node">詹姆斯</a>
+            <a href="/go/mesos" class="item_node">C罗</a>
+            <a href="/go/mesos" class="item_node">梅西</a>
+            <a href="/go/mesos" class="item_node">内马尔</a>
+            <a href="/go/mesos" class="item_node">哥斯达黎加</a>
+            <a href="/go/mesos" class="item_node">法网</a>
+            <a href="/go/mesos" class="item_node">NCAA</a>
+            <a href="/go/mesos" class="item_node">勇士</a>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %} {% endblock %}

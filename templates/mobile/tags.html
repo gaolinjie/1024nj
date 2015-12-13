@@ -1,0 +1,119 @@
+{% extends 'mobile/layout.html' %} 
+
+{% block title %}
+<title>所有标签 - 买买买</title>
+{% endblock %} 
+
+{% block main %}
+<div class="col-xs-12 shifter-page">
+    {% for category in categorys %} 
+    {% if category.tag_num>0 %}
+    <div class="bs-docs-section">
+        <h2>{{category.name}}</h2>
+        <div id="{{category.id}}" class="anchor"></div>
+        <ul class="tag-ranking-list">
+            {% for tag in tags %} 
+            {% if tag.category==category.id %}
+            <li>
+                <a href="/t/{{tag.name}}" class="tag {%if tag.thumb%}tag-img{%endif%} tipped_ajax_tag" data-tipped="/get/tag/{{tag.name}}" {%if tag.thumb%}style="background-image: url({{tag.thumb}}-icon);{%endif%}">{{tag.name}}</a>
+            </li>
+            {% endif %} 
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %} 
+    {% endfor %}
+</div>
+
+<div class="col-xs-12 col-md-3">
+    <div id="myScrollspy" class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+        <ul class="nav bs-docs-sidenav" data-spy="affix" data-offset-top="125">
+            {% for category in categorys %} 
+            {% if category.tag_num>0 %}
+            <li {% if category==categorys[0] %}class="active" {% endif %}>
+                <a href="#{{category.id}}">{{category.name}}</a>
+            </li>
+            {% endif %} 
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block navigation %}
+<nav class="shifter-navigation">
+                    <ul class="nav nav-list">
+                    <li class="nav-item">
+                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
+                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
+                            <input name="tn" type="hidden" value="bds" />
+                            <input name="cl" type="hidden" value="3" />
+                            <input name="si" type="hidden" value="mmmai.com" />
+                            <input name="ct" type="hidden" value="2097152" />
+                        </div>
+                    </form>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>
+                我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>
+                我的所有关注
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>
+                    <i class="icon-message"></i>
+                    我的消息 
+                    {%if notice_count%}
+                    <span class="badge message-badge">{{notice_count}}</span>
+                    {%endif%}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>
+                    <i class="icon-invitation"></i>
+                    邀请我回答的问题 
+                    {%if invite_count%}
+                    <span class="badge invite-badge">{{invite_count}}</span>
+                    {%endif%}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/tags">
+                    <i class="icon-tag"></i>
+                    所有标签
+                </a>
+            </li>
+            <li class="nav-item">
+                <a {% if user_info==none%}class="unlogin" {%else%}class="comingsoon" {%endif%} href="javascript:;" {% if user_info==none%}data-link="list" {%endif%}>
+                    <i class="icon-list"></i>
+                    欲望清单
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
+                    <i class="icon-invite"></i>
+                    邀请朋友加入
+                </a>
+            </li>
+        </ul>
+
+        <div class="slide-bottom">
+        {%if user_info%}
+        {%else%}
+        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
+        {%endif%} 
+        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
+        {%if user_info%}
+        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
+        {%endif%}
+        </div>
+    </nav>
+{% endblock %} 

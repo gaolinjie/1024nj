@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
+{% endblock %} 
+ {% block main %}
+<div class="col-xs-12 col-md-9">
+<div class="card setting">
+        <form class="form-horizontal" action='' method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <div id="legend">
+                    <legend class="setting-title">设置头像</legend>
+                </div>
+                {{ errors|dump_errors }}
+                <div class="form-group save-btn">
+                    <input type="submit" id="qPostBtn" class="btn btn-sm btn-success" value="保存改动">{{ xsrf_form_html() }}</div>
+
+
+
+                <div class="empty center list avatar-upload-zone ng-scope">
+                    <input type="file" id="avatar" name="avatar" class="ng-scope">
+                    <img src="{{ user_info.avatar }}-128px" alt="" class="s-avatar" />
+                    <div class="upload-text">
+                        <p><i class="upload cloud icon  fa-cloud-upload"></i>点击此区域选择图片上传！</p>
+                        <p>仅支持 1M 以内，大于128*128且小于800*800的头像</p>
+                    </div>
+                    <div class="ng-hide">
+                        <i class="loading icon"></i>正在上传！
+                        <div file-upload-progress="onUploadProgress" class="ng-scope"></div>
+                    </div>
+                </div>
+
+                
+
+                
+            </fieldset>
+            {{ xsrf_form_html() }}
+        </form>
+    </div>
+</div>
+
+<div class=" col-xs-12 col-md-3">
+<div class="card">
+     <div class="sidenav container-box">
+        <ul class="nav nav-list">
+            <li class="nav-item">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+    </div>
+    </div>
+</div>
+{% endblock %}

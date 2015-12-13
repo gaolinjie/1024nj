@@ -1,0 +1,106 @@
+{% extends 'mobile/layout.html' %}
+
+{% block main %}
+<div class="col-xs-12 shifter-page">
+    <div class="setting-card">
+        <form class="form-horizontal" action='' method="POST">
+            <fieldset>
+                <div id="legend">
+                    <legend class="setting-title">社交网络</legend>
+                </div>
+                {{ errors|dump_errors }}
+                <div class="save-btn">
+                    <input type="submit" id="qPostBtn" class="btn btn-sm btn-success" value="保存改动">{{ xsrf_form_html() }}</div>
+
+                <div class="form-group left">
+                    <!-- weibo -->
+                    <label for="sign">微&nbsp;&nbsp;&nbsp;&nbsp;博</label>
+                    <input type="text" id="weibo" name="weibo" placeholder="输入你的新浪微博主页地址" class="form-control" value="{{ user_info.weibo or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- qzone -->
+                    <label for="sign">QQ 空间</label>
+                    <input type="text" id="qzone" name="qzone" placeholder="输入你的 QQ 空间主页地址" class="form-control" value="{{ user_info.qzone or '' }}"></div>
+
+                <div class="form-group left">
+                    <!-- douban -->
+                    <label for="location">豆&nbsp;&nbsp;&nbsp;&nbsp;瓣</label>
+                    <input type="text" id="douban" name="douban" placeholder="输入你的豆瓣主页地址" class="form-control" value="{{ user_info.douban or '' }}"></div>
+
+                <div class="form-group">
+                    <!-- renren -->
+                    <label for="business">人&nbsp;&nbsp;&nbsp;&nbsp;人</label>
+                    <input type="text" id="renren" name="renren" placeholder="输入你的人人主页地址" class="form-control" value="{{ user_info.renren or '' }}"></div>
+            </fieldset>
+            {{ xsrf_form_html() }}
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block navigation %}
+<nav class="shifter-navigation">
+                    <ul class="nav nav-list">
+                    <li class="nav-item">
+                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
+                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
+                            <input name="tn" type="hidden" value="bds" />
+                            <input name="cl" type="hidden" value="3" />
+                            <input name="si" type="hidden" value="mmmai.com" />
+                            <input name="ct" type="hidden" value="2097152" />
+                        </div>
+                    </form>
+            </li>
+            
+            <li class="nav-item actived">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+
+        <div class="slide-bottom">
+        {%if user_info%}
+        {%else%}
+        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
+        {%endif%} 
+        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
+        {%if user_info%}
+        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
+        {%endif%}
+        </div>
+    </nav>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends 'layout.html' %} 
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/jquery-ui-1.11.0/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/static/aehlke-tag-it-1d84585/css/jquery.tagit.css">
+{% endblock %} 
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="setting-password-card">
+        <form class="form-horizontal" action='' method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <div id="legend">
+                    <legend class="setting-title">编辑标签</legend>
+                </div>
+                {{ errors|dump_errors }}
+                <div class="save-btn">
+                    <input type="submit" id="qPostBtn" class="btn btn-sm btn-success" value="保存改动">{{ xsrf_form_html() }}</div>
+                <div class="form-group">
+                    <label class="control-label" for="tag_name">标签名称</label>
+                    <input type="text" id="tag_name" name="name" placeholder="输入标签名称" class="form-control" value="{{tag.name}}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="tag_intro">标签介绍</label>
+                    <textarea type="text" id="tag_intro" name="intro" placeholder="输入标签介绍" class="form-control">{%if tag.intro%}{{tag.intro}}{%endif%}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tag_category">标签类别</label>
+                    <select id="tag_category" name="category" class="form-control">
+                        {%for category in categorys%}
+                        <option {% if category.id==tag.category %} selected="selected" {% endif %}>{{category.name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tag_type">标签类型</label>
+                    <select id="tag_type" name="tag_type" class="form-control">
+                        {%for tag_type in tag_types%}
+                        <option {% if tag_type.id==tag.tag_type %} selected="selected" {% endif %}>{{tag_type.name}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="tag_name">父标签</label>
+                    <input type="hidden" name="tag" id="qSingleField" data-all="{{allTagStr}}" value="">
+                    <ul id="qTags" class="">
+                </div>
+
+                <div class="empty center list avatar-upload-zone ng-scope">
+                    <input type="file" id="thumb" name="thumb" class="ng-scope">
+                    <img src="{{tag.thumb or 'http://mmm-static.qiniudn.com/tag.png'}}-thumb" alt="" class="s-avatar" />
+                    <div class="upload-text">
+                        <p> <i class="upload cloud icon  fa-cloud-upload"></i>
+                            点击此区域选择图片上传！
+                        </p>
+                        <p>仅支持 1M 以内，大于128*128且小于800*800的头像</p>
+                    </div>
+                    <div class="ng-hide"> <i class="loading icon"></i>
+                        正在上传！
+                        <div file-upload-progress="onUploadProgress" class="ng-scope"></div>
+                    </div>
+                </div>
+
+            </fieldset>
+            {{ xsrf_form_html() }}
+        </form>
+    </div>
+</div>
+
+<div class=" col-xs-12 col-md-3">
+    <div class="sidenav container-box">
+        <ul class="nav nav-list">
+            <li class="nav-item">
+                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
+                    我的主页
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting"> <i class="icon-setting"></i>
+                    基本设置
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/avatar">
+                    <i class="icon-avatar"></i>
+                    设置头像
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/setting/cover">
+                    <i class="icon-cover"></i>
+                    设置封面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/setting/password">
+                    <i class="icon-password"></i>
+                    修改密码
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item">
+                <a href="/social">
+                    <i class="icon-social"></i>
+                    社交网络
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %} 
+
+{% block javascript %}
+<script src="/static/jquery-ui-1.11.0/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/aehlke-tag-it-1d84585/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var str = $('#qSingleField').attr('data-all');
+        var sampleTags = str.split(",");
+
+        $("#qTags").tagit({
+            placeholderText: '添加合适的标签',
+            availableTags: sampleTags,
+            singleField: true,
+            allowSpaces: true, //标签中是否允许空格
+            singleFieldNode: $('#qSingleField') //将值保存到mySingleField元素
+        });
+    });
+</script>
+{% endblock %}

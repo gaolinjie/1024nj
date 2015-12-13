@@ -1,0 +1,43 @@
+{% extends 'layout.html' %} {% block title %}
+<title>错误提示 - 买买买</title>
+{% endblock %} {% block stylesheet %}
+<style type="text/css">
+.session-edge {
+    margin-top: 80px;
+    margin-bottom: 100px;
+}
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.site-error,
+.site-maintain {
+    padding-top: 80px;
+    height: 350px;
+    background: transparent url(http://s.segmentfault.com/img/error.png?d9L7mC) no-repeat right center;
+    color: #666;
+    font-size: 20px;
+}
+.site-error strong,
+.site-maintain strong {
+    font-size: 100px;
+    color: #333;
+}
+b,
+strong {
+    font-weight: bold;
+}
+.site-error span {
+    margin-left: 35px;
+}
+</style>
+{% endblock %} {% block main %}
+<div class="row session-edge">
+    <div class="col-xs-12 col-md-offset-1 col-md-10 site-error">
+        <strong>“卖光了”</strong>
+        <br>
+        <span>{{error_text}}<a href="/">回首页</a>
+        </span>
+    </div>
+</div>
+{% endblock %}

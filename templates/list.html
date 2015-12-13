@@ -1,0 +1,38 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+<title>欲望清单</title>
+{% endblock %} 
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+    {%for tag_type in tag_types%}
+    <div class="bs-docs-section">
+        <h2>{{tag_type.label}}</h2>
+        <div id="{{tag_type.id}}" class="anchor"></div>
+        <ul class="tag-ranking-list">
+            {%for tag in tags%} 
+            {%if tag.tag_type==tag_type.id%}
+            <li>
+                <a href="/t/{{tag.name}}" class="tag {%if tag.thumb%}tag-img{%endif%}" {%if tag.thumb%}style="background-image: url({{tag.thumb}}-icon);{%endif%}">{{tag.name}}</a>
+            </li>
+            {%endif%} 
+            {%endfor%}
+        </ul>
+    </div>
+    {%endfor%}
+
+</div>
+
+<div class="col-xs-12 col-md-3">
+    <div id="myScrollspy" class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+        <ul class="nav bs-docs-sidenav" data-spy="affix" data-offset-top="125">
+            {%for tag_type in tag_types%}
+            <li {%if tag_type==tag_types[0]%}class="active" {%endif%}>
+                <a href="#{{tag_type.id}}">{{tag_type.label}}</a>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>
+</div>
+{% endblock %}

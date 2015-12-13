@@ -1,0 +1,261 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+<title>发帖 - 直波侠</title>
+{% endblock %} 
+
+{% block stylesheet %}
+<link href="/static/summernote-0.5.2-dist/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/admin/remark/vendor/select2/select2.css">
+{% endblock %} 
+
+{% block main %}
+<div class="col-xs-12 col-md-9">
+    <div class="card new">
+        <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
+            <li class="active">
+                <a href="#post" role="tab" data-toggle="tab">新 帖</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="post">
+                <form class="mt10" action='/new?t=p' method="POST" id="pForm">
+                    <div class="new-btn">
+                        <a id="pPostBtn" class="btn btn-sm btn-success">立即发布{{ xsrf_form_html() }}</a>
+                    </div>
+                    <div class="title">
+                        <input type="text" id="pTitle" name="title" class="form-control" placeholder="输入你的标题">
+                    </div>
+                    <div class="content">
+                        <div id="pSummernote" class="description"></div>
+                        <input type="hidden" name="content" id="pContent" value="">
+                    </div>
+                    <div class="tag">
+                        <input type="hidden" id="pSingleField" value="">
+                        <ul id="pTags" class=""></ul>
+                    </div>
+                    <select name="node">
+                        <option></option>
+                        {%set i=0%}
+                        {%for category in categorys%}
+                        <optgroup label="{{category.name}}">
+                            {%for node in nodes[i]%}
+                            <option value="{{node.name}}">{{node.name}}</option>
+                            {%endfor%}
+                        </optgroup>
+                        {%set i=i+1%}
+                        {%endfor%}
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class=" col-xs-12 col-md-3">
+    {%if user_info%}
+    <div class="card">
+        <div class="cell">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="48" valign="top">
+                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
+                        </td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sep10"></div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td>
+                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="inner">
+            <div class="fr" id="money">
+                    <a href="/balance" class="balance_area" alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
+                </div>
+            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%} 条未读提醒</a></div>
+    </div>
+    {%else%}
+    <div class="card">
+      <div class="feed">
+            <span class="login-header">可能是东半球颜值最高的体育聚合社区</span>
+        </div>
+      <div class="feed center">
+        <a class="unlogin signup-switch" href="javascript:;">
+                                <button class="signin-btn btn btn-success">立即加入</button>
+        </a>
+      
+      <div class="signup-text">
+      已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
+      </div>
+    </div>
+    </div>
+    {%endif%}
+    {%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
+</div>
+<div id="alertModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                    发帖格式可能不符合规范
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="header">如果符合下列情况，请修改：</div>
+                <ul class="options clearfix">
+                    <li class="">
+                        <label>
+                            标题不能为空
+                        </label>
+                    </li>
+                    <li class="">
+                        <label>
+                            问题标题必须以问号结尾
+                        </label>
+                    </li>
+                    <li class="">
+                        <label>
+                            标签不能为空
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script src="/static/summernote-0.5.2-dist/summernote.js"></script>
+<script src="/static/summernote-0.5.2-dist/summernote-zh-CN.js"></script>
+<script src="/static/admin/remark/vendor/select2/select2.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#type_tab a').click(function(e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+
+    function sendFile(file, editor, editable) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: "/upload",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(url) {
+                editor.insertImage(editable, url);
+                $('.note-image-dialog').modal('hide');
+                $('.note-image-input').removeClass('uploading');
+                $('.note-group-select-from-files h5').text('从本地上传');
+            }
+        });
+    }
+
+    function sendShopping(sUrl, editor, editable) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/additem",
+            data: JSON.stringify({
+                url: sUrl,
+            }),
+            success: function(msg) {
+                if (msg.success != 0) {
+                    editor.insertShopping(editable, msg);
+                } else {
+                    alert("error");
+                }
+            },
+            error: function(msg) {
+                alert("error");
+            }
+        });
+    }
+
+    $('#pSummernote').summernote({
+        height: 200, // set editor height
+        minHeight: 200, // set minimum height of editor
+        maxHeight: 600, // set maximum height of editor
+        focus: true,
+        toolbar: [
+            ['style', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+            //['fontsize', ['fontsize']],
+            //['color', ['color']],
+            ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
+            //['height', ['height']],
+            //['table', ['table']],
+            ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
+            //['insert', ['link']],
+            ['view', ['fullscreen' /*, 'codeview'*/ ]],
+        ],
+        lang: 'zh-CN',
+        onImageUpload: function(files, editor, editable) {
+            $('.note-group-select-from-files h5').text('正在上传图片');
+            $('.note-image-input').addClass('uploading');
+            sendFile(files[0], editor, editable);
+        },
+        onShoppingUpload: function(sUrl, editor, editable) {
+            sendShopping(sUrl, editor, editable);
+        },
+    });
+
+    
+    $(document).on('click', '#pPostBtn', function() {
+        var title = $('#pTitle').val();
+        var node = $('select').val();
+        if (!title.trim() || !node.trim()) {
+            $('#alertModal').modal('show');
+            return;
+        }
+        $('#pContent').val($('#pSummernote').code());
+        $('#pForm').submit();
+    });
+
+    $(document).on('click', '#inviteEmail', function() {
+        var email = $('#inviteEmailInput').val();
+        $.getJSON('/invite/to/join?email=' + email, function(data) {
+            if (data.success != 0) {
+                $('#inviteEmailInput').val('');
+                $('#inviteJoinModal').modal('hide');
+                alert('邀请发送成功!');
+            } else {
+                alert('邀请发送失败!');
+            }
+        });
+    });
+
+    $('select').select2({
+        placeholder: "请选择一个合适的节点",
+        allowClear: true
+    });
+});
+</script>
+{% endblock %}
