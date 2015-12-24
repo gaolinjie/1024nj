@@ -361,13 +361,13 @@ class SettingAvatarHandler(BaseHandler):
         avatar = Image.open(avatar_buffer)
 
         usr_home = os.path.expanduser('~')
-        avatar.save(usr_home+"/www/avati/static/tmp/m_%s.png" % avatar_name, "PNG")
+        avatar.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % avatar_name, "PNG")
 
         uptoken = q.upload_token("mmm-avatar", "m_%s.png" % avatar_name)
-        data=open(usr_home+"/www/avati/static/tmp/m_%s.png" % avatar_name)
+        data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % avatar_name)
         ret, info = put_data(uptoken, "m_%s.png" % avatar_name, data)
 
-        os.remove(usr_home+"/www/avati/static/tmp/m_%s.png" % avatar_name)
+        os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % avatar_name)
 
         avatar_name = "http://mmm-avatar.qiniudn.com/m_"+avatar_name
         result = self.user_model.set_user_avatar_by_uid(user_id, "%s.png" % avatar_name)
@@ -419,13 +419,13 @@ class SettingCoverHandler(BaseHandler):
         cover = Image.open(cover_buffer)
      
         usr_home = os.path.expanduser('~')
-        cover.save(usr_home+"/www/avati/static/tmp/m_%s.png" % cover_name, "PNG")
+        cover.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % cover_name, "PNG")
 
         uptoken = q.upload_token("mmm-avatar", "m_%s.png" % cover_name)
-        data=open(usr_home+"/www/avati/static/tmp/m_%s.png" % cover_name)
+        data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % cover_name)
         ret, info = put_data(uptoken, "m_%s.png" % cover_name, data)
 
-        os.remove(usr_home+"/www/avati/static/tmp/m_%s.png" % cover_name)
+        os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % cover_name)
 
         cover_name = "http://mmm-avatar.qiniudn.com/m_"+cover_name
         result = self.user_model.set_user_cover_by_uid(user_id, "%s.png" % cover_name)

@@ -18,19 +18,19 @@ HOWTO deploy on Linode
 	$ pip install supervisor 
 
 ###Config Git
-	$ ssh-keygen -t rsa -C "avati@gmail.com"
+	$ ssh-keygen -t rsa -C "1024nj@gmail.com"
 	$ cat ~/.ssh/id_rsa.pub
 	# copy and paste the RSA key to the Deploy keys setting
-	$ git config --global user.name "avati"  
-	$ git config --global user.email avati@gmail.com  
+	$ git config --global user.name "1024nj"  
+	$ git config --global user.email 1024nj@gmail.com  
 
 ###Make directories for your app
 	$ mkdir ~/www
 
 ###Pull in source code
 	$ cd ~/www/
-	$ git clone git@github.com:gaolinjie/avati.git
-	$ cd avati
+	$ git clone git@github.com:gaolinjie/1024nj.git
+	$ cd 1024nj
 
 ###Install web app required modules
 	$ pip install -r requirements.txt

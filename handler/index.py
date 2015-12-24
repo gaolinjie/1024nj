@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 #
-# Copyright 2014 avati
+# Copyright 2014 1024nj
 
 import uuid
 import hashlib
@@ -1647,13 +1647,13 @@ class EditTagHandler(BaseHandler):
             thumb = Image.open(thumb_buffer)
 
             usr_home = os.path.expanduser('~')
-            thumb.save(usr_home+"/www/avati/static/tmp/m_%s.png" % tag_name, "PNG")
+            thumb.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % tag_name, "PNG")
 
             uptoken = q.upload_token("mmm-avatar", "m_%s.png" % tag_name)
-            data=open(usr_home+"/www/avati/static/tmp/m_%s.png" % tag_name)
+            data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % tag_name)
             ret, info = put_data(uptoken, "m_%s.png" % tag_name, data)
  
-            os.remove(usr_home+"/www/avati/static/tmp/m_%s.png" % tag_name)
+            os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % tag_name)
 
             thumb_name = "http://mmm-avatar.qiniudn.com/m_"+tag_name
             self.tag_model.update_tag_by_tag_id(tag_id, {"name": form.name.data, "intro": form.intro.data, "thumb": "%s.png" %  thumb_name, "category": category.id, "tag_type": tag_type.id})
@@ -1699,13 +1699,13 @@ class UploadHandler(BaseHandler):
             file = Image.open(file_buffer)
 
             usr_home = os.path.expanduser('~')
-            file.save(usr_home+"/www/avati/static/tmp/m_%s.png" % file_name, "PNG")  
+            file.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name, "PNG")  
 
             uptoken = q.upload_token("mmm-cdn", "m_%s.png" % file_name)
-            data=open(usr_home+"/www/avati/static/tmp/m_%s.png" % file_name)
+            data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name)
             ret, info = put_data(uptoken, "m_%s.png" % file_name, data)
  
-            os.remove(usr_home+"/www/avati/static/tmp/m_%s.png" % file_name)
+            os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name)
 
             file_name = "http://mmm-cdn.qiniudn.com/m_"+file_name+".png"
 

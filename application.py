@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 #
-# Copyright 2014 avati
+# Copyright 2014 1024nj
 
 # cat /etc/mime.types
 # application/octet-stream    crx
