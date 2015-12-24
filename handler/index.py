@@ -29,7 +29,6 @@ from lib.utils import find_mentions
 from lib.reddit import hot
 from lib.utils import pretty_date
 from lib.dateencoder import DateEncoder
-from pyquery import PyQuery as pyq
 
 from lib.mobile import is_mobile_browser
 from form.post import *
@@ -1191,128 +1190,6 @@ class AddItemHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, template_variables = {}):
         user_info = self.current_user
-
-        if(user_info):
-            data = json.loads(self.request.body)
-            url = data["url"]
-            sku = ""
-            link = ""
-            pyq_url = ""
-            vendor = ""
-            amazoncn_pattern = re.compile(r'http://www.amazon.cn/gp/product/([0-9A-Z]{10})')
-            amazoncn_match = amazoncn_pattern.search(url)
-            if amazoncn_match: 
-                sku = amazoncn_match.group(1)
-                link = 'http://www.amazon.cn/gp/product/' + sku
-                pyq_url = link
-                vendor = 'amazoncn'
-                item = self.item_model.get_item_by_sku_and_vendor2(sku, vendor)
-                if item:
-                    self.item_model.update_item_by_id(item.id, {"add_num": item.add_num+1})
-                    self.write(lib.jsonp.print_JSON({
-                        "success": 1,
-                        "id": item.id,
-                        "sku": item.sku,
-                        "name": item.name,
-                        "img": item.img,
-                        "like_num": item.like_num,
-                        "price": item.price,
-                        "vendor": item.vendor
-                    }))
-                else:
-                    doc=pyq(pyq_url)
-                    info = doc('.a-container')
-                    name = info.find('#centerCol #productTitle').text()
-                    img = info.find('#leftCol #imgTagWrapperId img').attr('src')
-                    price_url = 'http://s.etao.com/detail/10.html?uc_url=http%3A%2F%2Fwww.amazon.cn%2Fgp%2Fproduct%2F'+sku
-                    price_doc=pyq(price_url)
-                    price = price_doc('.real-price-num').text()
-                    item_id = self.item_model.add_new_item({
-                        "sku": sku,
-                        "name": name,
-                        "img": img,
-                        "link": link,
-                        "vendor": vendor,
-                        "price": price
-                    })
-                    self.write(lib.jsonp.print_JSON({
-                        "success": 1,
-                        "id": item_id,
-                        "sku": sku,
-                        "name": name,
-                        "img": img,
-                        "like_num": 0,
-                        "price": price,
-                        "vendor": vendor
-                    }))             
-                return
-            jd_pattern = re.compile(r'http://item.jd.com/(\d+).html') 
-            jd_match = jd_pattern.search(url) 
-            if jd_match: 
-                sku = jd_match.group(1)
-                link = 'http://item.jd.com/' + sku + '.html'
-                pyq_url = 'http://gouwu.sogou.com/compare?p=40251500&clf=2&query=129493916&adsUrl=http%3A%2F%2Fitem.jd.com%2F'+sku+'.html'
-                vendor = 'jd'
-            tmall_pattern = re.compile(r'http://detail.tmall.com/item.htm?\S*id=(\d+)')
-            tmall_match = tmall_pattern.search(url) 
-            if tmall_match: 
-                sku = tmall_match.group(1)
-                link = 'http://detail.tmall.com/item.htm?id=' + sku
-                pyq_url = 'http://gouwu.sogou.com/compare?p=40251500&query=-100&adsUrl=http%3A%2F%2Fdetail.tmall.com%2Fitem.htm%3Fid%3D'+sku
-                vendor = 'tmall'
-            taobao_pattern = re.compile(r'http://item.taobao.com/item.htm?\S*id=(\d+)')
-            taobao_match = taobao_pattern.search(url) 
-            if taobao_match: 
-                sku = taobao_match.group(1)
-                link = 'http://item.taobao.com/item.htm?id=' + sku
-                pyq_url = 'http://gouwu.sogou.com/compare?p=40251500&query=-100&adsUrl=http%3A%2F%2Fitem.taobao.com%2Fitem.htm%3Fid%3D'+sku
-                vendor = 'taobao'
-            if jd_match or tmall_match or taobao_match: 
-                item = self.item_model.get_item_by_sku_and_vendor(sku, vendor)
-                if item:
-                    self.item_model.update_item_by_id(item.id, {"add_num": item.add_num+1})
-                    self.write(lib.jsonp.print_JSON({
-                        "success": 1,
-                        "id": item.id,
-                        "sku": item.sku,
-                        "name": item.name,
-                        "img": item.img,
-                        "like_num": item.like_num,
-                        "price": item.price,
-                        "vendor": item.vendor
-                    }))
-                else:
-                    doc=pyq(pyq_url)
-                    info = doc('.nbox1')
-                    name = info.find('.nst1 #sb_title').text()
-                    img = info.find('.nbox1_imgmn #sb_pic img').attr('src')
-                    price = info.find('.n_list .shopprice').text()
-                    item_id = self.item_model.add_new_item({
-                        "sku": sku,
-                        "name": name,
-                        "img": img,
-                        "link": link,
-                        "vendor": vendor,
-                        "price": price
-                    })
-                    self.write(lib.jsonp.print_JSON({
-                        "success": 1,
-                        "id": item_id,
-                        "sku": sku,
-                        "name": name,
-                        "img": img,
-                        "like_num": 0,
-                        "price": price,
-                        "vendor": vendor
-                    }))                
-            else:
-                self.write(lib.jsonp.print_JSON({
-                    "success": 0,
-                }))
-        else:
-            self.write(lib.jsonp.print_JSON({
-                    "success": 0,
-                }))
 
 class ItemHandler(BaseHandler):
     def get(self, item_id, template_variables = {}):
