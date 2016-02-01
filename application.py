@@ -56,7 +56,7 @@ class Application(tornado.web.Application):
             (r"/(bdsitemap\.txt)", tornado.web.StaticFileHandler, dict(path = settings["static_path"])),
             (r"/(orca\.txt)", tornado.web.StaticFileHandler, dict(path = settings["static_path"])),
 
-            (r"/", handler.index.IndexHandler),
+            (r"/", handler.index.BbsHandler),
             (r"/p/(\d+)", handler.index.PostHandler),
             (r"/new", handler.index.NewHandler),
             (r"/t/(.*)", handler.index.TagHandler),   
