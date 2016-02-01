@@ -47,33 +47,33 @@
                 </div>
                 <div class="navbar-collapse collapse">
 
-                <form method="get" class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input name="word" size="30" maxlength="100" type="text" id="ts-search-input" class="form-control" placeholder="搜索一下，带你进入缤纷体育世界" />
-                        </div>
-                    </form>
+                <!--<form method="get" class="navbar-form navbar-left" role="search">-->
+                        <!--<div class="form-group">-->
+                            <!--<input name="word" size="30" maxlength="100" type="text" id="ts-search-input" class="form-control" placeholder="搜索一下，带你进入缤纷体育世界" />-->
+                        <!--</div>-->
+                    <!--</form>-->
                     
                     <ul class="nav navbar-nav navbar-right">
-                        <li {%if active_nav == '热榜'%}class="active"{%endif%}>
-                            <a href="/hot">热榜</a>
-                        </li>
-                        <li {%if active_nav == '直播'%}class="active"{%endif%}>
-                            <a href="/live">直播</a>
-                        </li>
-                        <li {%if active_nav == 'NBA'%}class="active"{%endif%}>
-                            <a href="/nba">NBA</a>
-                        </li>
-                        <li {%if active_nav == '足球'%}class="active"{%endif%}>
-                            <a href="/football">足球</a>
-                        </li>
-                        <li {%if active_nav == '社区'%}class="active"{%endif%}>
+                        <!--<li {%if active_nav == '热榜'%}class="active"{%endif%}>-->
+                            <!--<a href="/hot">热榜</a>-->
+                        <!--</li>-->
+                        <!--<li {%if active_nav == '直播'%}class="active"{%endif%}>-->
+                            <!--<a href="/live">直播</a>-->
+                        <!--</li>-->
+                        <!--<li {%if active_nav == 'NBA'%}class="active"{%endif%}>-->
+                            <!--<a href="/nba">NBA</a>-->
+                        <!--</li>-->
+                        <!--<li {%if active_nav == '足球'%}class="active"{%endif%}>-->
+                            <!--<a href="/football">足球</a>-->
+                        <!--</li>-->
+                        <li >
                             <a href="/bbs">社区</a>
                         </li>
-                        {%if 0%}
-                        <li {%if active_nav == '商城'%}class="active"{%endif%}>
-                            <a href="/mall">商城</a>
-                        </li>
-                        {%endif%}
+                        <!--{%if 0%}-->
+                        <!--<li {%if active_nav == '商城'%}class="active"{%endif%}>-->
+                            <!--<a href="/mall">商城</a>-->
+                        <!--</li>-->
+                        <!--{%endif%}-->
                         {%if user_info%}
                         <li class="dropdown {%if view_user and user_info.uid == view_user.uid%}active{%endif%}">
                             <a href="/u/{{ user_info.username}}" class="dropdown-toggle nav-username" data-toggle="dropdown">
@@ -128,7 +128,7 @@
                         <i class="icon-sign icon-sign-arrow"></i>
 
                     </a>
-                                <span class="js-title-label title-label">登录直波侠</span>
+                                <span class="js-title-label title-label">登录南京程序员第一社区</span>
                             </div>
                             <div class="form-group input">
                                 <input type="email" name="email" placeholder="邮箱" class="form-control email-input" />
