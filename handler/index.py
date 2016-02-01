@@ -248,8 +248,8 @@ class BbsHandler(BaseHandler):
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
 
-        all_navs = self.nav_model.get_all_navs_by_type("basketball")
-        all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
+        all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+        all_subnavs = self.nav_model.get_all_subnavs_by_type("itbbs")
 
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
