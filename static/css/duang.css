@@ -890,6 +890,47 @@ html,body{height:100%}
 .signin-btn {
     width: 200px;
 }
+.btn-success {
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  color: #fff;
+  background-color: #202020;
+  border-color: #202020;
+}
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  background-image: none;
+}
+.btn-success.disabled,
+.btn-success[disabled],
+fieldset[disabled] .btn-success,
+.btn-success.disabled:hover,
+.btn-success[disabled]:hover,
+fieldset[disabled] .btn-success:hover,
+.btn-success.disabled:focus,
+.btn-success[disabled]:focus,
+fieldset[disabled] .btn-success:focus,
+.btn-success.disabled:active,
+.btn-success[disabled]:active,
+fieldset[disabled] .btn-success:active,
+.btn-success.disabled.active,
+.btn-success[disabled].active,
+fieldset[disabled] .btn-success.active {
+  background-color: #000000;
+  border-color: #000000;
+}
+.btn-success .badge {
+  color: #000000;
+  background-color: #fff;
+}
 
 .nav-tab .main-tab a.more-btn {
     color: #ccc;
