@@ -402,12 +402,12 @@ body {
 }
 
 .global_footer .footer_inner .inner_copyr .inner_tech {
-    background-image: url(http://static.zealer.com/page/img/img_e90c75b4_font1.png);
-    background-image: -webkit-image-set(url(http://static.zealer.com/page/img/img_e90c75b4_font1.png) 1x, url(http://static.zealer.com/page/img/img_e90c7592_font1@2x.png) 2x);
+    background-image: url(/static/img/footer_string.png);
+    background-image: -webkit-image-set(url(/static/img/footer_string.png) 1x, url(/static/img/footer_string.png) 2x);
     background-repeat: no-repeat;
     display: inline-block;
     height: 16px;
-    padding-left: 131px;
+    padding-left: 218px;
 }
 
 .global_footer .footer_inner .inner_copyr em {
@@ -419,11 +419,11 @@ body {
 }
 
 .global_footer .footer_inner .inner_copyr .inner_copy {
-    background-image: url(http://static.zealer.com/page/img/img_e90c75f2_font2.png);
+    background-image: url(/static/img/copyright.png);
     background-repeat: no-repeat;
     display: inline-block;
     height: 16px;
-    padding-left: 77px;
+    padding-left: 172px;
 }
 
 .global_footer .footer_inner .inner_copyr .inner_no {
@@ -1008,21 +1008,4 @@ a.text-like:hover, a.text-like.followed {
 }
 .date-header.scroll-to-fixed-fixed:hover{
     background-color: #d0e9c6;
-}
-.legend {
-  background: #c81623;
-}
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
-    color: #fff;
-    background: #c81623;
-}
-.bootstrap-switch .bootstrap-switch-label {
-    color: #333333;
-    background: #333333;
-    background-color: #333333;
-    border-radius:0px
-}
-.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger {
-    color: #fff;
-    background: #c81623;
 }
