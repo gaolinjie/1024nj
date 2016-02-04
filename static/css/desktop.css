@@ -3,7 +3,7 @@ body {
     line-height: 1.5;
     font-size: 13px;
 }
-    
+
 blockquote {
 border-left: 3px solid #D0E5F2;
 font-style: normal;
@@ -17,11 +17,11 @@ font-size: 13px;
 }
 
 blockquote:first-child
-{ 
+{
 margin-top: 10px;
 }
 blockquote:last-child
-{ 
+{
 margin-bottom: 10px;
 }
 
@@ -35,11 +35,11 @@ background: #f8f8f8;
 border: 0;
 }
 pre:first-child
-{ 
+{
 margin-top: 10px;
 }
 pre:last-child
-{ 
+{
 margin-bottom: 10px;
 }
 
@@ -1268,7 +1268,7 @@ a.link-disabled {
     position: relative;
     width: 100%;
     display: block;
-    background: #FF7052;
+    background: #f02b2b;
     padding: 15px;
     color: #fff;
     font-size: 20px;
@@ -1785,7 +1785,7 @@ background-position: center right;
 }
 
 .mmm-img {
-    float: left; 
+    float: left;
     margin-right:10px;
 }
 

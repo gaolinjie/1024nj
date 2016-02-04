@@ -1009,3 +1009,20 @@ a.text-like:hover, a.text-like.followed {
 .date-header.scroll-to-fixed-fixed:hover{
     background-color: #d0e9c6;
 }
+.legend {
+  background: #c81623;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
+    color: #fff;
+    background: #c81623;
+}
+.bootstrap-switch .bootstrap-switch-label {
+    color: #333333;
+    background: #333333;
+    background-color: #333333;
+    border-radius:0px
+}
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger {
+    color: #fff;
+    background: #c81623;
+}
