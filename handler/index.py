@@ -229,6 +229,7 @@ class GetNavHandler(BaseHandler):
     def get(self, nav_id, template_variables = {}):
         p = int(self.get_argument("p", "1"))
         nav = self.nav_model.get_nav_by_nav_id(nav_id)
+        print 'Get nav is ' , nav.nav_name
         if nav and nav.tag_id:
             nav_feeds = self.post_tag_model.get_tag_all_feeds(nav.tag_id, current_page = p)
             feeds_json = json.dumps(nav_feeds, cls=DateEncoder)
@@ -240,6 +241,24 @@ class GetNavHandler(BaseHandler):
         
             self.write(feeds_json)
             self.write("")
+
+class NavListNewsHandler(BaseHandler):
+    def get(self, nav_id, template_variables = {}):
+        p = int(self.get_argument("p", "1"))
+        nav = self.nav_model.get_nav_by_nav_id(nav_id)
+        all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+        print 'Get nav is ' , nav
+        if nav.nav_name.strip()=='':
+            nav = all_navs[0]
+            print "the default nav is  ", nav.nav_name
+        else :
+            print "the click nav is  ", nav.nav_name
+        nav_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
+        post_json = json.dumps(nav_posts, cls=DateEncoder)
+
+        self.write(post_json)
+        self.write("")
+
 
 class BbsHandler(BaseHandler):
     def get(self, template_variables = {}):

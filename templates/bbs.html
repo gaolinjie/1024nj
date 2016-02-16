@@ -32,11 +32,11 @@
 </div>
 
 <div class="card-list">
-<div class="card-inner">
+<div class="card-inner" id="list_news">
 {% for post in all_posts.list %}
-<div class="feed">
-<div class="feed-up">
-<div class="avatar feed-left">
+<div class="feed" id="news_div">
+<div class="feed-up" >
+  <div class="avatar feed-left">
     <a href="/u/{{post.author_username}}"><img class="feed-object avatar-48" src="{{post.author_avatar}}-thumb"></a>
   </div>
   <div class="infos feed-body">
@@ -170,6 +170,12 @@
             autoTrigger: false,
             callback: function(newElems) {},
         });
+        function isEmpty(val) {
+            if (val == null || typeof val == 'undefined' || val == "") {
+                return true;
+            }
+            return false;
+        }
 
         $(document).on('click', '.nav-item', function() {
             var nav_id = $(this).attr('data-id');
@@ -177,28 +183,56 @@
             $(this).addClass('nav-actived');
             $('.subnav-actived').removeClass('subnav-actived');
 
-            $(".sub-item").each(function() {
-              var parent_id = $(this).attr('data-parent');
-              if (nav_id == parent_id) {
-                $(this).show();
-              } else {
-                $(this).hide();
-              }
-            });
+//            $(".sub-item").each(function() {
+//              var parent_id = $(this).attr('data-parent');
+//              if (nav_id == parent_id) {
+//                $(this).show();
+//              } else {
+//                $(this).hide();
+//              }
+//            });
 
-            if ($(this).text() == '全部') {
-              $('.card-list').show();
-              $('.nav-card').hide();
-              return;
-            }
+//            if ($(this).text() == '全部') {
+//              $('.card-list').show();
+//              $('.nav-card').hide();
+//              return;
+//            }
 
             $.getJSON('/get/nav/' + nav_id, function(data) {
-              var list_html = '';
+              console.log("return data ==> " + data);
+              var list_html2 = '';
               var list = data['list'];
               for (var i=0;i<list.length;i++) {
-                list_html += '<li><a class="video-tag" href="/p/'+list[i].post_id+'">'+list[i].feed_title+'</a></li>';
+                //list_html += '<li><a class="video-tag" href="'/p/'+list[i].post_id+''">'+list[i].feed_title+'</a></li>';
+                post = list[i];
+                list_html2 += '   <div class="feed" id="news_div">\
+                                  <div class="feed-up" >\
+                                  <div class="avatar feed-left">\
+                                      <a href="/u/"+post.author_username+"><img class="feed-object avatar-48" src="'+post.author_avatar+'-thumb"></a>\
+                                  </div>\
+                                  <div class="infos feed-body">\
+                                      <div class="title feed-heading">\
+                                      <a title="'+post.title+'" href="/p/'+post.id+'">'+post.title+'</a>\
+                                      </div>\
+                                      <div class="info">\
+                                          <span class="small"><div class="votes"></div><a class="node" href="/go/'+post.node_name+'">'+post.node_name+'</a> &nbsp;•&nbsp; <strong><a href="/u/'+post.author_username+'">'+post.author_username+'</a></strong> &nbsp;•&nbsp; '+post.updated;
+                if (!isEmpty(post.last_replay)) {
+                    replyHtml = '&nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/'+post.last_reply_username+'">'+post.last_reply_username+'</a></strong></span>';
+                    list_html2 += replyHtml;
+                } else {
+                    list_html2 += '</span>';
+                }
+                list_html2 += '      </div>\
+                                  </div>\
+                                  <div class="count feed-right">\
+                                   <a class="count-num" href="/p/'+post.id+'">'+post.reply_num+'</a>\
+                                  </div>\
+                                  </div>\
+                                  </div>';
               }
-              $('.nav-card .tags').html(list_html);
+              $("#list_news").children("#news_div").remove();
+
+              $('#list_news').prepend(list_html2);
 
               var page = data['page']
               if (page.current == page.pages) {
@@ -210,9 +244,9 @@
               }
             });
 
-            $('.card-list').hide();
-            $('.nav-card').show();
-            $('.nav-card .tab-item').text($(this).text());
+            //$('.card-list').hide();
+            //$('.nav-card').show();
+            //$('.nav-card .tab-item').text($(this).text());
         });
 
         $(document).on('click', '.nav-load-more', function() {

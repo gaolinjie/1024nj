@@ -108,7 +108,7 @@ class Application(tornado.web.Application):
             (r"/like/(\d+)", handler.index.LikeItemHandler),
             #(r".*", handler.index.PageNotFoundHandler)
 
-            (r"/get/nav/(\d+)", handler.index.GetNavHandler),
+            (r"/get/nav/(\d+)", handler.index.NavListNewsHandler),
 
             (r"/nba", handler.index.NbaHandler),
             (r"/football", handler.index.FootballHandler),
