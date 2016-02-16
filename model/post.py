@@ -63,12 +63,19 @@ class PostModel(Query):
         where = "post.author_id = %s" % author_id
         return self.where(where).count()
 
-    def get_all_bbs_posts(self, num = 20, current_page = 1):
-        where = "post.post_type = 'bbs'"
+    def get_all_bbs_posts(self, num = 20, current_page = 1, nav = ''):
+        print 'nav is ' , nav
+        if nav.strip() != '':
+            print 'nav is not null'
+            where = "post.post_type = 'bbs' AND node.name = '%s'" % nav
+
+        else :
+            print 'nav is null'
+            where = "post.post_type = 'bbs' "
         join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid\
                 LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\
                 LEFT JOIN post_node ON post.id = post_node.post_id\
-                LEFT JOIN node ON post_node.node_id = node.id"
+                LEFT JOIN node ON post_node.node_id = node.id "
         order = "post.created DESC, post.id DESC"
         field = "post.*, \
                 author_user.username as author_username, \

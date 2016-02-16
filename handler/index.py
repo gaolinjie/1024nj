@@ -247,8 +247,12 @@ class BbsHandler(BaseHandler):
         template_variables["user_info"] = user_info
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
+        nav = str(self.get_argument("nav",""))
 
         all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+        if nav.strip()=='':
+            nav = all_navs[0]
+            print "the default nav is  ", nav.nav_name
         all_subnavs = self.nav_model.get_all_subnavs_by_type("itbbs")
 
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
@@ -258,7 +262,7 @@ class BbsHandler(BaseHandler):
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "社区"
 
-        all_posts = self.post_model.get_all_bbs_posts(current_page = p)
+        all_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
         template_variables["all_posts"] = all_posts
 
         template_variables["ad"] = self.ads_model.get_rand_ad()
@@ -1670,6 +1674,10 @@ class GetUserHandler(BaseHandler):
             follow = None
         user_tip = self.render_string("tooltip/user-tip.html", user_info=user_info, follow=follow, view_user=view_user, follow_users=follow_users)
         self.write(user_tip)
+
+    def post_node_model(self):
+        return super(GetUserHandler, self).post_node_model()
+
 
 class GetTagHandler(BaseHandler):
     def get(self, tagname, template_variables = {}):
