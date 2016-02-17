@@ -1,88 +1,104 @@
 {% extends 'layout.html' %}
 
 {% block title %}
+<<<<<<< HEAD
 <title>社区  - 南京程序员第一社区</title>
 {% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
+=======
+<title>社区 - 南京程序员第一社区</title>
+{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css"/>
+>>>>>>> modify page
 {% endblock %}
 
 {% block main %}
 <div class="col-xs-12 col-md-9">
-<div class="main">
+    <div class="main">
 
-<div class="card">
+        <div class="card">
 
-<div class="">
-  <div class="nav-tab">
-<div class="main-tab">
-{% set i=0 %}
-{% for nav in all_navs %}
-<a href="javascript:;" class="nav-item {%if i==0%}nav-actived{%endif%}" data-id="{{nav.id}}">{{nav.nav_name}}</a>
-{% set i=i+1 %}
-{%endfor%}
-</div>
-<div class="sub-tab">
-{% for subnav in all_subnavs %}
-<a href="javascript:;" class="sub-item" {%if all_navs[0].id != subnav.parent_id%}style="display:none;"{%endif%} data-parent="{{subnav.parent_id}}"  data-id="{{subnav.id}}">{{subnav.nav_name}}</a>
-{%endfor%}
-</div>
-</div>
-</div>
-
-<div class="card-list">
-<div class="card-inner" id="list_news">
-{% for post in all_posts.list %}
-<div class="feed" id="news_div">
-<div class="feed-up" >
-  <div class="avatar feed-left">
-    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-48" src="{{post.author_avatar}}-thumb"></a>
-  </div>
-  <div class="infos feed-body">
-    <div class="title feed-heading">
-      <a title="{{post.title}}" href="/p/{{post.id}}">{{post.title}}</a>
-    </div>
-    <div class="info">
-      <span class="small"><div class="votes"></div><a class="node" href="/go/{{post.node_name}}">{{post.node_name}}</a> &nbsp;•&nbsp; <strong><a href="/u/{{post.author_username}}">{{post.author_username}}</a></strong> &nbsp;•&nbsp; {{post.updated|pretty_date}}{%if post.last_reply%} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/{{post.last_reply_username}}">{{post.last_reply_username}}</a></strong>{%endif%}</span>
-    </div>
-  </div>
-  <div class="count feed-right">
-      <a class="count-num" href="/p/{{post.id}}">{{post.reply_num}}</a>
-  </div>
-  </div>
-</div>
-{%endfor%}
-
-            {% if all_posts.page.next!=all_posts.page.current %}
-            <div class="next jscroll-next-parent">
-                <a href="/bbs?p={{all_posts.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+            <div class="">
+                <div class="nav-tab">
+                    <div class="main-tab">
+                        {% set i=0 %}
+                        {% for nav in all_navs %}
+                        <a href="javascript:;" class="nav-item {%if i==0%}nav-actived{%endif%}" data-id="{{nav.id}}">{{nav.nav_name}}</a>
+                        {% set i=i+1 %}
+                        {%endfor%}
+                    </div>
+                    <!--<div class="sub-tab">-->
+                    <!--{% for subnav in all_subnavs %}-->
+                    <!--<a href="javascript:;" class="sub-item" {%if all_navs[0].id != subnav.parent_id%}style="display:none;"{%endif%} data-parent="{{subnav.parent_id}}"  data-id="{{subnav.id}}">{{subnav.nav_name}}</a>-->
+                    <!--{%endfor%}-->
+                    <!--</div>-->
+                </div>
             </div>
-            {%else%}
-            <div class="next jscroll-next-parent">
-                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+
+            <div class="card-list">
+                <div class="card-inner" id="list_news">
+                    {% for post in all_posts.list %}
+                    <div class="feed" id="news_div">
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/{{post.author_username}}"><img class="feed-object avatar-48"
+                                                                           src="{{post.author_avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="title feed-heading">
+                                    <a title="{{post.title}}" href="/p/{{post.id}}">{{post.title}}</a>
+                                </div>
+                                <div class="info">
+                                    <span class="small"><div class="votes"></div><a class="node"
+                                                                                    href="/go/{{post.node_name}}">{{post.node_name}}</a> &nbsp;•&nbsp; <strong><a
+                                            href="/u/{{post.author_username}}">{{post.author_username}}</a></strong> &nbsp;•&nbsp; {{post.updated|pretty_date}}{%if post.last_reply%} &nbsp;•&nbsp; 最后回复来自 <strong><a
+                                            href="/u/{{post.last_reply_username}}">{{post.last_reply_username}}</a></strong>{%endif%}</span>
+                                </div>
+                            </div>
+                            <div class="count feed-right">
+                                <a class="count-num" href="/p/{{post.id}}">{{post.reply_num}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+
+                    {% if all_posts.page.next!=all_posts.page.current %}
+                    <div class="next jscroll-next-parent">
+                        <a href="/bbs?p={{all_posts.page.next}}" id="load-more"
+                           class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                    </div>
+                    {%else%}
+                    <div class="next jscroll-next-parent">
+                        <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading"
+                           style="display: block;">没有更多了</a>
+                    </div>
+                    {%endif%}
+                </div>
             </div>
-            {%endif%}
-</div>
-</div>
-</div>
-</div>
+        </div>
+    </div>
 </div>
 
 <div class=" col-xs-12 col-md-3">
-{%if user_info%}
+    {%if user_info%}
     <div class="card">
         <div class="cell">
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tbody>
-                    <tr>
-                        <td width="48" valign="top">
-                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
-                        </td>
-                        <td width="10" valign="top"></td>
-                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
-                        </td>
-                    </tr>
+                <tr>
+                    <td width="48" valign="top">
+                        <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0"
+                                                                 align="default"
+                                                                 style="max-width: 48px; max-height: 48px;"></a>
+                    </td>
+                    <td width="10" valign="top"></td>
+                    <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <div class="sep10"></div>
@@ -93,18 +109,43 @@
                         <td width="34%" style="border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
                         <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
                     </tr>
+                <tr>
+
+                    <td width="34%"
+                        style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);"
+                        align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark"
+                                          style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span>
+
+                        <div class="sep3"></div>
+                        <span class="fade-header">主题收藏</span></a></td>
+                    <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark"
+                                                      style="display: block;"><span class="bigger">{{user_card.follow_users}}</span>
+
+                        <div class="sep3"></div>
+                        <span class="fade-header">特别关注</span></a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
         <div class="inner">
             <div class="fr" id="money">
-                    <a href="/balance" class="balance_area" alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
-                </div>
-            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%} 条未读提醒</a></div>
+                <a href="/balance" class="balance_area"
+                   alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if
+                    user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle"
+                                                                           border="0" style="padding-bottom: 2px;">
+                    {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img
+                            src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;">
+                    {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png"
+                                                                                            align="absmiddle"
+                                                                                            border="0">{%endif%}</a>
+            </div>
+            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span
+                    class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%}
+                条未读提醒</a></div>
     </div>
     {%else%}
     <div class="card">
-      <div class="feed">
+        <div class="feed">
             <span class="login-header">可能是南京最懂程序员的IT社区</span>
         </div>
       <div class="feed center">
@@ -126,7 +167,7 @@
     </div>
     {%endif%}
 
-<div class="card">
+    <div class="card">
         <div class="feed">
             <span class="fade-header">今日热议主题</span>
         </div>
@@ -134,7 +175,8 @@
         <div class="feed">
             <div class="feed-up">
                 <div class="avatar feed-left">
-                    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-24" src="{{post.author_avatar}}" alt=""></a>
+                    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-24"
+                                                               src="{{post.author_avatar}}" alt=""></a>
                 </div>
                 <div class="infos feed-body">
                     <div class="title feed-heading">
@@ -163,25 +205,26 @@
 {% block javascript %}
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
 <script type="text/javascript">
-        $('.card-list').jscroll({
-            loadingHtml: '<a href="/bbs?p={{all_posts.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
-            contentSelector: '.card-inner',
-            nextSelector: 'a.jscroll-next:last',
-            autoTrigger: false,
-            callback: function(newElems) {},
-        });
-        function isEmpty(val) {
-            if (val == null || typeof val == 'undefined' || val == "") {
-                return true;
-            }
-            return false;
+    $('.card-list').jscroll({
+        loadingHtml: '<a href="/bbs?p={{all_posts.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+        contentSelector: '.card-inner',
+        nextSelector: 'a.jscroll-next:last',
+        autoTrigger: false,
+        callback: function (newElems) {
+        },
+    });
+    function isEmpty(val) {
+        if (val == null || typeof val == 'undefined' || val == "") {
+            return true;
         }
+        return false;
+    }
 
-        $(document).on('click', '.nav-item', function() {
-            var nav_id = $(this).attr('data-id');
-            $('.nav-actived').removeClass('nav-actived');
-            $(this).addClass('nav-actived');
-            $('.subnav-actived').removeClass('subnav-actived');
+    $(document).on('click', '.nav-item', function () {
+        var nav_id = $(this).attr('data-id');
+        $('.nav-actived').removeClass('nav-actived');
+        $(this).addClass('nav-actived');
+        $('.subnav-actived').removeClass('subnav-actived');
 
 //            $(".sub-item").each(function() {
 //              var parent_id = $(this).attr('data-parent');
@@ -198,26 +241,26 @@
 //              return;
 //            }
 
-            $.getJSON('/get/nav/' + nav_id, function(data) {
-              console.log("return data ==> " + data);
-              var list_html2 = '';
-              var list = data['list'];
-              for (var i=0;i<list.length;i++) {
+        $.getJSON('/get/nav/' + nav_id, function (data) {
+            console.log("return data ==> " + data);
+            var list_html2 = '';
+            var list = data['list'];
+            for (var i = 0; i < list.length; i++) {
                 //list_html += '<li><a class="video-tag" href="'/p/'+list[i].post_id+''">'+list[i].feed_title+'</a></li>';
                 post = list[i];
                 list_html2 += '   <div class="feed" id="news_div">\
                                   <div class="feed-up" >\
                                   <div class="avatar feed-left">\
-                                      <a href="/u/"+post.author_username+"><img class="feed-object avatar-48" src="'+post.author_avatar+'-thumb"></a>\
+                                      <a href="/u/"+post.author_username+"><img class="feed-object avatar-48" src="' + post.author_avatar + '-thumb"></a>\
                                   </div>\
                                   <div class="infos feed-body">\
                                       <div class="title feed-heading">\
-                                      <a title="'+post.title+'" href="/p/'+post.id+'">'+post.title+'</a>\
+                                      <a title="' + post.title + '" href="/p/' + post.id + '">' + post.title + '</a>\
                                       </div>\
                                       <div class="info">\
-                                          <span class="small"><div class="votes"></div><a class="node" href="/go/'+post.node_name+'">'+post.node_name+'</a> &nbsp;•&nbsp; <strong><a href="/u/'+post.author_username+'">'+post.author_username+'</a></strong> &nbsp;•&nbsp; '+post.updated;
+                                          <span class="small"><div class="votes"></div><a class="node" href="/go/' + post.node_name + '">' + post.node_name + '</a> &nbsp;•&nbsp; <strong><a href="/u/' + post.author_username + '">' + post.author_username + '</a></strong> &nbsp;•&nbsp; ' + post.updated;
                 if (!isEmpty(post.last_replay)) {
-                    replyHtml = '&nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/'+post.last_reply_username+'">'+post.last_reply_username+'</a></strong></span>';
+                    replyHtml = '&nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/' + post.last_reply_username + '">' + post.last_reply_username + '</a></strong></span>';
                     list_html2 += replyHtml;
                 } else {
                     list_html2 += '</span>';
@@ -225,83 +268,69 @@
                 list_html2 += '      </div>\
                                   </div>\
                                   <div class="count feed-right">\
-                                   <a class="count-num" href="/p/'+post.id+'">'+post.reply_num+'</a>\
+                                   <a class="count-num" href="/p/' + post.id + '">' + post.reply_num + '</a>\
                                   </div>\
                                   </div>\
                                   </div>';
-              }
-              $("#list_news").children("#news_div").remove();
-
-              $('#list_news').prepend(list_html2);
-
-              var page = data['page']
-              if (page.current == page.pages) {
-                $('.nav-load-more a').text('没有更多了');
-              } else {
-                $('.nav-load-more a').text('更多');
-                $('.nav-load-more').attr('data-next', page.next);
-                $('.nav-load-more').attr('data-nav', nav_id);
-              }
-            });
-
-            //$('.card-list').hide();
-            //$('.nav-card').show();
-            //$('.nav-card .tab-item').text($(this).text());
-        });
-
-        $(document).on('click', '.nav-load-more', function() {
-
-            if ($('.nav-load-more a').text() == '没有更多了') {
-              return;
             }
-            var nav_id = $(this).attr('data-nav');
-            var next_page = $(this).attr('data-next');
+            var page = data['page'];
+            if (page.next!=page.current) {
+                list_html2 += '<div class="next jscroll-next-parent">\
+                               <a href="/bbs?p={{all_posts.page.next}}" id="load-more"\
+                               class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>\
+                               </div>';
 
-            $.getJSON('/get/nav/' + nav_id + '?p=' + next_page, function(data) {
-              var list_html = $('.nav-card .tags').html();
-              var list = data['list'];
-              for (var i=0;i<list.length;i++) {
-                list_html += '<li><a class="video-tag" href="/p/'+list[i].post_id+'">'+list[i].feed_title+'</a></li>';
-              }
-              $('.nav-card .tags').html(list_html);
+            } else {
+                list_html2 += '<div class="next jscroll-next-parent">\
+                               <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading"\
+                               style="display: block;">没有更多了</a></div>'
+            }
+            $('.jscroll-added').remove();
+            $('.next.jscroll-next-parent').remove();
+            $("#list_news").children("#news_div").remove();
+            $('#list_news').prepend(list_html2);
 
-              var page = data['page']
-              if (page.current == page.pages) {
+//            var page = data['page']
+//            if (page.current == page.pages) {
+//                $('.nav-load-more a').text('没有更多了');
+//            } else {
+//                $('.nav-load-more a').text('更多');
+//                $('.nav-load-more').attr('data-next', page.next);
+//                $('.nav-load-more').attr('data-nav', nav_id);
+//            }
+        });
+
+        //$('.card-list').hide();
+        //$('.nav-card').show();
+        //$('.nav-card .tab-item').text($(this).text());
+    });
+
+    $(document).on('click', '.sub-item', function () {
+        var nav_id = $(this).attr('data-id');
+        $('.subnav-actived').removeClass('subnav-actived');
+        $(this).addClass('subnav-actived');
+
+        $.getJSON('/get/nav/' + nav_id, function (data) {
+            var list_html = '';
+            var list = data['list'];
+            for (var i = 0; i < list.length; i++) {
+                list_html += '<li><a class="video-tag" href="/p/' + list[i].post_id + '">' + list[i].feed_title + '</a></li>';
+            }
+            $('.nav-card .tags').html(list_html);
+
+            var page = data['page']
+            if (page.current == page.pages) {
                 $('.nav-load-more a').text('没有更多了');
-              } else {
+            } else {
                 $('.nav-load-more a').text('更多');
                 $('.nav-load-more').attr('data-next', page.next);
                 $('.nav-load-more').attr('data-nav', nav_id);
-              }
-            });
+            }
         });
 
-        $(document).on('click', '.sub-item', function() {
-            var nav_id = $(this).attr('data-id');
-            $('.subnav-actived').removeClass('subnav-actived');
-            $(this).addClass('subnav-actived');
-
-            $.getJSON('/get/nav/' + nav_id, function(data) {
-              var list_html = '';
-              var list = data['list'];
-              for (var i=0;i<list.length;i++) {
-                list_html += '<li><a class="video-tag" href="/p/'+list[i].post_id+'">'+list[i].feed_title+'</a></li>';
-              }
-              $('.nav-card .tags').html(list_html);
-
-              var page = data['page']
-              if (page.current == page.pages) {
-                $('.nav-load-more a').text('没有更多了');
-              } else {
-                $('.nav-load-more a').text('更多');
-                $('.nav-load-more').attr('data-next', page.next);
-                $('.nav-load-more').attr('data-nav', nav_id);
-              }
-            });
-
-            $('.card-list').hide();
-            $('.nav-card').show();
-            $('.nav-card .tab-item').text($(this).text());
-        });
+        $('.card-list').hide();
+        $('.nav-card').show();
+        $('.nav-card .tab-item').text($(this).text());
+    });
 </script>
 {% endblock %}
