@@ -1,12 +1,12 @@
-{% extends 'layout.html' %} 
+{% extends 'layout.html' %}
 
 {% block title %}
 <title>社区  - 南京程序员第一社区</title>
-{% endblock %} 
+{% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
-{% endblock %} 
+{% endblock %}
 
 {% block main %}
 <div class="col-xs-12 col-md-9">
@@ -89,8 +89,8 @@
             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
                 <tbody>
                     <tr>
-                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td>
-                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <!-- <td width="33%" align="center" style="display: none"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td> -->
+                        <td width="34%" style="border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
                         <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
                     </tr>
                 </tbody>
@@ -111,7 +111,7 @@
         <a class="unlogin signup-switch" href="javascript:;">
                                 <button class="signin-btn btn btn-success">立即加入</button>
         </a>
-      
+
       <div class="signup-text">
       已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
       </div>
@@ -158,9 +158,9 @@
 
 
 </div>
-{% endblock %} 
+{% endblock %}
 
-{% block javascript %} 
+{% block javascript %}
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
 <script type="text/javascript">
         $('.card-list').jscroll({
