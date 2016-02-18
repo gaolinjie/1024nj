@@ -2,11 +2,11 @@
 
 {% block title %}
 
-<title>社区  - 南京程序员第一社区</title>
+<title>社区 - 南京程序员第一社区</title>
 {% endblock %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css"/>
 {% endblock %}
 
 {% block main %}
@@ -17,10 +17,11 @@
 
             <div class="">
                 <div class="nav-tab">
-                    <div class="main-tab">
+                    <div class="main-tab" active_nav_id="{{active_nav_id}}">
                         {% set i=0 %}
                         {% for nav in all_navs %}
-                        <a href="javascript:;" class="nav-item {%if i==0%}nav-actived{%endif%}" data-id="{{nav.id}}">{{nav.nav_name}}</a>
+                        <a href="javascript:;" class="nav-item
+                         " data-id="{{nav.id}}">{{nav.nav_name}}</a>
                         {% set i=i+1 %}
                         {%endfor%}
                     </div>
@@ -97,11 +98,20 @@
             <div class="sep10"></div>
             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
                 <tbody>
-                    <tr>
-                        <!-- <td width="33%" align="center" style="display: none"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td> -->
-                        <td width="34%" style="border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
-                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
-                    </tr>
+                <tr>
+                    <!-- <td width="33%" align="center" style="display: none"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td> -->
+                    <td width="34%" style="border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a
+                            href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span
+                            class="bigger">{{user_card.follow_posts}}</span>
+
+                        <div class="sep3"></div>
+                        <span class="fade-header">主题收藏</span></a></td>
+                    <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark"
+                                                      style="display: block;"><span class="bigger">{{user_card.follow_users}}</span>
+
+                        <div class="sep3"></div>
+                        <span class="fade-header">特别关注</span></a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -126,15 +136,15 @@
         <div class="feed">
             <span class="login-header">可能是南京最懂程序员的IT社区</span>
         </div>
-      <div class="feed center">
-        <a class="unlogin signup-switch" href="javascript:;">
-                                <button class="signin-btn btn btn-success">立即加入</button>
-        </a>
+        <div class="feed center">
+            <a class="unlogin signup-switch" href="javascript:;">
+                <button class="signin-btn btn btn-success">立即加入</button>
+            </a>
 
-      <div class="signup-text">
-      已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
-      </div>
-    </div>
+            <div class="signup-text">
+                已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
+            </div>
+        </div>
     </div>
     {%endif%}
     {%if ad%}
@@ -183,6 +193,21 @@
 {% block javascript %}
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        var active_nav_id = $('.main-tab').attr("active_nav_id");
+        $(".nav-item").each(function () {
+            var i = $(this).attr('data-id');
+            if (isEmpty(active_nav_id)) {
+                if (i == 1) {
+                    $(this).addClass('nav-actived');
+                }
+            } else {
+                if (Number(active_nav_id) == i) {
+                    $(this).addClass('nav-actived');
+                }
+            }
+        });
+    });
     $('.card-list').jscroll({
         loadingHtml: '<a href="/bbs?p={{all_posts.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
         contentSelector: '.card-inner',
@@ -203,6 +228,7 @@
         $('.nav-actived').removeClass('nav-actived');
         $(this).addClass('nav-actived');
         $('.subnav-actived').removeClass('subnav-actived');
+        window.location.href = "/get/nav/" + nav_id;
 
 //            $(".sub-item").each(function() {
 //              var parent_id = $(this).attr('data-parent');
@@ -219,54 +245,54 @@
 //              return;
 //            }
 
-        $.getJSON('/get/nav/' + nav_id, function (data) {
-            console.log("return data ==> " + data);
-            var list_html2 = '';
-            var list = data['list'];
-            for (var i = 0; i < list.length; i++) {
-                //list_html += '<li><a class="video-tag" href="'/p/'+list[i].post_id+''">'+list[i].feed_title+'</a></li>';
-                post = list[i];
-                list_html2 += '   <div class="feed" id="news_div">\
-                                  <div class="feed-up" >\
-                                  <div class="avatar feed-left">\
-                                      <a href="/u/"+post.author_username+"><img class="feed-object avatar-48" src="' + post.author_avatar + '-thumb"></a>\
-                                  </div>\
-                                  <div class="infos feed-body">\
-                                      <div class="title feed-heading">\
-                                      <a title="' + post.title + '" href="/p/' + post.id + '">' + post.title + '</a>\
-                                      </div>\
-                                      <div class="info">\
-                                          <span class="small"><div class="votes"></div><a class="node" href="/go/' + post.node_name + '">' + post.node_name + '</a> &nbsp;•&nbsp; <strong><a href="/u/' + post.author_username + '">' + post.author_username + '</a></strong> &nbsp;•&nbsp; ' + post.updated;
-                if (!isEmpty(post.last_replay)) {
-                    replyHtml = '&nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/' + post.last_reply_username + '">' + post.last_reply_username + '</a></strong></span>';
-                    list_html2 += replyHtml;
-                } else {
-                    list_html2 += '</span>';
-                }
-                list_html2 += '      </div>\
-                                  </div>\
-                                  <div class="count feed-right">\
-                                   <a class="count-num" href="/p/' + post.id + '">' + post.reply_num + '</a>\
-                                  </div>\
-                                  </div>\
-                                  </div>';
-            }
-            var page = data['page'];
-            if (page.next!=page.current) {
-                list_html2 += '<div class="next jscroll-next-parent">\
-                               <a href="/bbs?p={{all_posts.page.next}}" id="load-more"\
-                               class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>\
-                               </div>';
-
-            } else {
-                list_html2 += '<div class="next jscroll-next-parent">\
-                               <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading"\
-                               style="display: block;">没有更多了</a></div>'
-            }
-            $('.jscroll-added').remove();
-            $('.next.jscroll-next-parent').remove();
-            $("#list_news").children("#news_div").remove();
-            $('#list_news').prepend(list_html2);
+//        $.getJSON('/get/nav/' + nav_id, function (data) {
+//            console.log("return data ==> " + data);
+//            var list_html2 = '';
+//            var list = data['list'];
+//            for (var i = 0; i < list.length; i++) {
+//                //list_html += '<li><a class="video-tag" href="'/p/'+list[i].post_id+''">'+list[i].feed_title+'</a></li>';
+//                post = list[i];
+//                list_html2 += '   <div class="feed" id="news_div">\
+//                                  <div class="feed-up" >\
+//                                  <div class="avatar feed-left">\
+//                                      <a href="/u/"+post.author_username+"><img class="feed-object avatar-48" src="' + post.author_avatar + '-thumb"></a>\
+//                                  </div>\
+//                                  <div class="infos feed-body">\
+//                                      <div class="title feed-heading">\
+//                                      <a title="' + post.title + '" href="/p/' + post.id + '">' + post.title + '</a>\
+//                                      </div>\
+//                                      <div class="info">\
+//                                          <span class="small"><div class="votes"></div><a class="node" href="/go/' + post.node_name + '">' + post.node_name + '</a> &nbsp;•&nbsp; <strong><a href="/u/' + post.author_username + '">' + post.author_username + '</a></strong> &nbsp;•&nbsp; ' + post.updated;
+//                if (!isEmpty(post.last_replay)) {
+//                    replyHtml = '&nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/' + post.last_reply_username + '">' + post.last_reply_username + '</a></strong></span>';
+//                    list_html2 += replyHtml;
+//                } else {
+//                    list_html2 += '</span>';
+//                }
+//                list_html2 += '   </div>\
+//                                  </div>\
+//                                  <div class="count feed-right">\
+//                                   <a class="count-num" href="/p/' + post.id + '">' + post.reply_num + '</a>\
+//                                  </div>\
+//                                  </div>\
+//                                  </div>';
+//            }
+//            var page = data['page'];
+//            if (page.next != page.current) {
+//                list_html2 += '<div class="next jscroll-next-parent">\
+//                                <a href="/get/nav/' + nav_id + '?p='+page.next+'" id="load-more”\
+//                               class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>\
+//                               </div>';
+//
+//            } else {
+//                list_html2 += '<div class="next jscroll-next-parent">\
+//                               <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading"\
+//                               style="display: block;">没有更多了</a></div>'
+//            }
+//            $('.jscroll-added').remove();
+//            $('.next.jscroll-next-parent').remove();
+//            $("#list_news").children("#news_div").remove();
+//            $('#list_news').prepend(list_html2);
 
 //            var page = data['page']
 //            if (page.current == page.pages) {
@@ -276,7 +302,7 @@
 //                $('.nav-load-more').attr('data-next', page.next);
 //                $('.nav-load-more').attr('data-nav', nav_id);
 //            }
-        });
+//        });
 
         //$('.card-list').hide();
         //$('.nav-card').show();

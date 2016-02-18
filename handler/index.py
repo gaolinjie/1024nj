@@ -245,19 +245,85 @@ class GetNavHandler(BaseHandler):
 class NavListNewsHandler(BaseHandler):
     def get(self, nav_id, template_variables = {}):
         p = int(self.get_argument("p", "1"))
-        nav = self.nav_model.get_nav_by_nav_id(nav_id)
-        all_navs = self.nav_model.get_all_navs_by_type("itbbs")
-        print 'Get nav is ' , nav
-        if nav.nav_name.strip()=='':
-            nav = all_navs[0]
-            print "the default nav is  ", nav.nav_name
-        else :
-            print "the click nav is  ", nav.nav_name
-        nav_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
-        post_json = json.dumps(nav_posts, cls=DateEncoder)
+        # if p == 1:
+        #     nav = self.nav_model.get_nav_by_nav_id(nav_id)
+        #     all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+        #     print 'Get nav is ' , nav
+        #     if nav.nav_name.strip()=='':
+        #         nav = all_navs[0]
+        #         print "the default nav is  ", nav.nav_name
+        #     else :
+        #         print "the click nav is  ", nav.nav_name
+        #     nav_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
+        #     post_json = json.dumps(nav_posts, cls=DateEncoder)
+        #
+        #     self.write(post_json)
+        #     self.write("")
+        if p == 1:
+            user_info = self.current_user
+            nav = self.nav_model.get_nav_by_nav_id(nav_id)
+            print 'zhudewei test ' , nav
+            template_variables["user_info"] = user_info
+            template_variables["gen_random"] = gen_random
+            p = int(self.get_argument("p", "1"))
 
-        self.write(post_json)
-        self.write("")
+            all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+            if nav.nav_name.strip()=='':
+                nav = all_navs[0]
+                print "the default nav is  ", nav.nav_name
+            all_subnavs = self.nav_model.get_all_subnavs_by_type("itbbs")
+
+            template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+            template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+            template_variables["all_navs"] = all_navs
+            template_variables["all_subnavs"] = all_subnavs
+            template_variables["active_nav"] = "社区"
+            template_variables['active_nav_id'] = nav_id;
+
+            all_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
+            template_variables["all_posts"] = all_posts
+
+            template_variables["ad"] = self.ads_model.get_rand_ad()
+            if user_info:
+                template_variables["user_card"] = get_user_card(self)
+
+            if is_mobile_browser(self):
+                self.render("bbs.html", **template_variables)
+            else:
+                self.render("bbs.html", **template_variables)
+        else :
+            user_info = self.current_user
+            nav = self.nav_model.get_nav_by_nav_id(nav_id)
+            print 'zhudewei test ' , nav
+            template_variables["user_info"] = user_info
+            template_variables["gen_random"] = gen_random
+            p = int(self.get_argument("p", "1"))
+
+            all_navs = self.nav_model.get_all_navs_by_type("itbbs")
+            if nav.nav_name.strip()=='':
+                nav = all_navs[0]
+                print "the default nav is  ", nav.nav_name
+            all_subnavs = self.nav_model.get_all_subnavs_by_type("itbbs")
+
+            template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+            template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+            template_variables["all_navs"] = all_navs
+            template_variables["all_subnavs"] = all_subnavs
+            template_variables["active_nav"] = "社区"
+            template_variables['active_nav_id'] = nav_id;
+            all_posts = self.post_model.get_all_bbs_posts(current_page = p, nav = nav.nav_name)
+            template_variables["all_posts"] = all_posts
+
+            template_variables["ad"] = self.ads_model.get_rand_ad()
+            if user_info:
+                template_variables["user_card"] = get_user_card(self)
+
+            if is_mobile_browser(self):
+                self.render("bbs.html", **template_variables)
+            else:
+                self.render("bbs.html", **template_variables)
 
 
 class BbsHandler(BaseHandler):
