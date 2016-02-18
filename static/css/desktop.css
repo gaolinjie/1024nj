@@ -65,10 +65,10 @@ margin-bottom: 10px;
 }
 }
 .navbar-brand {
-    width: 78px;
+    width: 88px;
     height: 49px;
     background: url(/static/img/logo.png) 0 0 no-repeat;
-      background-size: 78px auto;
+    background-size: 93px auto;
     background-position: center;
 }
 @media screen and (min-width: 959px) {
