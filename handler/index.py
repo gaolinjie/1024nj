@@ -15,7 +15,7 @@ import tornado.web
 import lib.jsonp
 import pprint
 import math
-import datetime
+import datetime 
 import os
 import requests
 import urllib
@@ -54,7 +54,7 @@ def get_user_card(self):
     user_info = self.current_user
     if user_info:
         gold_coins = (user_info.income - user_info.expend )/ 10000
-        silver_coins = (user_info.income - user_info.expend )% 10000
+        silver_coins = (user_info.income - user_info.expend )% 10000     
         bronze_coins = silver_coins  % 100
         silver_coins = silver_coins / 100
         notice_count = self.notice_model.get_user_unread_notice_count(user_info.uid)
@@ -88,14 +88,14 @@ class IndexHandler(BaseHandler):
 
         template_variables["football_games"] = self.feed_model.get_index_feeds("football", "game", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["football_videos"] = self.feed_model.get_index_feeds("football", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
-
+        
         template_variables["basketball_games"] = self.feed_model.get_index_feeds("basketball", "game", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["basketball_videos"] = self.feed_model.get_index_feeds("basketball", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
-
+        
 
         pass_time = now_time + datetime.timedelta(hours=-2)
         future_time = now_time + datetime.timedelta(days=+14)
-
+        
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
         template_variables["all_hots"] = self.post_model.get_all_hot_posts(current_page = p)
@@ -233,12 +233,12 @@ class GetNavHandler(BaseHandler):
         if nav and nav.tag_id:
             nav_feeds = self.post_tag_model.get_tag_all_feeds(nav.tag_id, current_page = p)
             feeds_json = json.dumps(nav_feeds, cls=DateEncoder)
-
+        
             self.write(feeds_json)
         else:
             nav_feeds = self.post_tag_model.get_tag_all_feeds(-1, current_page = p)
             feeds_json = json.dumps(nav_feeds, cls=DateEncoder)
-
+        
             self.write(feeds_json)
             self.write("")
 
@@ -424,7 +424,7 @@ class PostHandler(BaseHandler):
         template_variables["current_time"] = time.strftime('%Y-%m-%d %H:%M:%S')
 
         template_variables["videos"] = self.object_video_model.get_post_videos(post_id)
-
+        
         template_variables["related_posts"] = self.post_tag_model.get_post_related_posts(post_id)
         template_variables["tags"] = self.post_tag_model.get_post_all_tags(post_id)
 
@@ -435,10 +435,10 @@ class PostHandler(BaseHandler):
         if user_info:
             template_variables["user_card"] = get_user_card(self)
 
-        if(user_info):
+        if(user_info):  
             post = self.post_model.get_post_by_post_id2(post_id, user_info.uid)
             template_variables["post"] = post
-            self.post_model.update_post_by_post_id(post.id, {"view_num": post.view_num+1})
+            self.post_model.update_post_by_post_id(post.id, {"view_num": post.view_num+1})          
             if sort== "voted":
                 replys = self.reply_model.get_post_all_replys_sort_by_voted(post_id, user_info.uid, current_page = p)
                 template_variables["sort"] = "voted"
@@ -449,16 +449,16 @@ class PostHandler(BaseHandler):
             template_variables["follow"] = self.follow_model.get_follow(user_info.uid, post_id, 'p')
             template_variables["thank"] = self.thank_model.get_thank(user_info.uid, post.author_id, post_id, 'post')
             template_variables["report"] = self.report_model.get_report(user_info.uid, post.author_id, post_id, 'post')
-
+            '''
             votesList = []
             for reply in replys["list"]:
-                votesList.append(self.vote_model.get_reply_all_up_votes(reply.id))
+                votesList.append(self.vote_model.get_reply_all_up_votes(reply.id)) 
             template_variables["votesList"] = votesList
-
+            '''
         else:
             post = self.post_model.get_post_by_post_id(post_id)
             template_variables["post"] = post
-            self.post_model.update_post_by_post_id(post.id, {"view_num": post.view_num+1})
+            self.post_model.update_post_by_post_id(post.id, {"view_num": post.view_num+1}) 
             if sort== "voted":
                 replys = self.reply_model.get_post_all_replys_sort_by_voted2(post_id, current_page = p)
                 template_variables["sort"] = "voted"
@@ -469,19 +469,19 @@ class PostHandler(BaseHandler):
             template_variables["follow"] = None
             template_variables["link"] = "p"
             template_variables["link2"] = post_id
-
+            '''
             votesList = []
             for reply in replys["list"]:
-                votesList.append(self.vote_model.get_reply_all_up_votes(reply.id))
+                votesList.append(self.vote_model.get_reply_all_up_votes(reply.id)) 
             template_variables["votesList"] = votesList
-            
-            template_variables["sign_in_up"] = self.get_argument("s", "")
+            '''
+            template_variables["sign_in_up"] = self.get_argument("s", "") 
             link = self.get_argument("link", "")
             if link!="":
                 template_variables["link"] =  link
             link2 = self.get_argument("link2", "")
             if link2!="":
-                template_variables["link2"] = link2
+                template_variables["link2"] = link2 
             invite = self.get_argument("i", "")
             if invite!="":
                 template_variables["invite"] = invite
@@ -509,7 +509,7 @@ class GetTagsHandler(BaseHandler):
             allTagJson.append(tag.name)
 
         self.write(json.dumps(allTagJson))
-
+        
 class GetNodesHandler(BaseHandler):
     def get(self, template_variables = {}):
         user_info = self.current_user
@@ -520,8 +520,8 @@ class GetNodesHandler(BaseHandler):
             allNodeJson.append(node.name)
 
         self.write(json.dumps(allNodeJson))
-
-
+        
+            
 
 
 class NewHandler(BaseHandler):
@@ -545,7 +545,7 @@ class NewHandler(BaseHandler):
             if is_mobile_browser(self):
                 self.render("mobile/new.html", **template_variables)
             else:
-                self.render("new.html", **template_variables)
+                self.render("new.html", **template_variables)           
         else:
             self.redirect("/?s=signin&link=new")
 
@@ -560,9 +560,9 @@ class NewHandler(BaseHandler):
         #if not form.validate():
            # self.get({"errors": form.errors})
             #return
-
+            
         post_info = {
-            "author_id": self.current_user["uid"],
+            "author_id": self.current_user["uid"],           
             "title": form.title.data,
             "content": form.content.data,
             "reply_num": 0,
@@ -599,7 +599,7 @@ class NewHandler(BaseHandler):
 
             notice_info = {
                 "author_id": mentioned_user["uid"],
-                "user_id": self.current_user["uid"],
+                "user_id": self.current_user["uid"],          
                 "post_id": post_id,
                 "notice_type": notice_type,
                 "created": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -634,7 +634,7 @@ class EditHandler(BaseHandler):
 
             current_node = self.post_node_model.get_node_by_post_id(post_id)
             template_variables["current_node"] = current_node
-
+            
             if is_mobile_browser(self):
                 self.render("mobile/edit.html", **template_variables)
             else:
@@ -653,7 +653,7 @@ class EditHandler(BaseHandler):
             #self.get({"errors": form.errors})
             #return
 
-        post_info = {
+        post_info = {          
             "title": form.title.data,
             "content": form.content.data,
             "updated": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -668,7 +668,7 @@ class EditHandler(BaseHandler):
         old_node = self.post_node_model.get_node_by_post_id(post_id)
         self.post_node_model.update_post_node_by_post_node_id(old_node.post_node_id, {"node_id": new_node.id})
 
-
+  
 
 class TagHandler(BaseHandler):
     def get(self, tag_name, template_variables = {}):
@@ -682,7 +682,7 @@ class TagHandler(BaseHandler):
         template_variables["feeds7_len"] = self.tag_model.get_tag_all_feeds_count_by_type(tag.id, 7)
         template_variables["parent_tags"] = self.tag_parent_model.get_parent_tags(tag.id)
         template_variables["child_tags"] = self.tag_parent_model.get_child_tags(tag.id)
-        if(user_info):
+        if(user_info):   
             template_variables["follow"] = self.follow_model.get_follow(user_info.uid, tag.id, 't')
             template_variables["feeds"] = self.tag_model.get_tag_all_feeds(tag.id, user_info.uid, current_page = p)
             template_variables["feeds1"] = self.tag_model.get_tag_all_feeds_by_type(tag.id, user_info.uid, 1, current_page = p)
@@ -694,7 +694,7 @@ class TagHandler(BaseHandler):
             template_variables["link"] = "t"
             template_variables["link2"] = tag_name
             template_variables["follow"] = None
-
+            
         if is_mobile_browser(self):
             self.render("mobile/tag.html", **template_variables)
         else:
@@ -704,7 +704,7 @@ class TagsHandler(BaseHandler):
     def get(self, template_variables = {}):
         user_info = self.current_user
         template_variables["user_info"] = user_info
-
+        
         #template_variables["categorys"] = self.category_model.get_tag_categorys()
         template_variables["tags"] = self.tag_model.get_all_tags2()
         template_variables["scrollspy"] = "scrollspy"
@@ -739,7 +739,7 @@ class ReplyHandler(BaseHandler):
 
             post = self.post_model.get_post_by_post_id(post_id)
             self.post_model.update_post_by_post_id(post_id, {
-                "reply_num": post.reply_num+1,
+                "reply_num": post.reply_num+1, 
                 "updated": time.strftime('%Y-%m-%d %H:%M:%S'),
             })
 
@@ -751,14 +751,14 @@ class ReplyHandler(BaseHandler):
             if user_info.uid != post.author_id:
                 notice_info = {
                     "author_id": post.author_id,
-                    "user_id": self.current_user["uid"],
+                    "user_id": self.current_user["uid"],          
                     "post_id": post.id,
                     "reply_id": reply_id,
                     "notice_type": notice_type,
                     "created": time.strftime('%Y-%m-%d %H:%M:%S'),
                 }
                 self.notice_model.add_new_notice(notice_info)
-
+            
             # create @username notification
             for username in set(find_mentions(reply_content)):
                 mentioned_user = self.user_model.get_user_by_username(username)
@@ -774,7 +774,7 @@ class ReplyHandler(BaseHandler):
 
                 notice_info2 = {
                     "author_id": mentioned_user["uid"],
-                    "user_id": self.current_user["uid"],
+                    "user_id": self.current_user["uid"],          
                     "post_id": post_id,
                     "reply_id": reply_id,
                     "notice_type": notice_type2,
@@ -851,7 +851,7 @@ class FollowHandler(BaseHandler):
                     if obj_id != user_info["uid"]:
                         notice_info = {
                             "author_id": obj_id,
-                            "user_id": user_info["uid"],
+                            "user_id": user_info["uid"],           
                             "notice_type": 15,
                             "created": time.strftime('%Y-%m-%d %H:%M:%S'),
                         }
@@ -872,7 +872,7 @@ class FollowHandler(BaseHandler):
                     if post.author_id != None and post.author_id != user_info["uid"]:
                         notice_info = {
                             "author_id": post.author_id,
-                            "user_id": user_info["uid"],
+                            "user_id": user_info["uid"],           
                             "post_id": obj_id,
                             "notice_type": notice_type,
                             "created": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -904,11 +904,11 @@ class VotePostHandler(BaseHandler):
                     if vote.up_down=='up':
                         # cancel up vote
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num-1})
-
+                        
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income-1, "up_num": post_author.up_num-1})
-                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 8, "amount": -1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 8, "amount": -1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.post_model.update_post_by_post_id(post.id, {"down_num": post.down_num-1})
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"down_num": post_author.down_num-1})
@@ -916,18 +916,18 @@ class VotePostHandler(BaseHandler):
                     if vote.up_down=='up':
                         # cancel up vote
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num-1, "down_num": post.down_num+1})
-
+                    
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income-1, "up_num": post_author.up_num-1, "down_num": post_author.down_num+1})
-                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 8, "amount": -1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 8, "amount": -1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num+1, "down_num": post.down_num-1})
-
+                        
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income+1,  "up_num": post_author.up_num+1, "down_num": post_author.down_num-1})
-                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 6, "amount": 1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 6, "amount": 1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     self.vote_model.update_vote_by_id(vote.id, {"up_down": vote_type, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
             else:
                 self.vote_model.add_new_vote({"obj_id": post_id, "obj_type": "post", "up_down": vote_type, "author_id": user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
@@ -938,7 +938,7 @@ class VotePostHandler(BaseHandler):
                     # add notice: 赞了你的问题
                     notice_info = {
                         "author_id": post.author_id,
-                        "user_id": user_info["uid"],
+                        "user_id": user_info["uid"],           
                         "post_id": post_id,
                         "notice_type": notice_type,
                         "created": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -946,9 +946,9 @@ class VotePostHandler(BaseHandler):
                     self.notice_model.add_new_notice(notice_info)
 
                     self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                     self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income+1, "up_num": post_author.up_num+1})
-                    self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 6, "amount": 1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 6, "amount": 1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                 else:
                     self.post_model.update_post_by_post_id(post.id, {"down_num": post.down_num+1})
                     self.user_model.update_user_info_by_user_id(post_author.uid, {"up_num": post_author.down_num+1})
@@ -970,7 +970,7 @@ class VoteReplyHandler(BaseHandler):
             vote = self.vote_model.get_vote_by_user_and_reply(user_info.uid, reply_id)
             post = self.post_model.get_post_by_post_id(reply.post_id)
             reply_author = self.user_model.get_user_by_uid(reply.author_id)
-
+            
             if vote:
                 if vote_type==vote.up_down:
                     self.vote_model.delete_vote_by_id(vote.id)
@@ -978,9 +978,9 @@ class VoteReplyHandler(BaseHandler):
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num-1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"up_num": reply_author.up_num-1, "income": reply_author.income-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.reply_model.update_reply_by_id(reply.id, {"down_num": reply.down_num-1})
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"down_num": reply_author.down_num-1})
@@ -990,16 +990,16 @@ class VoteReplyHandler(BaseHandler):
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"up_num": reply_author.up_num-1, "down_num": reply_author.down_num+1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num+1, "down_num": reply.down_num-1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income+1, "up_num": reply_author.up_num+1, "down_num": reply_author.down_num-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     self.vote_model.update_vote_by_id(vote.id, {"up_down": vote_type, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
             else:
                 self.vote_model.add_new_vote({"obj_id": reply_id,  "obj_type": "reply", "up_down": vote_type, "author_id": user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
@@ -1010,7 +1010,7 @@ class VoteReplyHandler(BaseHandler):
                     # add notice: 赞同了你的回答
                     notice_info = {
                         "author_id": reply.author_id,
-                        "user_id": user_info["uid"],
+                        "user_id": user_info["uid"],           
                         "post_id": reply.post_id,
                         "reply_id": reply.id,
                         "notice_type": notice_type,
@@ -1019,9 +1019,9 @@ class VoteReplyHandler(BaseHandler):
                     self.notice_model.add_new_notice(notice_info)
 
                     self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                     self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income+1, "up_num": reply_author.up_num+1})
-                    self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                 else:
                     self.reply_model.update_reply_by_id(reply.id, {"down_num": reply.down_num+1})
                     self.user_model.update_user_info_by_user_id(reply_author.uid, {"down_num": reply_author.down_num+1})
@@ -1043,7 +1043,7 @@ class VoteVideoHandler(BaseHandler):
             vote = self.vote_model.get_vote_by_user_and_video(user_info.uid, video_id)
             post = self.post_model.get_post_by_post_id(video.post_id)
             reply_author = self.user_model.get_user_by_uid(reply.author_id)
-
+            
             if vote:
                 if vote_type==vote.up_down:
                     self.vote_model.delete_vote_by_id(vote.id)
@@ -1051,9 +1051,9 @@ class VoteVideoHandler(BaseHandler):
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num-1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"up_num": reply_author.up_num-1, "income": reply_author.income-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.reply_model.update_reply_by_id(reply.id, {"down_num": reply.down_num-1})
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"down_num": reply_author.down_num-1})
@@ -1063,16 +1063,16 @@ class VoteVideoHandler(BaseHandler):
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"up_num": reply_author.up_num-1, "down_num": reply_author.down_num+1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num+1, "down_num": reply.down_num-1})
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income+1, "up_num": reply_author.up_num+1, "down_num": reply_author.down_num-1})
-                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                        self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     self.vote_model.update_vote_by_id(vote.id, {"up_down": vote_type, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
             else:
                 self.vote_model.add_new_vote({"reply_id": reply_id, "up_down": vote_type, "author_id": user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
@@ -1083,7 +1083,7 @@ class VoteVideoHandler(BaseHandler):
                     # add notice: 赞同了你的回答
                     notice_info = {
                         "author_id": reply.author_id,
-                        "user_id": user_info["uid"],
+                        "user_id": user_info["uid"],           
                         "post_id": reply.post_id,
                         "reply_id": reply.id,
                         "notice_type": notice_type,
@@ -1092,9 +1092,9 @@ class VoteVideoHandler(BaseHandler):
                     self.notice_model.add_new_notice(notice_info)
 
                     self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
-                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                     self.user_model.update_user_info_by_user_id(reply_author.uid, {"income": reply_author.income+1, "up_num": reply_author.up_num+1})
-                    self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                    self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 6, "amount": 1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                 else:
                     self.reply_model.update_reply_by_id(reply.id, {"down_num": reply.down_num+1})
                     self.user_model.update_user_info_by_user_id(reply_author.uid, {"down_num": reply_author.down_num+1})
@@ -1134,7 +1134,7 @@ class ThankHandler(BaseHandler):
                 # add notice: user 感谢了问题
                 notice_info = {
                     "author_id": post.author_id,
-                    "user_id": user_info["uid"],
+                    "user_id": user_info["uid"],           
                     "post_id": post.id,
                     "notice_type": notice_type,
                     "created": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -1142,10 +1142,10 @@ class ThankHandler(BaseHandler):
                 self.notice_model.add_new_notice(notice_info)
 
                 self.user_model.update_user_info_by_user_id(user_info.uid, {"income": user_info.expend+10})
-                self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 9, "amount": -10, "balance": user_info.income-user_info.expend-10, "post_id": post.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 9, "amount": -10, "balance": user_info.income-user_info.expend-10, "post_id": post.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                 post_author = self.user_model.get_user_by_uid(post.author_id)
                 self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income+10})
-                self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 10, "amount": 10, "balance": post_author.income-post_author.expend+10, "post_id": post.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 10, "amount": 10, "balance": post_author.income-post_author.expend+10, "post_id": post.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
             else:
                 reply = self.reply_model.get_reply_by_id(obj_id)
                 self.thank_model.add_new_thank({
@@ -1168,8 +1168,8 @@ class ThankHandler(BaseHandler):
                 # add notice: user 感谢了问题
                 notice_info = {
                     "author_id": reply.author_id,
-                    "user_id": user_info["uid"],
-                    "reply_id": reply.id,
+                    "user_id": user_info["uid"],   
+                    "reply_id": reply.id,           
                     "post_id": post.id,
                     "notice_type": notice_type,
                     "created": time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -1177,10 +1177,10 @@ class ThankHandler(BaseHandler):
                 self.notice_model.add_new_notice(notice_info)
 
                 self.user_model.update_user_info_by_user_id(user_info.uid, {"income": user_info.expend+10})
-                self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 9, "amount": -10, "balance": user_info.income-user_info.expend-10, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 9, "amount": -10, "balance": user_info.income-user_info.expend-10, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                 post_author = self.user_model.get_user_by_uid(post.author_id)
                 self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income+10})
-                self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 10, "amount": 10, "balance": post_author.income-post_author.expend+10, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 10, "amount": 10, "balance": post_author.income-post_author.expend+10, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
 
             self.write(lib.jsonp.print_JSON({
                     "success": 1,
@@ -1305,12 +1305,12 @@ class LikeItemHandler(BaseHandler):
                     "item_id": item_id,
                     "created": time.strftime('%Y-%m-%d %H:%M:%S')
                 })
-
+                
             self.write(lib.jsonp.print_JSON({
                     "success": 1,
                 }))
 
-
+        
 
 class DeletePostHandler(BaseHandler):
     def get(self, post_id, template_variables = {}):
@@ -1387,7 +1387,7 @@ class FollowsHandler(BaseHandler):
         print self.follow_model.get_user_follow_lives(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["lives"] = self.follow_model.get_user_follow_lives(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
 
-        if(user_info):
+        if(user_info):            
             template_variables["follow"] = self.follow_model.get_follow(user_info.uid, view_user.uid, 'u')
             template_variables["feeds3"] = self.follow_model.get_user_followees(view_user.uid, user_info.uid, current_page = p)
             template_variables["feeds4"] = self.follow_model.get_user_followers(view_user.uid, user_info.uid, current_page = p)
@@ -1409,8 +1409,8 @@ class GetInviteUsersHandler(BaseHandler):
     def get(self, post_id, template_variables = {}):
         user_info = self.current_user
 
-        if(user_info):
-            users = self.post_tag_model.get_post_related_users(post_id, user_info.uid)
+        if(user_info):  
+            users = self.post_tag_model.get_post_related_users(post_id, user_info.uid)          
             jarray = []
             uids = []
             i = 0
@@ -1456,7 +1456,7 @@ class InviteToAnswerHandler(BaseHandler):
             if invite:
                 self.invite_model.delete_invite_by_id(invite.id)
             else:
-                self.invite_model.add_new_invite({"from_user": user_info.uid, "to_user": invite_user, "post_id": post_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
+                self.invite_model.add_new_invite({"from_user": user_info.uid, "to_user": invite_user, "post_id": post_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})   
 
             self.write(lib.jsonp.print_JSON({
                     "success": 1,
@@ -1571,7 +1571,7 @@ class InviteHandler(BaseHandler):
                 if post_id=="":
                     self.redirect("/?s=signup&i="+invite_code)
                 else:
-                    self.redirect("/p/"+post_id+"?s=signup&i="+invite_code)
+                    self.redirect("/p/"+post_id+"?s=signup&i="+invite_code)    
 
 class EditTagHandler(BaseHandler):
     @tornado.web.authenticated
@@ -1591,7 +1591,7 @@ class EditTagHandler(BaseHandler):
             else:
                 allTagStr = allTagStr + ','+ tag.name
             i=i+1
-        template_variables["allTagStr"] = allTagStr
+        template_variables["allTagStr"] = allTagStr 
 
         self.render("edit_tag.html", **template_variables)
 
@@ -1604,9 +1604,9 @@ class EditTagHandler(BaseHandler):
         tag= self.tag_model.get_tag_by_tag_id(tag_id)
         category = self.category_model.get_category_by_name(form.category.data)
         tag_type = self.tag_type_model.get_tag_type_by_name(form.tag_type.data)
-        if("thumb" in self.request.files):
+        if("thumb" in self.request.files):            
             origin_thumb = tag.thumb
-
+            
             tag_name = "%s" % uuid.uuid1()
             thumb_raw = self.request.files["thumb"][0]["body"]
             thumb_buffer = StringIO.StringIO(thumb_raw)
@@ -1618,16 +1618,16 @@ class EditTagHandler(BaseHandler):
             uptoken = q.upload_token("mmm-avatar", "m_%s.png" % tag_name)
             data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % tag_name)
             ret, info = put_data(uptoken, "m_%s.png" % tag_name, data)
-
+ 
             os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % tag_name)
 
             thumb_name = "http://mmm-avatar.qiniudn.com/m_"+tag_name
             self.tag_model.update_tag_by_tag_id(tag_id, {"name": form.name.data, "intro": form.intro.data, "thumb": "%s.png" %  thumb_name, "category": category.id, "tag_type": tag_type.id})
 
             if origin_thumb:
-                pattern = re.compile(r'm_.*.png')
-                match = pattern.search(origin_thumb)
-                if match:
+                pattern = re.compile(r'm_.*.png') 
+                match = pattern.search(origin_thumb) 
+                if match: 
                     ret, info = bucket.delete("mmm-avatar", match.group())
                     #ret, err = qiniu.rs.Client().delete("mmm-avatar", match.group())
         else:
@@ -1642,12 +1642,12 @@ class EditTagHandler(BaseHandler):
         tagStr = form.tag.data
         if tagStr:
             print tagStr
-            tagNames = tagStr.split(',')
-            for tagName in tagNames:
+            tagNames = tagStr.split(',')  
+            for tagName in tagNames:  
                 tag = self.tag_model.get_tag_by_tag_name(tagName)
                 if tag:
                     self.tag_parent_model.add_new_tag_parent({"tag_id": tag_id, "parent_id": tag.id})
-
+                 
         template_variables["success_message"] = [u"标签已更新"]
         self.redirect("/t/"+form.name.data)
 
@@ -1658,19 +1658,19 @@ class UploadHandler(BaseHandler):
         template_variables = {}
 
         # validate the fields
-        if("file" in self.request.files):
+        if("file" in self.request.files):            
             file_name = "%s" % uuid.uuid1()
             file_raw = self.request.files["file"][0]["body"]
             file_buffer = StringIO.StringIO(file_raw)
             file = Image.open(file_buffer)
 
             usr_home = os.path.expanduser('~')
-            file.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name, "PNG")
+            file.save(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name, "PNG")  
 
             uptoken = q.upload_token("mmm-cdn", "m_%s.png" % file_name)
             data=open(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name)
             ret, info = put_data(uptoken, "m_%s.png" % file_name, data)
-
+ 
             os.remove(usr_home+"/www/1024nj/static/tmp/m_%s.png" % file_name)
 
             file_name = "http://mmm-cdn.qiniudn.com/m_"+file_name+".png"
@@ -1699,13 +1699,13 @@ class BalanceHandler(BaseHandler):
             template_variables["user_card"] = get_user_card(self)
         if(user_info):
             gold_coins = (user_info.income - user_info.expend )/ 10000
-            silver_coins = (user_info.income - user_info.expend )% 10000
+            silver_coins = (user_info.income - user_info.expend )% 10000     
             bronze_coins = silver_coins  % 100
             silver_coins = silver_coins / 100
             template_variables["gold_coins"] = gold_coins
             template_variables["silver_coins"] = silver_coins
             template_variables["bronze_coins"] = bronze_coins
-            template_variables["notice_count"] = self.notice_model.get_user_unread_notice_count(user_info.uid)
+            template_variables["notice_count"] = self.notice_model.get_user_unread_notice_count(user_info.uid)  
             template_variables["invite_count"] = self.invite_model.get_user_unread_invite_count(user_info.uid)
             template_variables["balances"] = self.balance_model.get_user_balances(user_info.uid, current_page = p)
             if is_mobile_browser(self):
@@ -1722,7 +1722,7 @@ class PageNotFoundHandler(BaseHandler):
 class UpdateUserViewFollowHandler(BaseHandler):
     def get(self, template_variables = {}):
         user_info = self.current_user
-
+        
         if(user_info):
             self.user_model.update_user_info_by_user_id(user_info.uid, {"view_follow": time.strftime('%Y-%m-%d %H:%M:%S')})
             self.write(lib.jsonp.print_JSON({
@@ -1774,7 +1774,7 @@ class GetTagHandler(BaseHandler):
         else:
             follow = None
         tag_tip = self.render_string("tooltip/tag-tip.html", user_info=user_info, follow=follow, view_tag=view_tag, follow_users=follow_users)
-        self.write(tag_tip)
+        self.write(tag_tip)   
 
 class PageHandler(BaseHandler):
     def get(self, page_name, template_variables = {}):
