@@ -1502,8 +1502,8 @@ class InviteToEmailHandler(BaseHandler):
                 "api_key" : "bRjboOZIVFUU9s0q",\
                 "from" : "noreply@mmmai.com", \
                 "to" : email, \
-                "fromname" : "买买买", \
-                "subject" : user_info.username+"邀请您回答问题："+post.title+"--买买买", \
+                "fromname" : "南京程序员第一社区", \
+                "subject" : user_info.username+"邀请您回答问题："+post.title+"--南京程序员第一社区", \
                 "html": mail_content \
             }
 
@@ -1537,8 +1537,8 @@ class InviteToJoinHandler(BaseHandler):
                 "api_key" : "bRjboOZIVFUU9s0q",\
                 "from" : "noreply@mmmai.com", \
                 "to" : email, \
-                "fromname" : "买买买", \
-                "subject" : "邀请加入买买买", \
+                "fromname" : "南京程序员第一社区", \
+                "subject" : "邀请加入南京程序员第一社区", \
                 "html": mail_content \
             }
 
