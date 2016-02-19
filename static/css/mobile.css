@@ -45,7 +45,7 @@ font-family: roboto,'Hiragino Sans GB','Microsoft YaHei',微软雅黑,STHeiti,'W
 .navbar-brand {
     width: 78px;
     height: 49px;
-    background: url(http://mmm-static.qiniudn.com/logo.png) 0 0 no-repeat;
+    background: url(/static/img/logo.png) 0 0 no-repeat;
     background-size: 78px Auto;
     background-position: center;
 }
@@ -1815,7 +1815,7 @@ td a {
     padding: 10px 25px 5px;
 }
 .navbar-nav {
-margin: 0px; 
+margin: 0px;
 }
 .navbar {
 margin-bottom: 0px;
@@ -1827,7 +1827,7 @@ padding-top: 20px;
     margin-top: 50px;
 }
 .container {
- padding-right: 0; 
+ padding-right: 0;
  padding-left: 0;
 }
 .shifter-page {
