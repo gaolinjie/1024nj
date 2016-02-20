@@ -354,6 +354,22 @@ class BbsHandler(BaseHandler):
         if user_info:
             template_variables["user_card"] = get_user_card(self)
 
+        template_variables["sign_in_up"] = self.get_argument("s", "")
+        link = self.get_argument("link", "")
+        if link!="":
+            template_variables["link"] =  link
+        link2 = self.get_argument("link2", "")
+        if link2!="":
+            template_variables["link2"] = link2
+
+        error = self.get_argument("e", "")
+        if error!="":
+            template_variables["error"] = error
+        else:
+            template_variables["error"] = None
+
+
+
         if is_mobile_browser(self):
             self.render("bbs.html", **template_variables)
         else:
