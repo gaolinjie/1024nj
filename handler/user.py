@@ -78,15 +78,17 @@ class SigninHandler(BaseHandler):
 
         form = SigninForm(self)
 
-        user_info = self.user_model.get_user_by_email(form.email.data)
-        if user_info == None:
-            self.redirect("/?s=signin&e=1")
-            return
+        # user_info = self.user_model.get_user_by_email(form.email.data)
+        # if user_info == None:
+        #     self.redirect("/?s=signin&e=1")
+        #     return
         
         secure_password = hashlib.sha1(form.password.data).hexdigest()
         secure_password_md5 = hashlib.md5(form.password.data).hexdigest()
         user_info = self.user_model.get_user_by_email_and_password(form.email.data, secure_password)
         user_info = user_info or self.user_model.get_user_by_email_and_password(form.email.data, secure_password_md5)
+        user_info = user_info or self.user_model.get_user_by_username_and_password(form.email.data, secure_password)
+        user_info = user_info or self.user_model.get_user_by_username_and_password(form.email.data, secure_password_md5)
         
         if(user_info):
             do_login(self, user_info["uid"])

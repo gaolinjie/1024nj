@@ -133,7 +133,7 @@
                                 <span class="js-title-label title-label">登录南京程序员第一社区</span>
                             </div>
                             <div class="form-group input">
-                                <input type="email" name="email" placeholder="邮箱" class="form-control email-input" />
+                                <input type="text" name="email" placeholder="邮箱或用户名" class="form-control email-input" />
                                 <span>
 
                                 <i class="fa fa-envelope-o"></i>
@@ -398,11 +398,11 @@
                             email: {
                                 validators: {
                                     notEmpty: {
-                                        message: '邮箱不能为空'
+                                        message: '邮箱或用户名不能为空'
                                     },
-                                    emailAddress: {
-                                        message: '输入的不是邮箱地址'
-                                    },
+//                                    emailAddress: {
+//                                        message: '输入的不是邮箱地址'
+//                                    },
                                     regexp: {
                                         regexp: /^((?!qq\.com).)*$/,
                                         message: "对不起，暂不支持 qq 邮箱"

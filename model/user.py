@@ -43,6 +43,10 @@ class UserModel(Query):
         where = "email = '%s' AND password = '%s'" % (email, secure_password)
         return self.where(where).find()
 
+    def get_user_by_username_and_password(self, email, secure_password):
+        where = "username = '%s' AND password = '%s'" % (email, secure_password)
+        return self.where(where).find()
+
     def get_user_by_email_and_username(self, email, username):
         where = "email = '%s' AND username = '%s'" % (email, username)
         return self.where(where).find()
