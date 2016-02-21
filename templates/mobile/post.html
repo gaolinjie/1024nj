@@ -24,7 +24,7 @@
             <div class="user-title user-title-wrapper">
             <div id="post-user-avatar" class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{post.author_username}}">
                 <a href="/u/{{post.author_username}}">
-                    <img src="{{post.author_avatar}}-32px" width="32px" height="32px" alt="" class="avatar-img">
+                    <img src="{{post.author_avatar}}?imageView2/1/w/32/h/32" width="32px" height="32px" alt="" class="avatar-img">
                 </a>
             </div>
             <div class="username-wrapper">
@@ -135,7 +135,7 @@
                     {% if reply.anon==0 %}
                     <div class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}">
                         <a href="/u/{{reply.author_username}}">
-                            <img src="{{ reply.author_avatar}}-32px" width="32px" height="32px" alt="" class="avatar-img">
+                            <img src="{{ reply.author_avatar}}?imageView2/1/w/32/h/32" width="32px" height="32px" alt="" class="avatar-img">
                         </a>
                     </div>
                     {%endif%}
@@ -145,40 +145,6 @@
                             <a class="tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}" href="/u/{{reply.author_username}}">{{reply.author_username}}</a>
                             {%if reply.author_sign%}，{{reply.author_sign}}{%endif%} {%else%} 匿名用户 {%endif%}
                         </div>
-                        {% set votes=votesList[i] %}
-                        <div class="answer-user-meta meta">
-                            {% if votes.list %} {% for vote in votes.list %}
-                            <a href="/u/{{vote.author_username}}" class="tipped_ajax_user" data-tipped="/get/user/{{vote.author_username}}">{{vote.author_username}}</a>
-                            {%if vote!=votes.list[votes.list|length-1] %}、{%endif%} {% endfor %} 等人赞同 {%else%} 还没有人赞同 {%endif%}
-                        </div>
-                        {% set i=i+1 %}
-                        </div>
-
-                        <div class="m-votebar {% if reply.author_id != user_info.uid %}m-votebar-vote{%endif%} {%if reply.vote_up_down%}voted{%endif%} {%if user_info==none%}unlogin{%endif%}">
-                <a href="javascript:;" class="m-votenum"><span>{{reply.up_num}}</span>{% if reply.author_id != user_info.uid %}<i class=" arrow"></i>{%endif%}</a>
-                </div>
-                <div class="zm-votebar" style="display:none;">
-                        {% if reply.author_id != user_info.uid %}
-                        <button class="up vote-btn vote-reply {%if reply.vote_up_down and reply.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
-                        data-type="up">
-                            <i class="icon vote-arrow"></i>
-                            <span class="label">赞同</span>
-                            <span class="count">{{reply.up_num}}</span>
-                        </button>
-                        <button class="down vote-btn vote-reply {%if reply.vote_up_down and reply.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}"
-                        data-type="down">
-                            <i class="icon vote-arrow"></i>
-                            <span class="label">反对，不会显示你的姓名</span>
-                            <span class="count" style="display: none;">{{reply.down_num}}</span>
-                        </button>
-                        {% else %}
-                        <button class="up vote-btn vote-self-btn" title="赞同">
-                            <span class="label">赞同</span>
-                            <span class="count">{{reply.up_num}}</span>
-                        </button>
-                        {% endif %}
-                    </div>
-
                         
                     </div>                  
                 </div>
@@ -231,7 +197,7 @@
                 </div>
                 <div class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{user_info.username}}">
                 <a href="/u/{{user_info.username}}">
-                    <img src="{{ user_info.avatar}}-32px" width="32px" height="32px" alt="" class="avatar-img">
+                    <img src="{{ user_info.avatar}}?imageView2/1/w/32/h/32" width="32px" height="32px" alt="" class="avatar-img">
                 </a>
             </div>
             </div>            
@@ -323,83 +289,83 @@
 </div>
 {% endblock %} 
 
-{% block navigation %}
-<nav class="shifter-navigation">
-                    <ul class="nav nav-list">
-                    <li class="nav-item">
-                <form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />
-                            <input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">
-                            <input name="tn" type="hidden" value="bds" />
-                            <input name="cl" type="hidden" value="3" />
-                            <input name="si" type="hidden" value="mmmai.com" />
-                            <input name="ct" type="hidden" value="2097152" />
-                        </div>
-                    </form>
-            </li>
-            <li class="nav-item">
-                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>
-                我的主页
-                </a>
-            </li>
-            <li class="nav-item">
-                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>
-                我的所有关注
-                </a>
-            </li>
-            <li class="nav-item">
-                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>
-                    <i class="icon-message"></i>
-                    我的消息 
-                    {%if notice_count%}
-                    <span class="badge message-badge">{{notice_count}}</span>
-                    {%endif%}
-                </a>
-            </li>
+<!--{% block navigation %}-->
+<!--<nav class="shifter-navigation">-->
+                    <!--<ul class="nav nav-list">-->
+                    <!--<li class="nav-item">-->
+                <!--<form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">-->
+                        <!--<div class="form-group">-->
+                            <!--<input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />-->
+                            <!--<input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">-->
+                            <!--<input name="tn" type="hidden" value="bds" />-->
+                            <!--<input name="cl" type="hidden" value="3" />-->
+                            <!--<input name="si" type="hidden" value="mmmai.com" />-->
+                            <!--<input name="ct" type="hidden" value="2097152" />-->
+                        <!--</div>-->
+                    <!--</form>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>-->
+                <!--我的主页-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>-->
+                <!--我的所有关注-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>-->
+                    <!--<i class="icon-message"></i>-->
+                    <!--我的消息 -->
+                    <!--{%if notice_count%}-->
+                    <!--<span class="badge message-badge">{{notice_count}}</span>-->
+                    <!--{%endif%}-->
+                <!--</a>-->
+            <!--</li>-->
 
-            <li class="nav-item">
-                <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>
-                    <i class="icon-invitation"></i>
-                    邀请我回答的问题 
-                    {%if invite_count%}
-                    <span class="badge invite-badge">{{invite_count}}</span>
-                    {%endif%}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/tags">
-                    <i class="icon-tag"></i>
-                    所有标签
-                </a>
-            </li>
-            <li class="nav-item">
-                <a {% if user_info==none%}class="unlogin" {%else%}class="comingsoon" {%endif%} href="javascript:;" {% if user_info==none%}data-link="list" {%endif%}>
-                    <i class="icon-list"></i>
-                    欲望清单
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li class="nav-item">
-                <a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
-                    <i class="icon-invite"></i>
-                    邀请朋友加入
-                </a>
-            </li>
-        </ul>
+            <!--<li class="nav-item">-->
+                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>-->
+                    <!--<i class="icon-invitation"></i>-->
+                    <!--邀请我回答的问题 -->
+                    <!--{%if invite_count%}-->
+                    <!--<span class="badge invite-badge">{{invite_count}}</span>-->
+                    <!--{%endif%}-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a href="/tags">-->
+                    <!--<i class="icon-tag"></i>-->
+                    <!--所有标签-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a {% if user_info==none%}class="unlogin" {%else%}class="comingsoon" {%endif%} href="javascript:;" {% if user_info==none%}data-link="list" {%endif%}>-->
+                    <!--<i class="icon-list"></i>-->
+                    <!--欲望清单-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="divider"></li>-->
+            <!--<li class="nav-item">-->
+                <!--<a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>-->
+                    <!--<i class="icon-invite"></i>-->
+                    <!--邀请朋友加入-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
 
-        <div class="slide-bottom">
-        {%if user_info%}
-        {%else%}
-        <a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>
-        {%endif%} 
-        <a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>
-        {%if user_info%}
-        <a class="slide-btn slide-btn-login" href="/signout">退出</a>
-        {%endif%}
-        </div>
-    </nav>
-{% endblock %} 
+        <!--&lt;!&ndash;<div class="slide-bottom">&ndash;&gt;-->
+        <!--&lt;!&ndash;{%if user_info%}&ndash;&gt;-->
+        <!--&lt;!&ndash;{%else%}&ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;{%endif%} &ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;{%if user_info%}&ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="slide-btn slide-btn-login" href="/signout">退出</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;{%endif%}&ndash;&gt;-->
+        <!--</div>-->
+    <!--</nav>-->
+<!--{% endblock %} -->
 
 {% block javascript %}
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
@@ -480,7 +446,7 @@
                 }),
                 success: function(msg) {
                     if (msg.success != 0) {
-                        var reply_string = '<div id="' + msg.reply_id + '" class="answer-item"><div class="user-wrapper"><div class="zm-votebar"><button class="up vote-btn vote-self-btn" title="赞同"> <span class="label">赞同</span><span class="count">0</span></button></div><div class="user-title"><div class="user-name"><a href="/u/{{user_info.username}}">{{user_info.username}}</a>{%if user_info.sign%}，{{user_info.sign}}{%endif%}</div><div class="answer-user-meta meta">还没有人赞同</div></div><div class="user-avatar"><a href="/u/{{user_info.username}}"><img src="{{ user_info.avatar }}-32px" width="32px" height="32px" alt="" class="avatar-img"></a></div></div><div class="answer-text">' + reply_text + '</div><div class="answer-meta meta"><span class="time">刚刚</span><span class="bullet">&nbsp;•&nbsp;</span><a class="edit" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">&nbsp;•&nbsp;</span><a class="delete" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></div></div>';
+                        var reply_string = '<div id="' + msg.reply_id + '" class="answer-item"><div class="user-wrapper"><div class="zm-votebar"><button class="up vote-btn vote-self-btn" title="赞同"> <span class="label">赞同</span><span class="count">0</span></button></div><div class="user-title"><div class="user-name"><a href="/u/{{user_info.username}}">{{user_info.username}}</a>{%if user_info.sign%}，{{user_info.sign}}{%endif%}</div><div class="answer-user-meta meta">还没有人赞同</div></div><div class="user-avatar"><a href="/u/{{user_info.username}}"><img src="{{ user_info.avatar }}?imageView2/1/w/32/h/32" width="32px" height="32px" alt="" class="avatar-img"></a></div></div><div class="answer-text">' + reply_text + '</div><div class="answer-meta meta"><span class="time">刚刚</span><span class="bullet">&nbsp;•&nbsp;</span><a class="edit" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">&nbsp;•&nbsp;</span><a class="delete" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></div></div>';
                         $('#rSummernote').code('');
                         $(reply_string).insertBefore('.jscroll-next-parent:last');
                     } else {
@@ -931,7 +897,7 @@
         window._bd_share_config = {
             "common": {
                 "bdSnsKey": {},
-                "bdText": "{{post.title}}-@买买喵",
+                "bdText": "{{post.title}}-@南京程序员第一社区",
                 "bdMini": "2",
                 "bdPic": "",
                 "bdStyle": "0",
