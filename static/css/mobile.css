@@ -40,6 +40,8 @@ font-family: roboto,'Hiragino Sans GB','Microsoft YaHei',微软雅黑,STHeiti,'W
 @media screen and (min-width: 959px) {
     .container {
         width: 960px;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 }
 .navbar-brand {
@@ -54,8 +56,11 @@ font-family: roboto,'Hiragino Sans GB','Microsoft YaHei',微软雅黑,STHeiti,'W
         width: 638px;
     }
 }
-.nav li button {
-    margin-top: 8px;
+.navbar-nav>li>a {
+    color: #556;
+    margin-top: 4px;
+    padding-bottom: 10px;
+    font-size: 15px;
 }
 .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
     margin-left: 0;
