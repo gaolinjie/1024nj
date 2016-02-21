@@ -239,9 +239,9 @@ class SignupHandler(BaseHandler):
                 "html": mail_content \
             }
 
-            url="https://sendcloud.sohu.com/webapi/mail.send.xml"
-            r = requests.post(url, data=params)
-            print r.text
+            #url="https://sendcloud.sohu.com/webapi/mail.send.xml"
+            #r = requests.post(url, data=params)
+            #print r.text
 
         self.redirect(self.get_argument("next", "/"))
 
