@@ -40,8 +40,8 @@ from qiniu import put_data
 import xml.etree.ElementTree as ET
 import commands
 
-access_key = "DaQzr1UhFQD6im_kJJjZ8tQUKQW7ykiHo4ZWfC25"
-secret_key = "Ge61JJtUSC5myXVrntdVOqAZ5L7WpXR_Taa9C8vb"
+access_key = "n1vd9L0XY-7WbJ0RGCGoG8zf7mXqgEqGTV9s3DqF"
+secret_key = "TgXcv43Y47nXSGW5xSsI5Er8fy_OePi6oLyyMYth"
 q = Auth(access_key, secret_key)
 bucket = BucketManager(q)
 
