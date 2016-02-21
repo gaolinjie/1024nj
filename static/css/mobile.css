@@ -1825,6 +1825,7 @@ padding-top: 20px;
 }
 .shifter-navigation .nav {
     margin-top: 50px;
+    display: none;
 }
 .container {
  padding-right: 0;
