@@ -850,7 +850,12 @@ a:hover {
 html,body{height:100%}
 .global_footer {margin-top:-60px;}
 .global_wrap{min-height:100%}
-.global_container{padding-bottom:60px;overflow:hidden;}
+.global_container{
+    padding-bottom:60px;
+    overflow:hidden;
+    padding-left: 0px;
+    padding-right: 0px;
+}
 
 .nav-tabs>li>a {
     border-radius: 3px 3px 0 0;
