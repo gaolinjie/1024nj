@@ -289,7 +289,7 @@ class NavListNewsHandler(BaseHandler):
                 template_variables["user_card"] = get_user_card(self)
 
             if is_mobile_browser(self):
-                self.render("bbs.html", **template_variables)
+                self.render("mobile/bbs.html", **template_variables)
             else:
                 self.render("bbs.html", **template_variables)
         else :
@@ -321,7 +321,7 @@ class NavListNewsHandler(BaseHandler):
                 template_variables["user_card"] = get_user_card(self)
 
             if is_mobile_browser(self):
-                self.render("bbs.html", **template_variables)
+                self.render("mobile/bbs.html", **template_variables)
             else:
                 self.render("bbs.html", **template_variables)
 
@@ -371,7 +371,7 @@ class BbsHandler(BaseHandler):
 
 
         if is_mobile_browser(self):
-            self.render("bbs.html", **template_variables)
+            self.render("mobile/bbs.html", **template_variables)
         else:
             self.render("bbs.html", **template_variables)
 
