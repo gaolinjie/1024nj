@@ -960,7 +960,7 @@ i.icon {
 font-weight: 700;
 }
 #post-user-wrapper {
-    margin-top: 15px;
+    margin-top: 0px;
 }
 .zm-votebar .vote-self-btn {
     height: 24px;
@@ -1835,7 +1835,7 @@ padding-top: 20px;
  padding-left: 0;
 }
 .shifter-page {
-    padding: 10px 10px;
+    padding: 0px 10px;
 }
 
 .slide-bottom {
