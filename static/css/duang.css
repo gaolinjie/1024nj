@@ -402,11 +402,9 @@ body {
 }
 
 .global_footer .footer_inner .inner_copyr .inner_tech {
-    background-image: url(/static/img/footer_string.png);
     background-repeat: no-repeat;
     display: inline-block;
     height: 16px;
-    padding-left: 218px;
 }
 
 .global_footer .footer_inner .inner_copyr em {
@@ -418,11 +416,9 @@ body {
 }
 
 .global_footer .footer_inner .inner_copyr .inner_copy {
-    background-image: url(/static/img/copyright.png);
     background-repeat: no-repeat;
     display: inline-block;
     height: 16px;
-    padding-left: 172px;
 }
 
 .global_footer .footer_inner .inner_copyr .inner_no {
