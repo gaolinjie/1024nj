@@ -35,20 +35,20 @@
                 {%endif%}
                 <div class="sep10"></div>
                 <h1>{%if post.open_type=='link'%}<a title="{{post.title}}" href="{{post.post_link}}" target="_blank">{{post.title}}</a>{%else%}{{post.title}}{%endif%}</h1>
-                <div class="votes">
-                    <a href="javascript:" class="vote up vote-post {%if post.vote_up_down and post.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
-                data-type="up">
-                        <li class="fa fa-chevron-up"></li>
-                        <span class="count {% if post.up_num == 0 %}zero{% endif %}">{{post.up_num}}</span>
-                    </a>
+                <!--<div class="votes">-->
+                    <!--<a href="javascript:" class="vote up vote-post {%if post.vote_up_down and post.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"-->
+                <!--data-type="up">-->
+                        <!--<li class="fa fa-chevron-up"></li>-->
+                        <!--<span class="count {% if post.up_num == 0 %}zero{% endif %}">{{post.up_num}}</span>-->
+                    <!--</a>-->
 
-                    <a href="javascript:" class="vote down vote-post {%if post.vote_up_down and post.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"
-                data-type="down">
-                        <li class="fa fa-chevron-down"></li>
-                        <span class="count {% if post.down_num == 0 %}zero{% endif %}">{{post.down_num}}</span>
-                    </a>
-                </div>
-                &nbsp;
+                    <!--<a href="javascript:" class="vote down vote-post {%if post.vote_up_down and post.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{post.id}}"-->
+                <!--data-type="down">-->
+                        <!--<li class="fa fa-chevron-down"></li>-->
+                        <!--<span class="count {% if post.down_num == 0 %}zero{% endif %}">{{post.down_num}}</span>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--&nbsp;-->
                 <small class="gray">
                     {% if post.author_id %}
                     <a href="/u/{{post.author_name}}">{{post.author_name}}</a>

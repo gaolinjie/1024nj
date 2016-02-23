@@ -32,14 +32,14 @@
                     <a class="tipped_ajax_user" data-tipped="/get/user/{{post.author_username}}" href="/u/{{post.author_username}}">{{post.author_username}}</a>
                     {%if post.author_sign%}，{{post.author_sign}}{%endif%}
                 </div>
-                <div class="answer-user-meta meta">
-                还没有人赞同
-                        </div>
+                <!--<div class="answer-user-meta meta">-->
+                <!--还没有人赞同-->
+                        <!--</div>-->
                 </div>
 
-                <div class="m-votebar {% if post.author_id != user_info.uid %}m-votebar-vote{%endif%} {%if post.vote_up_down%}voted{%endif%} {%if user_info==none%}unlogin{%endif%}">
-                <a href="javascript:;" class="m-votenum"><span>{{post.up_num}}</span>{% if post.author_id != user_info.uid %}<i class=" arrow"></i>{%endif%}</a>
-                </div>
+                <!--<div class="m-votebar {% if post.author_id != user_info.uid %}m-votebar-vote{%endif%} {%if post.vote_up_down%}voted{%endif%} {%if user_info==none%}unlogin{%endif%}">-->
+                <!--<a href="javascript:;" class="m-votenum"><span>{{post.up_num}}</span>{% if post.author_id != user_info.uid %}<i class=" arrow"></i>{%endif%}</a>-->
+                <!--</div>-->
 
                 <div class="zm-votebar post-votebar" style="display:none;">
                 {% if post.author_id != user_info.uid %}
@@ -111,17 +111,17 @@
     </div>
 
     <div class="answers-title clearfix">
-        <div id="answers-filter" class="answers-sorter">
-            {% if sort=="voted" %}
-            <span class="lbl">按票数排序</span>
-            <a class="lbl" href="/p/{{post.id}}?sort=created">按时间排序</a>  <i class="zg-icon zg-icon-double-arrow"></i>
-            {% else %}
-            <span class="lbl">按时间排序</span>
-            <a class="lbl" href="/p/{{post.id}}">按票数排序</a>
-            <i class="zg-icon zg-icon-double-arrow"></i>
-            {% endif %}
-        </div>
-        <h3 id="question-answer-num">{{post.reply_num}} 个{% if post.post_type=='q' %}回答{% else %}评论{% endif %}</h3>
+        <!--<div id="answers-filter" class="answers-sorter">-->
+            <!--{% if sort=="voted" %}-->
+            <!--<span class="lbl">按票数排序</span>-->
+            <!--<a class="lbl" href="/p/{{post.id}}?sort=created">按时间排序</a>  <i class="zg-icon zg-icon-double-arrow"></i>-->
+            <!--{% else %}-->
+            <!--<span class="lbl">按时间排序</span>-->
+            <!--<a class="lbl" href="/p/{{post.id}}">按票数排序</a>-->
+            <!--<i class="zg-icon zg-icon-double-arrow"></i>-->
+            <!--{% endif %}-->
+        <!--</div>-->
+        <!--<h3 id="question-answer-num">{{post.reply_num}} 个{% if post.post_type=='q' %}回答{% else %}评论{% endif %}</h3>-->
     </div>
 
     <div class="answers-area">
@@ -287,85 +287,7 @@
         </div>
     </div>
 </div>
-{% endblock %} 
-
-<!--{% block navigation %}-->
-<!--<nav class="shifter-navigation">-->
-                    <!--<ul class="nav nav-list">-->
-                    <!--<li class="nav-item">-->
-                <!--<form method="get" action="http://www.baidu.com/baidu" class="navbar-form navbar-left" role="search">-->
-                        <!--<div class="form-group">-->
-                            <!--<input name="word" size="30" maxlength="100" type="text" id="search-input" class="form-control" placeholder="搜索一下，你就知道怎么买" />-->
-                            <!--<input type='submit' value='搜索' onclick="this.form.target='_blank';return true;" style="display:none">-->
-                            <!--<input name="tn" type="hidden" value="bds" />-->
-                            <!--<input name="cl" type="hidden" value="3" />-->
-                            <!--<input name="si" type="hidden" value="mmmai.com" />-->
-                            <!--<input name="ct" type="hidden" value="2097152" />-->
-                        <!--</div>-->
-                    <!--</form>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>-->
-                <!--我的主页-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>-->
-                <!--我的所有关注-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>-->
-                    <!--<i class="icon-message"></i>-->
-                    <!--我的消息 -->
-                    <!--{%if notice_count%}-->
-                    <!--<span class="badge message-badge">{{notice_count}}</span>-->
-                    <!--{%endif%}-->
-                <!--</a>-->
-            <!--</li>-->
-
-            <!--<li class="nav-item">-->
-                <!--<a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>-->
-                    <!--<i class="icon-invitation"></i>-->
-                    <!--邀请我回答的问题 -->
-                    <!--{%if invite_count%}-->
-                    <!--<span class="badge invite-badge">{{invite_count}}</span>-->
-                    <!--{%endif%}-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-                <!--<a href="/tags">-->
-                    <!--<i class="icon-tag"></i>-->
-                    <!--所有标签-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-                <!--<a {% if user_info==none%}class="unlogin" {%else%}class="comingsoon" {%endif%} href="javascript:;" {% if user_info==none%}data-link="list" {%endif%}>-->
-                    <!--<i class="icon-list"></i>-->
-                    <!--欲望清单-->
-                <!--</a>-->
-            <!--</li>-->
-            <!--<li class="divider"></li>-->
-            <!--<li class="nav-item">-->
-                <!--<a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>-->
-                    <!--<i class="icon-invite"></i>-->
-                    <!--邀请朋友加入-->
-                <!--</a>-->
-            <!--</li>-->
-        <!--</ul>-->
-
-        <!--&lt;!&ndash;<div class="slide-bottom">&ndash;&gt;-->
-        <!--&lt;!&ndash;{%if user_info%}&ndash;&gt;-->
-        <!--&lt;!&ndash;{%else%}&ndash;&gt;-->
-        <!--&lt;!&ndash;<a class="slide-btn slide-btn-login unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>登录 or 注册</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;{%endif%} &ndash;&gt;-->
-        <!--&lt;!&ndash;<a class="slide-btn slide-btn-post {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>提问 or 发帖</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;{%if user_info%}&ndash;&gt;-->
-        <!--&lt;!&ndash;<a class="slide-btn slide-btn-login" href="/signout">退出</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;{%endif%}&ndash;&gt;-->
-        <!--</div>-->
-    <!--</nav>-->
-<!--{% endblock %} -->
+{% endblock %}
 
 {% block javascript %}
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
