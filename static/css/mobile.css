@@ -192,6 +192,7 @@ a {
     position: relative;
 }
 .user-title {
+    display:none;
     float: left;
     width: 100%;
 }
