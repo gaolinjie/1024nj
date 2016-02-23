@@ -1,13 +1,13 @@
-{% extends 'mobile/layout.html' %}
+{% extends 'mobile/layout.html' %} 
 
 {% block title %}
 <title>{{post.title}} - 南京程序员第一社区</title>
-{% endblock %}
+{% endblock %} 
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
 <link rel="stylesheet" href="/static/summernote-0.5.2-dist/summernote.css">
-{% endblock %}
+{% endblock %} 
 
 {% block main %}
 <div class="col-xs-12 shifter-page">
@@ -19,8 +19,8 @@
         </div>
 
         <div id="post-user-wrapper" class="user-wrapper">
-
-
+            
+            
             <div class="user-title user-title-wrapper">
             <div id="post-user-avatar" class="user-avatar tipped_ajax_user" data-tipped="/get/user/{{post.author_username}}">
                 <a href="/u/{{post.author_username}}">
@@ -57,8 +57,8 @@
                 </button>
                 {% endif %}
             </div>
-
-
+                
+                
             </div>
             <div class="topic-title">
                     <h2>{{post.title}}</h2>
@@ -129,7 +129,7 @@
             {% set i=0 %} {% for reply in replys.list %}
             <div id="{{reply.id}}" class="answer-item">
                 <div class="user-wrapper">
-
+                    
 
                     <div class="user-title">
                     {% if reply.anon==0 %}
@@ -145,8 +145,8 @@
                             <a class="tipped_ajax_user" data-tipped="/get/user/{{reply.author_username}}" href="/u/{{reply.author_username}}">{{reply.author_username}}</a>
                             {%if reply.author_sign%}，{{reply.author_sign}}{%endif%} {%else%} 匿名用户 {%endif%}
                         </div>
-
-                    </div>
+                        
+                    </div>                  
                 </div>
                 <div class="answer-text">{{reply.content|desktop_content_process}}</div>
                 <div class="answer-meta meta">
@@ -182,7 +182,7 @@
     <div class="comment-box {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}>
         {% if user_info != none %}
         <div class="user-wrapper">
-
+            
             <div class="user-title">
             <div class="username-wrapper">
                 <div class="user-name">
@@ -200,7 +200,7 @@
                     <img src="{{ user_info.avatar}}?imageView2/1/w/32/h/32" width="32px" height="32px" alt="" class="avatar-img">
                 </a>
             </div>
-            </div>
+            </div>            
         </div>
         {%else%}
         <div class="zu-answer-form-title">
@@ -211,10 +211,10 @@
             <div id="rSummernote" class="description"></div>
             <input type="hidden" name="reply" id="rReplyText" value="">
         </div>
+        <div class="reply-btn">
+            <input type="submit" id="rPostBtn" data-post="{{ post.id }}" class="btn btn-sm btn-default" value="立即发布">{{ xsrf_form_html() }}</div>
     </div>
-    <div class="reply-btn">
-        <input type="submit" id="rPostBtn" data-post="{{ post.id }}" class="btn btn-sm btn-default" value="立即发布">{{ xsrf_form_html() }}
-    </div>
+
 
 
     <div class="follow-box box">
@@ -287,7 +287,7 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} 
 
 <!--{% block navigation %}-->
 <!--<nav class="shifter-navigation">-->
@@ -514,14 +514,14 @@
             var m_votenum = m_votebar.find('span');
             $.getJSON('/vote/post/' + vote_id + '?vote=' + vote_type, function(data) {
                 if (data.success != 0) {
-                    if (m_votebar.hasClass('voted')) {
+                    if (m_votebar.hasClass('voted')) {                       
                         if (vote_type == 'up') {
                             if (vote_btn.hasClass('voted')) {
                                 m_votebar.removeClass('voted');
                                 m_votenum.text(parseInt(m_votenum.text()) - 1);
                             } else {
                                 m_votenum.text(parseInt(m_votenum.text()) + 1);
-                            }
+                            }                            
                         } else {
                             if (vote_btn.hasClass('voted')) {
                                 m_votebar.removeClass('voted');
@@ -533,7 +533,7 @@
                         m_votebar.addClass('voted');
                         if (vote_type == 'up') {
                             m_votenum.text(parseInt(m_votenum.text()) + 1);
-                        }
+                        } 
                     }
                     if (vote_btn.hasClass('voted')) {
                         vote_btn.removeClass('voted');
@@ -579,14 +579,14 @@
             var m_votenum = m_votebar.find('span');
             $.getJSON('/vote/reply/' + vote_id + '?vote=' + vote_type, function(data) {
                 if (data.success != 0) {
-                    if (m_votebar.hasClass('voted')) {
+                    if (m_votebar.hasClass('voted')) {                       
                         if (vote_type == 'up') {
                             if (vote_btn.hasClass('voted')) {
                                 m_votebar.removeClass('voted');
                                 m_votenum.text(parseInt(m_votenum.text()) - 1);
                             } else {
                                 m_votenum.text(parseInt(m_votenum.text()) + 1);
-                            }
+                            }                            
                         } else {
                             if (vote_btn.hasClass('voted')) {
                                 m_votebar.removeClass('voted');
@@ -598,7 +598,7 @@
                         m_votebar.addClass('voted');
                         if (vote_type == 'up') {
                             m_votenum.text(parseInt(m_votenum.text()) + 1);
-                        }
+                        } 
                     }
                     if (vote_btn.hasClass('voted')) {
                         vote_btn.removeClass('voted');
@@ -623,8 +623,8 @@
                             }
                         }
                     }
-
-                    zm_votebar.hide();
+                    
+                    zm_votebar.hide();                   
                     m_votebar.show();
                 }
             });
@@ -891,7 +891,7 @@
                     alert("error");
                 }
             });
-        });
+        }); 
         {% endif %}
 
         window._bd_share_config = {
