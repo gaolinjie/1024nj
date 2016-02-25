@@ -448,7 +448,16 @@
                 }),
                 success: function(msg) {
                     if (msg.success != 0) {
-                        var reply_string = '<div id="' + msg.reply_id + '" class="answer-item"><div class="user-wrapper"><div class="zm-votebar"><button class="up vote-btn vote-self-btn" title="赞同"> <span class="label">赞同</span><span class="count">0</span></button></div><div class="user-title"><div class="user-name"><a href="/u/{{user_info.username}}">{{user_info.username}}</a>{%if user_info.sign%}，{{user_info.sign}}{%endif%}</div><div class="answer-user-meta meta">还没有人赞同</div></div><div class="user-avatar"><a href="/u/{{user_info.username}}"><img src="{{ user_info.avatar }}-46px" width="46px" height="46px" alt="" class="avatar-img"></a></div></div><div class="answer-text">' + reply_text + '</div><div class="answer-meta meta"><span class="time">刚刚</span><span class="bullet">&nbsp;•&nbsp;</span><a class="edit" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">&nbsp;•&nbsp;</span><a class="delete" href="javascript:;" data-id="' + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></div></div>';
+                        var reply_string = '<div id="'
+                         + msg.reply_id + '" class="feed"><div class="feed-up">'
+                         + '<div class="avatar feed-left tipped_ajax_user" data-tipped="/get/user/{{user_info.username}}"><a href="/u/{{user_info.username}}"><img class="feed-object avatar-48" src="{{ user_info.avatar}}?imageView2/1/w/48/h/48" alt=""></a>'
+                         + '</div><div class="infos feed-body"><div class="info"><div class="fr"><div class="op_area" style="display:none;">&nbsp; &nbsp; &nbsp;<a href="#;" class="op">回复 Ta</a></div>&nbsp;<div class="votes"><a href="javascript:" class="vote up vote-reply" title="赞同" data-id="'
+                         + msg.reply_id + '" data-type="up"><li class="fa fa-chevron-up"></li><span class="count zero">0</span></a><a href="javascript:" class="vote down vote-reply" title="反对，不会显示你的姓名" data-id="'
+                         + msg.reply_id + '" data-type="down"><li class="fa fa-chevron-down"></li><span class="count zero">0</span></a></div>&nbsp;</div>'
+                         + '<span class="small"> <strong><a class="tipped_ajax_user" data-tipped="/get/user/{{user_info.username}}" href="/u/{{user_info.username}}">{{user_info.username}}</a></strong>&nbsp;&nbsp;<span class="time">刚刚</span><span class="bullet">•</span><a class="edit" href="javascript:;" data-id="'
+                         + msg.reply_id + '" data-type="reply">修改</a><span class="bullet">•</span><a class="delete" href="javascript:;" data-id="'
+                         + msg.reply_id + '" data-type="reply" data-toggle="modal" data-target="#delModal">删除</a></span></div><div class="reply_content">'
+                         + reply_text + '</div></div></div></div>';
                         $('#rSummernote').code('');
                         $(reply_string).insertBefore('.jscroll-next-parent:last');
                     } else {
