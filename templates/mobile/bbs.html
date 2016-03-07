@@ -64,6 +64,16 @@
                     <div class="next jscroll-next-parent">
                         <a href="/bbs?p={{all_posts.page.next}}" id="load-more"
                            class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                        <script type="text/javascript">
+                            var active_nav_id = "{{active_nav_id}}";
+                            if(active_nav_id == null || typeof active_nav_id == 'undefined' || active_nav_id == ""){
+                                active_nav_id = "1";
+                            }
+                            var loadMoreItem = document.getElementById("load-more");
+                            if(loadMoreItem != null && typeof loadMoreItem != 'undefined' && loadMoreItem != ""){
+                               loadMoreItem.href = "/get/nav/" + active_nav_id + "?p={{all_posts.page.next}}";
+                            }
+                        </script>
                     </div>
                     {%else%}
                     <div class="next jscroll-next-parent">
