@@ -464,7 +464,7 @@ DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` text,
-  `content` text,
+  `content` longtext,
   `post_type` text,
   `feed_type` text,
   `open_type` text,
